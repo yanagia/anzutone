@@ -1,6 +1,8 @@
 このプロジェクトはまだ作業中です。
 
-このレポジトリにはjQueryのソースコードが含まれています。
+このレポジトリにはjQueryおよびjQuery Context Menu Pluginのソースコードが含まれています。
 - js/jquery*
 - css/ui-*
-これらのソースコードはMIT Licenseでライセンスされています。
+- css/plugin/*
+これらのソースコードはMIT Licenseによってライセンスされています。
+

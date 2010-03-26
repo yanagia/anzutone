@@ -25,6 +25,19 @@ $(function(){
 
     $(document).dblclick(function(ev)
 		 {
+		   var lclick = $("<div>")
+		     .contextMenu(
+		       {
+			 menu : "noteContextMenu"
+		       }, function(action, el, pos){
+			 console.log(action, el, pos);
+			 if(action === "noteDeleteEvent"){
+			   console.log("yes");
+			   console.log(el.disableContextMenu());
+			 }
+		       });
+
+
 		   $("<div>")
 		     .addClass("ui-widget-header")
 		     .attr("style", "width: 100px; height: 19px; margin 0px 20px 20px 0px;" + 
@@ -36,11 +49,11 @@ $(function(){
 		       {
 			 menu : "noteContextMenu"
 		       }, function(action, el, pos){
-			 console.log(action, el, pos);
 			 if(action === "noteDeleteEvent"){
 			   console.log("yes");
-			   console.log(el.disableContextMenu());
-// 			   el.draggable("destory");
+			   el.disableContextMenu();
+			   el.draggable("disable");
+			   el.resizable("disable");
 			 }
 		       })
 		     .appendTo(role);

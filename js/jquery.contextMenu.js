@@ -1,6 +1,6 @@
 // jQuery Context Menu Plugin
 //
-// Version 1.01
+// Version 1.011
 //
 // Cory S.N. LaViska
 // A Beautiful Site (http://abeautifulsite.net/)
@@ -12,6 +12,11 @@
 // This plugin is dual-licensed under the GNU General Public License
 //   and the MIT License and is copyright A Beautiful Site, LLC.
 //
+//
+// fixed : 03/26/10 
+//         "$(that).draggable().resizable().contextMenu()" bug fixed.
+//             by yanagia (http://d.hatena.ne.jp/yanagia/)
+
 if(jQuery)( function() {
 	$.extend($.fn, {
 		
@@ -31,6 +36,7 @@ if(jQuery)( function() {
 				$('#' + o.menu).addClass('contextMenu');
 				// Simulate a true right click
 				$(this).mousedown( function(e) {
+						     if(e.which != undefined && e.witch != 1 && e.button != 2) return; // add this line (yanagia : 03/26/10)
 					var evt = e;
 					evt.stopPropagation();
 					$(this).mouseup( function(e) {
