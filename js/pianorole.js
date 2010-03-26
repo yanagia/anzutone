@@ -67,11 +67,13 @@ $(function(){
 			   $(document).click(clickHandler);			   
 			 }
 		       }, function(action, el, pos){
-			 if(action === "noteDeleteEvent"){
+			 switch(action){
+			 case "delete":
 			   el.disableContextMenu();
 			   el.draggable("destroy");
 			   el.resizable("destroy");
 			   el.remove();
+			   break;
 			 }
 
 		       })
@@ -138,18 +140,20 @@ function playShortAudio(audio, t){
 function convertToTrack(){
   var role = $("#role");
 
-  var track = [];
+  var notes = [];
 
   role.children().each(function(idn, dom){
 			 var top, left, width;
 			 top = dom.style.top;
 			 left = dom.style.left;
 			 width = dom.style.width;
-			 console.log([top, left, width]);
-			 track.push(convertToNote(dom));
+			 notes.push(convertToNote(dom));
 		       });
 
-  return track;
+  return {
+    notes : notes,
+    tone : "Square"
+  };
 }
 
 function convertToNote(dom){

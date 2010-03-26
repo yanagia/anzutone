@@ -50,6 +50,17 @@ function createSquareSignal(t, sinF){
   return signals;
 }
 
+function mixSignal(base, up, offset){
+  var i, len, sig;
+  len = up.length;
+  offset = Math.floor(offset);
+  for(i = 0; i < len; i++){
+    sig = base[i+offset] + Math.floor(up[i] * 0.1);
+    sig = sig > 255 ? 255 : sig; // 255でカット
+    base[i+offset] = sig;
+  }
+}
+
 function convertToBinary(signals){ // signals は 8bit unsigned charの配列
   var i, len, bin;
   len = signals.length;

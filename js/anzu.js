@@ -20,6 +20,7 @@ $(function(){
 //     document.body.style.backgroundImage = "url(css/anzu/piano.png)";
 
 //     setTimeout(checkRoleNode, 1000);
+    initPitchList();
 });
 
 function checkRoleNode(){
@@ -32,5 +33,64 @@ function checkRoleNode(){
 
 function getCurrentScore(){
   var track = $("iframe")[0].contentWindow.convertToTrack();
-  console.log(track);
+  var score = {
+    bpm : 60,
+    tracks : [track]
+  };
+
+  return score;
+}
+
+function playScore(){
+  var score = getCurrentScore();
+  var bpm = score.bpm;
+  
+  var track = score.tracks[0];
+  var tone = track.tone;
+  var notes = track.notes;
+
+  notes.sort(function(a, b)
+	     {
+	       return  a.begin + a.length - (b.begin + b.length);
+	     });
+  var samplingRate = 22050;
+  var endTime = notes[notes.length-1].begin + notes[notes.length-1].length;
+  var totalSeconds = 60.0 / bpm * endTime;
+  var totalFrames = Math.ceil(totalSeconds * samplingRate);
+  var baseSignals = new Array(totalFrames);
+  var i;
+  for(i = 0; i < totalFrames; i++){
+    baseSignals[i] = 0;
+  }
+  var noteslen = notes.length;
+  var note, spb = 60.0 / bpm;
+  var noteframe, signals;
+  for(i = 0; i < noteslen; i++){
+    note = notes[i];
+    noteframe = note.length * spb;
+    console.log([note.begin, noteframe]);
+    signals = createSquareSignal(note.length * spb, convertToPitch(note.key));
+    mixSignal(baseSignals, signals, note.begin * spb * samplingRate);
+  }
+  console.log(notes.length);
+
+  var url = convertToURL(convertToBinary(baseSignals));
+  var audio = new Audio(url);
+  var jo = $(audio);
+  $("#outAudioStream").append(jo);
+  audio.volume = 1.0;
+  audio.loop = false;
+  setTimeout(function()
+	     {
+	       audio.play();
+	       setTimeout(function()
+			  {
+			    audio.pause();
+			    audio.loop = false;
+			    audio = null;
+			    jo.remove();
+			    jo = null;
+			  }, totalSeconds * 1000 + 500);
+	     }, 1000);
+  
 }

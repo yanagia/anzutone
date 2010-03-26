@@ -6,12 +6,14 @@
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
 <script type="text/javascript" src="js/anzu.js"></script>
+<script type="text/javascript" src="js/wave.js"></script>
+<script type="text/javascript" src="js/base64.js"></script>
 </head>
 
 <body>
 aa
 <form>
-<input type="button" value="楽譜に変換" onclick="getCurrentScore()">
+<input type="button" value="再生" onclick="playScore()">
 </form>
 <iframe src="pianorole.html?abcd" width="100%" height="80%" frameborder=0 id="pianorole"></iframe>
 <!-- <div id="role-bg" class="pianorole-bg"> -->
@@ -22,5 +24,7 @@ aa
 <!-- </div> -->
 <!-- </div> -->
 <!-- </div> -->
+
+<div id="outAudioStream"></div>
 </body>
 </html>
