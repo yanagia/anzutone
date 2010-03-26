@@ -68,29 +68,25 @@ function playScore(){
   for(i = 0; i < noteslen; i++){
     note = notes[i];
     noteframe = note.length * spb;
-    console.log([note.begin, noteframe]);
     signals = createSquareSignal(note.length * spb, convertToPitch(note.key));
     mixSignal(baseSignals, signals, note.begin * spb * samplingRate);
   }
-  console.log(notes.length);
 
   var url = convertToURL(convertToBinary(baseSignals));
+  baseSignals = null;
   var audio = new Audio(url);
+  url = null;
   var jo = $(audio);
   $("#outAudioStream").append(jo);
   audio.volume = 1.0;
   audio.loop = false;
+  audio.play();
   setTimeout(function()
 	     {
-	       audio.play();
-	       setTimeout(function()
-			  {
-			    audio.pause();
-			    audio.loop = false;
-			    audio = null;
-			    jo.remove();
-			    jo = null;
-			  }, totalSeconds * 1000 + 500);
-	     }, 1000);
-  
+	       audio.pause();
+	       audio.loop = false;
+	       audio = null;
+	       jo.remove();
+	       jo = null;
+	     }, totalSeconds * 1000 + 500);
 }

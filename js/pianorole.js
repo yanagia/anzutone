@@ -49,6 +49,9 @@ $(function(){
 			   var audio = new Audio(url);
 			   lastKey = key;
 			   playShortAudio(audio, 2);
+			   url = null;
+			   signals = null;
+			   audio = null;
 			 },
 			 drag : function(ev, ui){
 			   var key = posKeyList[Math.floor(ev.pageY / 20) * 20];
@@ -58,6 +61,9 @@ $(function(){
 			   var audio = new Audio(url);
 			   lastKey = key;
 			   playShortAudio(audio, 2);
+			   url = null;
+			   signals = null;
+			   audio = null;
 			 }
 		       })
 		     .contextMenu(
@@ -73,6 +79,7 @@ $(function(){
 			   el.draggable("destroy");
 			   el.resizable("destroy");
 			   el.remove();
+			   el = null;
 			   break;
 			 }
 
@@ -97,6 +104,8 @@ $(function(){
       prev = now;
       lastKeyIndex = nowKeyIndex;
       audio = null;
+      signals = null;
+      url = null;
     };
     $(document).click(clickHandler);
     
