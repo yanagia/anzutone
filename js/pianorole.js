@@ -62,7 +62,10 @@ $(function(){
 		       })
 		     .contextMenu(
 		       {
-			 menu : "noteContextMenu"
+			 menu : "noteContextMenu",
+			 afterCallback : function(){
+			   $(document).click(clickHandler);			   
+			 }
 		       }, function(action, el, pos){
 			 if(action === "noteDeleteEvent"){
 			   el.disableContextMenu();
@@ -70,6 +73,7 @@ $(function(){
 			   el.resizable("destroy");
 			   el.remove();
 			 }
+
 		       })
 		     .appendTo(role);
 		 });
@@ -77,20 +81,22 @@ $(function(){
     var prev = new Date();
     var lastKeyIndex = 0;
     // 音を鳴らす。ダブルクリックの時は鳴らさない。
-    $(document).click(function(ev)
-		      {
-			var now = new Date();
-			var nowKeyIndex = Math.floor(ev.pageY / 20) * 20;
-			if(lastKeyIndex === nowKeyIndex && now - prev < 200) return;
-			var key = posKeyList[Math.floor(ev.pageY / 20) * 20];
-			var signals = createSquareSignal(0.2, convertToPitch(key));
-			var url = convertToURL(convertToBinary(signals));
-			var audio = new Audio(url);
-			playShortAudio(audio, 2);
-			prev = now;
-			lastKeyIndex = nowKeyIndex;
-			audio = null;
-		      });
+
+    function clickHandler(ev)
+    {
+      var now = new Date();
+      var nowKeyIndex = Math.floor(ev.pageY / 20) * 20;
+      if(lastKeyIndex === nowKeyIndex && now - prev < 200) return;
+      var key = posKeyList[Math.floor(ev.pageY / 20) * 20];
+      var signals = createSquareSignal(0.2, convertToPitch(key));
+      var url = convertToURL(convertToBinary(signals));
+      var audio = new Audio(url);
+      playShortAudio(audio, 2);
+      prev = now;
+      lastKeyIndex = nowKeyIndex;
+      audio = null;
+    };
+    $(document).click(clickHandler);
     
     initPitchList();
     testSounds = {};

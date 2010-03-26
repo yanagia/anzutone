@@ -14,7 +14,8 @@
 //
 //
 // fixed : 03/26/10 
-//         "$(that).draggable().resizable().contextMenu()" bug fixed.
+//         - "$(that).draggable().resizable().contextMenu()" bug fixed.
+//         -  add option "afterCallback". This function called after context menu erase.
 //             by yanagia (http://d.hatena.ne.jp/yanagia/)
 
 if(jQuery)( function() {
@@ -36,6 +37,7 @@ if(jQuery)( function() {
 				$('#' + o.menu).addClass('contextMenu');
 				// Simulate a true right click
 				$(this).mousedown( function(e) {
+						     console.log("lc: " + e);
 						     if(e.which != undefined && e.witch != 1 && e.button != 2) return; // add this line (yanagia : 03/26/10)
 					var evt = e;
 					evt.stopPropagation();
@@ -74,7 +76,7 @@ if(jQuery)( function() {
 							(e.pageY) ? y = e.pageY : x = e.clientY + d.scrollTop;
 							
 							// Show the menu
-							$(document).unbind('click');
+ 							$(document).unbind('click');
 							$(menu).css({ top: y, left: x }).fadeIn(o.inSpeed);
 							// Hover events
 							$(menu).find('A').mouseover( function() {
@@ -119,14 +121,17 @@ if(jQuery)( function() {
 								$(".contextMenu").hide();
 								// Callback
 								if( callback ) callback( $(this).attr('href').substr(1), $(srcElement), {x: x - offset.left, y: y - offset.top, docX: x, docY: y} );
+													     o.afterCallback();
 								return false;
 							});
-							
 							// Hide bindings
 							setTimeout( function() { // Delay for Mozilla
 								$(document).click( function() {
 									$(document).unbind('click').unbind('keypress');
 									$(menu).fadeOut(o.outSpeed);
+							console.log("after hide ");
+										     o.afterCallback();
+										     
 									return false;
 								});
 							}, 0);
