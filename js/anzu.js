@@ -2,7 +2,7 @@ $(function(){
     var ifdoc = $("#pianorole").contents().find("#role");
 //     ifdoc.appendChild(document.createTextNode("node"));
 
-    console.log(ifdoc[0]);
+//     console.log(ifdoc[0]);
 
 //     $("<div>")
 //       .addClass("ui-widget-header")
@@ -19,14 +19,18 @@ $(function(){
 
 //     document.body.style.backgroundImage = "url(css/anzu/piano.png)";
 
-    setTimeout(checkRoleNode, 1000);
+//     setTimeout(checkRoleNode, 1000);
 });
 
 function checkRoleNode(){
-  var ifdoc = $("#pianorole").contents().find("#role");
+  var ifd = $("#pianorole").contents().find("#role");
+  $("iframe")[0].contentWindow.innerFunction();
+//   $("<div>").append("sampleString").attr("style", "display: none;").appendTo(ifdoc);
 
-  $("<div>").append("sampleString").attr("style", "display: none;").appendTo(ifdoc);
-
-  console.log(ifdoc);
+//   console.log(ifdoc);
 }
 
+function getCurrentScore(){
+  var track = $("iframe")[0].contentWindow.convertToTrack();
+  console.log(track);
+}
