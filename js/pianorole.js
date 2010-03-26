@@ -25,7 +25,6 @@ $(function(){
 
     $(document).dblclick(function(ev)
 		 {
-		   console.log(ev.pageX + ":" + ev.pageY);
 		   $("<div>")
 		     .addClass("ui-widget-header")
 		     .attr("style", "width: 100px; height: 19px; margin 0px 20px 20px 0px;" + 
@@ -33,6 +32,17 @@ $(function(){
 			   "top:" + Math.floor(ev.pageY / 20) * 20 + "px;left:" + ev.pageX + "px;")
 		     .resizable({ maxHeight : 19, minHeight : 19})
 		     .draggable({ grid : [1, 20]})
+		     .contextMenu(
+		       {
+			 menu : "noteContextMenu"
+		       }, function(action, el, pos){
+			 console.log(action, el, pos);
+			 if(action === "noteDeleteEvent"){
+			   console.log("yes");
+			   console.log(el.disableContextMenu());
+// 			   el.draggable("destory");
+			 }
+		       })
 		     .appendTo(role);
 		 });
 		   
