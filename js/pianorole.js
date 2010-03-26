@@ -74,7 +74,7 @@ $(function(){
 			 }
 		       }, function(action, el, pos){
 			 switch(action){
-			 case "delete":
+			 case "noteDeleteEvent":
 			   el.disableContextMenu();
 			   el.draggable("destroy");
 			   el.resizable("destroy");
@@ -108,7 +108,8 @@ $(function(){
       url = null;
     };
     $(document).click(clickHandler);
-    
+
+
     initPitchList();
     testSounds = {};
 
@@ -126,8 +127,16 @@ $(function(){
       }
     }
 
+    $("#bar")
+      .draggable(
+    {
+      axis : "x"
+    });
+
+//     startBarAnimation(4, 1200);
+
     // あらかじめスクロールしておく。
-    document.body.scrollTop = 1180;
+//     document.body.scrollTop = 1180;
 });
 
 function playShortAudio(audio, t){
@@ -179,4 +188,28 @@ function convertToNote(dom){
   };
 
   return note;
+}
+
+var barAnimationTimer;
+var playBarStyle, playBarAdd, playBarMax;
+
+function startBarAnimation(speed, to){
+  playBarAdd = speed;
+  playBarMax = to;
+  playBarStyle = $("#bar")[0].style;
+  barAnimationTimer = setInterval(barAnimate, 1000/24);
+};
+
+function barAnimate(){
+//   console.log("animate");
+  var pixel = parseInt(playBarStyle.left, 10);
+  playBarStyle.left = playBarAdd + pixel + "px";
+  if(playBarAdd + pixel > playBarMax){
+    console.log("unset");
+    clearInterval(barAnimationTimer);
+  }
+};
+
+function stopBarAnimation(){
+  clearInterval(barAnimationTimer);
 }
