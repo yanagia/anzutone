@@ -50,10 +50,10 @@ $(function(){
 			 menu : "noteContextMenu"
 		       }, function(action, el, pos){
 			 if(action === "noteDeleteEvent"){
-			   console.log("yes");
 			   el.disableContextMenu();
-			   el.draggable("disable");
-			   el.resizable("disable");
+			   el.draggable("destroy");
+			   el.resizable("destroy");
+			   el.remove();
 			 }
 		       })
 		     .appendTo(role);
