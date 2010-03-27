@@ -165,15 +165,19 @@ $(function(){
 	selected : function(ev, ui){
 	  var elm = ui.selected;
 	  if(elm.style.position){
-	    $(ui.selected).removeClass(noteCSSClass);
 	    $(ui.selected).addClass("anzu-note-selected");
-	    console.log($(ui.selected));
+	    $(ui.selected).animate({backgroundColor : "#66CDAA"}, 300);
+	  }
+	},
+	unselected : function(ev, ui){
+	  var elm = ui.unselected;
+	  if(elm.style.position){
+	    $(ui.unselected).removeClass("anzu-note-selected");
+	    $(ui.unselected).animate({backgroundColor : "#f6a828"}, 300);
 	  }
 	},
 	start : function(ev, ui){
-	  console.log("clicked");
 	  clickHandler(ev);
-// 	  $(document).trigger('click', ev);
 	}
       });
 
