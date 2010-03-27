@@ -56,10 +56,11 @@ function mixSignal(base, up, offset){
   len = up.length;
   offset = Math.floor(offset);
   for(i = 0; i < len; i++){
-    sig = base[i+offset] + up[i] * 0.1;
+    sig = base[i+offset] + up[i] * 0.2;
 //     sig = sig > 255 ? 255 : sig; // 255でカット
     sig = sig > 1.0 ? 1.0 : sig;
     sig = sig < -1.0 ? -1.0 : sig;
+    sig *= 0.7;
     base[i+offset] = sig;
   }
 }
@@ -69,7 +70,7 @@ function convertToBinary(signals){ // signals は 8bit unsigned charの配列
   len = signals.length;
   bin = "";
   for(i = 0; i < len; i++){
-    bin += String.fromCharCode(Math.floor((signals[i] + 2.0)/2.0 * 255));
+    bin += String.fromCharCode(Math.floor((signals[i] + 1.0)/2.0 * 255));
   }
   return bin;
 }
