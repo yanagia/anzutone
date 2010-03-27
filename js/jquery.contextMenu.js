@@ -31,6 +31,8 @@ if(jQuery)( function() {
 			if( o.outSpeed == 0 ) o.outSpeed = -1;
 			// Loop each context menu
 			$(this).each( function() {
+		        o.beforeCallback();
+
 				var el = $(this);
 				var offset = $(el).offset();
 				// Add contextMenu class

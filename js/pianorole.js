@@ -28,14 +28,17 @@ $(function(){
 //       .appendTo(role);
 
     var lastKey = "C1";
+    var noteCSSClass = "ui-widget-header";
+    var openingContextMenu = false;
 
     // ノートを追加するアクション
     $(document).dblclick(function(ev)
 		 {
 		   $("<div>")
-		     .addClass("ui-widget-header")
+		     .addClass(noteCSSClass)
+//  		     .addClass("ui-widget-content")
 		     .attr("style", "width: 98px; height: 17px; margin 0px 20px 20px 0px;" + 
-			   "position: absolute;"  + 
+			   "position: absolute; opacity: 0.9;"  + 
 			   "top:" + (Math.floor(ev.pageY / 20) * 20 + 1) + "px;" + 
 			   "left:" + (Math.floor(ev.pageX / 12.5) * 12.5) + "px;")
 		     .resizable({ maxHeight : 17, minHeight : 17})
@@ -66,24 +69,27 @@ $(function(){
 			   audio = null;
 			 }
 		       })
-		     .contextMenu(
-		       {
-			 menu : "noteContextMenu",
-			 afterCallback : function(){
-			   $(document).click(clickHandler);			   
-			 }
-		       }, function(action, el, pos){
-			 switch(action){
-			 case "noteDeleteEvent":
-			   el.disableContextMenu();
-			   el.draggable("destroy");
-			   el.resizable("destroy");
-			   el.remove();
-			   el = null;
-			   break;
-			 }
-
-		       })
+// 		     .contextMenu(
+// 		       {
+// 			 menu : "noteContextMenu",
+// 			 beforeCallback : function(){
+// 			   openingContextMenu = true;
+// 			 },
+// 			 afterCallback : function(){
+// 			   openingContextMenu = false;
+// // 			   $(document).click(clickHandler);			   
+// 			 }
+// 		       }, function(action, el, pos){
+// 			 switch(action){
+// 			 case "noteDeleteEvent":
+// 			   el.disableContextMenu();
+// 			   el.draggable("destroy");
+// 			   el.resizable("destroy");
+// 			   el.remove();
+// 			   el = null;
+// 			   break;
+// 			 }
+// 		       })
 		     .appendTo(role);
 		 });
 
@@ -93,9 +99,10 @@ $(function(){
 
     function clickHandler(ev)
     {
+//       if(openingContextMenu) return;
       var now = new Date();
       var nowKeyIndex = Math.floor(ev.pageY / 20) * 20;
-      if(lastKeyIndex === nowKeyIndex && now - prev < 200) return;
+      if(lastKeyIndex === nowKeyIndex && now - prev < 400) return;
       var key = posKeyList[Math.floor(ev.pageY / 20) * 20];
       var signals = createSquareSignal(0.2, convertToPitch(key));
       var url = convertToURL(convertToBinary(signals));
@@ -106,8 +113,9 @@ $(function(){
       audio = null;
       signals = null;
       url = null;
+      console.log("I play!!");
     };
-    $(document).click(clickHandler);
+//     $(document).click(clickHandler);
 
 
     initPitchList();
@@ -152,8 +160,25 @@ $(function(){
 
 //     startBarAnimation(4, 1200);
 
+    $("body").selectable(
+      {
+	selected : function(ev, ui){
+	  var elm = ui.selected;
+	  if(elm.style.position){
+	    $(ui.selected).removeClass(noteCSSClass);
+	    $(ui.selected).addClass("anzu-note-selected");
+	    console.log($(ui.selected));
+	  }
+	},
+	start : function(ev, ui){
+	  console.log("clicked");
+	  clickHandler(ev);
+// 	  $(document).trigger('click', ev);
+	}
+      });
+
     // あらかじめスクロールしておく。
-//     document.body.scrollTop = 1180;
+    document.body.scrollTop = 1180;
 });
 
 function playShortAudio(audio, t){
