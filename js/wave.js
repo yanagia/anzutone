@@ -41,7 +41,8 @@ function createSquareSignal(t, sinF){
 
   for(i = 0; i < t; i++){
     sig = Math.sin(phase);
-    sig = sig > 0 ? 180 : 75;
+//     sig = sig > 0 ? 180 : 75;
+    sig = sig > 0.0 ? 1.0 : -1.0;
     signals[i] = sig;
 
     phase += freq;
@@ -55,8 +56,10 @@ function mixSignal(base, up, offset){
   len = up.length;
   offset = Math.floor(offset);
   for(i = 0; i < len; i++){
-    sig = base[i+offset] + Math.floor(up[i] * 0.1);
-    sig = sig > 255 ? 255 : sig; // 255でカット
+    sig = base[i+offset] + up[i] * 0.1;
+//     sig = sig > 255 ? 255 : sig; // 255でカット
+    sig = sig > 1.0 ? 1.0 : sig;
+    sig = sig < -1.0 ? -1.0 : sig;
     base[i+offset] = sig;
   }
 }
@@ -66,7 +69,7 @@ function convertToBinary(signals){ // signals は 8bit unsigned charの配列
   len = signals.length;
   bin = "";
   for(i = 0; i < len; i++){
-    bin += String.fromCharCode(signals[i]);
+    bin += String.fromCharCode(Math.floor((signals[i] + 2.0)/2.0 * 255));
   }
   return bin;
 }

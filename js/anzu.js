@@ -53,6 +53,9 @@ function playScore(){
 	     {
 	       return  a.begin + a.length - (b.begin + b.length);
 	     });
+
+  console.log(notes);
+
   var samplingRate = 22050;
   var endTime = notes[notes.length-1].begin + notes[notes.length-1].length;
   var totalSeconds = 60.0 / bpm * endTime;
@@ -78,7 +81,7 @@ function playScore(){
   url = null;
   var jo = $(audio);
   $("#outAudioStream").append(jo);
-  audio.volume = 1.0;
+  audio.volume = 0.5;
   audio.loop = false;
   audio.play();
   setTimeout(function()
