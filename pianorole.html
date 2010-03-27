@@ -23,8 +23,10 @@
 </head>
 <body style="background-image: url(css/anzu/piano-tate.gif); background-repeat: repeat-x; height: 1920px;">
 <div id="role">
-<div class="tooltipTri"></div><div class="tooltipBody"><div class="tooltipInner">abc</div></div>
-<div id="bar" class="ui-state-highlight" style="width: 2px; position: absolute; height: 1920px; top: 0px; left: 100px;"></div>
+<div class="tooltip" id="barTooltip">
+<div class="tooltipTri"></div><div class="tooltipBody"><div class="tooltipInner" id="barTooltipInner">abc</div></div>
+</div>
+<div id="bar" class="ui-state-highlight" style="width: 2px; position: absolute; height: 1920px; top: 0px; left: 100px; z-index: 999;"></div>
 </div>
 
 

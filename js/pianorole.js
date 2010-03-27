@@ -127,10 +127,27 @@ $(function(){
       }
     }
 
+    var barTooltip = $("#barTooltip")[0];
+    var barTooltipInner = $("#barTooltipInner")[0];
+
     $("#bar")
       .draggable(
     {
-      axis : "x"
+      axis : "x",
+      start : function(ev, ui){
+	barTooltip.style.top = (ev.pageY-20) + "px";
+	barTooltip.style.left = ev.pageX + "px";
+	barTooltipInner.innerHTML = "&nbsp;" + (Math.floor(ev.pageX / 400)) + " + " + (ev.pageX % 400 / 100);
+	barTooltip.style.display = "block";
+      },
+      drag : function(ev, ui){
+	barTooltip.style.top = (ev.pageY-20) + "px";
+	barTooltip.style.left = ev.pageX + "px";
+	barTooltipInner.innerHTML = "&nbsp;" + (Math.floor(ev.pageX / 400)) + " + " + (ev.pageX % 400 / 100);
+      },
+      stop : function(ev, ui){
+	barTooltip.style.display = "none";
+      }
     });
 
 //     startBarAnimation(4, 1200);
