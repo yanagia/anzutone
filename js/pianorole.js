@@ -118,7 +118,7 @@ $(function(){
     $(window).keydown(function(ev)
 		      {
 			var selected;
-			switch(ev.which){
+			switch(ev.keyCode){
 			case 8:	// backspace
 			  selected = $("#role > .ui-selected");
 			  selected.each(function(ind, elm)
@@ -140,7 +140,6 @@ $(function(){
 			  killBuffer = [];
 			  var min = 1000 * 1000;
 			  selected.each(function(ind, elm){
-					  console.log(parseInt(elm.style.left));
 					  if(min > parseInt(elm.style.left)) min = parseInt(elm.style.left);
 					});
 			  selected.each(function(ind, elm)
@@ -153,10 +152,10 @@ $(function(){
 					      left : parseInt(elm.style.left) - min
 					    });
 					});
-			  console.log(killBuffer);
 			  break;
 
 			  case 86: // v
+			  case 89: // y
 			  var x = parseInt($("#bar")[0].style.left);
 			  var i, len;
 			  for(i = 0; i < killBuffer.length; i++){
@@ -164,7 +163,36 @@ $(function(){
 			    var newNoteDiv = createNoteDiv(killBuffer[i]);
 			    newNoteDiv.appendTo($("#role"));
 			  }
-			  console.log("paste");
+			  break;
+
+			  case 87: // w
+			  case 88: // x
+			  selected = $("#role > .ui-selected");
+			  selected.each(function(ind, elm)
+					{
+					  var el = $(elm);
+					  el.draggable("destroy");
+					  el.resizable("destroy");
+					  el.remove();
+					  el = null;					  
+					});
+			  if(selected.length === 0) return;
+			  killBuffer = [];
+			  min = 1000 * 1000;
+			  selected.each(function(ind, elm){
+					  if(min > parseInt(elm.style.left)) min = parseInt(elm.style.left);
+					});
+			  selected.each(function(ind, elm)
+					{
+					  var el = $(elm);
+					  killBuffer.push(
+					    {
+					      top : parseInt(elm.style.top), 
+					      width : parseInt(elm.style.width),
+					      left : parseInt(elm.style.left) - min
+					    });
+					});
+
 			  break;
 			}
 		      });
