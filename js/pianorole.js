@@ -206,7 +206,7 @@ $(function(){
 //       if(openingContextMenu) return;
       var now = new Date();
       var nowKeyIndex = Math.floor(ev.pageY / 20) * 20;
-      if(lastKeyIndex === nowKeyIndex && now - prev < 400) return;
+      if(lastKeyIndex === nowKeyIndex && now - prev < 400) return; // ダブルクリック対策
       var key = posKeyList[Math.floor(ev.pageY / 20) * 20];
       var signals = createSquareSignal(0.2, convertToPitch(key));
       var url = convertToURL(convertToBinary(signals));
@@ -254,8 +254,6 @@ $(function(){
       },
       drag : function(ev, ui){
 	var  barPos = parseInt($("#bar")[0].style.left);
-// 	if(barPos === lastbarPos) return true;
-// 	lastBarPos = barPos;
 	barTooltip.style.top = (ev.pageY-20) + "px";
 	barTooltip.style.left = barPos + "px";
 	barTooltipInner.innerHTML = "&nbsp;" + (Math.floor(barPos / 400)) + " + " + (barPos % 400 / 100);
@@ -315,19 +313,20 @@ function convertToTrack(){
   var role = $("#role");
 
   var notes = [];
-
+  var track = Anzu.Track();
+  var n;
   role.children().each(function(idn, dom){
-			 var top, left, width;
-			 top = dom.style.top;
-			 left = dom.style.left;
-			 width = dom.style.width;
-			 notes.push(convertToNote(dom));
+			 n = Anzu.Note();
+			 n.setDiv(dom);
+			 track.addNote(n);
+// 			 var top, left, width;
+// 			 top = dom.style.top;
+// 			 left = dom.style.left;
+// 			 width = dom.style.width;
+// 			 notes.push(convertToNote(dom));
 		       });
 
-  return {
-    notes : notes,
-    tone : "Square"
-  };
+  return track;
 }
 
 function convertToNote(dom){

@@ -33,18 +33,19 @@ function checkRoleNode(){
 
 function getCurrentScore(){
   var track = $("iframe")[0].contentWindow.convertToTrack();
-  var score = {
-    bpm : 60,
-    tracks : [track]
-  };
+  var score = Anzu.Score();
+  score.addTrack(track);
 
   return score;
 }
 
 function playScore(){
   var score = getCurrentScore();
-  var bpm = score.bpm;
-  
+
+  score.play(0.0);
+  return;
+
+  var bpm = score.bpm;  
   var track = score.tracks[0];
   var tone = track.tone;
   var notes = track.notes;

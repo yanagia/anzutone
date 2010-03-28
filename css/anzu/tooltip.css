@@ -1,0 +1,31 @@
+.tooltipTri {
+    border-top: solid 2px transparent;
+    border-bottom: solid 9px transparent;
+    border-left: 0;
+    border-right: solid 22px #ffcc66;
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: 16px;
+    left: 0px;
+}
+
+.tooltipBody {
+    border: solid 2px #ffcc66;
+    width: 90px;
+    position: absolute;
+    left: 20px;
+}
+
+.tooltipInner {
+    background-color: #ffffff;
+    font-size: 18px;
+/*     width: 30px; */
+    height: 26px;
+}
+
+.tooltip {
+    position: absolute;
+    display: none;
+    z-index: 1000;
+}
