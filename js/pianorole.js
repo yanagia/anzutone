@@ -31,103 +31,142 @@ $(function(){
     var noteCSSClass = "ui-widget-header";
     var openingContextMenu = false;
 
+    function createNoteDiv(obj){
+      return $("<div>")
+	.addClass(noteCSSClass)
+      //  		     .addClass("ui-widget-content")
+	.attr("style", "width: " + obj.width + "px;" + " height: 17px; margin 0px 20px 20px 0px;" + 
+	      "position: absolute; opacity: 0.9;"  + 
+	      "top:" + (Math.floor(obj.top / 20) * 20 + 1) + "px;" + 
+	      "left:" + (Math.floor(obj.left / 12.5) * 12.5) + "px;")
+	.resizable({ maxHeight : 17, minHeight : 17})
+	.draggable(
+	  { 
+	    grid : [12.5, 20],
+	    start : function(ev, ui){
+	      var key = posKeyList[Math.floor(ev.pageY / 20) * 20];
+	      var signals = createSquareSignal(0.2, convertToPitch(key));
+	      var url = convertToURL(convertToBinary(signals));
+	      var audio = new Audio(url);
+	      lastKey = key;
+	      playShortAudio(audio, 2);
+	      url = null;
+	      signals = null;
+	      audio = null;
+	      var selected = $("#role > .ui-selected");
+	      var that = this;
+	      selected.each(function(ind, elm)
+			    {
+			      if(that !== elm){
+				elm.anzuHelper = {};
+				elm.anzuHelper.x = parseInt(that.style.left) - parseInt(elm.style.left);
+				elm.anzuHelper.y = parseInt(that.style.top) - parseInt(elm.style.top);
+			      }
+			    });
+	      
+	    },
+	    drag : function(ev, ui){
+	      var selected = $("#role > .ui-selected");
+	      var that = this;
+	      selected.each(function(ind, elm)
+			    {
+			      if(that !== elm){
+				elm.style.left = (parseInt(that.style.left) - elm.anzuHelper.x) + "px";
+				elm.style.top = (parseInt(that.style.top) - elm.anzuHelper.y) + "px";
+			      }
+			    });
+
+	      var key = posKeyList[Math.floor(ev.pageY / 20) * 20];
+	      if(lastKey === key) return;
+	      var signals = createSquareSignal(0.2, convertToPitch(key));
+	      var url = convertToURL(convertToBinary(signals));
+	      var audio = new Audio(url);
+	      lastKey = key;
+	      playShortAudio(audio, 2);
+	      url = null;
+	      signals = null;
+	      audio = null;
+	    }, 
+	    stop : function(ev, ui){
+	      var selected = $("#role > .ui-selected");
+	      var that = this;
+	      selected.each(function(ind, elm)
+			    {
+			      if(that !== elm){
+				elm.style.left = (parseInt(that.style.left) - elm.anzuHelper.x) + "px";
+				elm.style.top = (parseInt(that.style.top) - elm.anzuHelper.y) + "px";
+			      }
+			    });
+	    }
+	  });
+
+    }
+
     // ノートを追加するアクション
     $(document).dblclick(function(ev)
 		 {
-		   $("<div>")
-		     .addClass(noteCSSClass)
-//  		     .addClass("ui-widget-content")
-		     .attr("style", "width: 98px; height: 17px; margin 0px 20px 20px 0px;" + 
-			   "position: absolute; opacity: 0.9;"  + 
-			   "top:" + (Math.floor(ev.pageY / 20) * 20 + 1) + "px;" + 
-			   "left:" + (Math.floor(ev.pageX / 12.5) * 12.5) + "px;")
-		     .resizable({ maxHeight : 17, minHeight : 17})
-		     .draggable(
-		       { 
-			 grid : [12.5, 20],
-			 start : function(ev, ui){
-			   var key = posKeyList[Math.floor(ev.pageY / 20) * 20];
-			   var signals = createSquareSignal(0.2, convertToPitch(key));
-			   var url = convertToURL(convertToBinary(signals));
-			   var audio = new Audio(url);
-			   lastKey = key;
-			   playShortAudio(audio, 2);
-			   url = null;
-			   signals = null;
-			   audio = null;
-			   var selected = $("#role > .ui-selected");
-			   var that = this;
-			   selected.each(function(ind, elm)
-					 {
-					   if(that !== elm){
-					     elm.anzuHelper = {};
-					     elm.anzuHelper.x = parseInt(that.style.left) - parseInt(elm.style.left);
-					     elm.anzuHelper.y = parseInt(that.style.top) - parseInt(elm.style.top);
-					   }
-					 });
-			   
-			 },
-			 drag : function(ev, ui){
-			   var selected = $("#role > .ui-selected");
-			   var that = this;
-			   selected.each(function(ind, elm)
-					 {
-					   if(that !== elm){
-					     elm.style.left = (parseInt(that.style.left) - elm.anzuHelper.x) + "px";
-					     elm.style.top = (parseInt(that.style.top) - elm.anzuHelper.y) + "px";
-					   }
-					 });
-
-			   var key = posKeyList[Math.floor(ev.pageY / 20) * 20];
-			   if(lastKey === key) return;
-			   var signals = createSquareSignal(0.2, convertToPitch(key));
-			   var url = convertToURL(convertToBinary(signals));
-			   var audio = new Audio(url);
-			   lastKey = key;
-			   playShortAudio(audio, 2);
-			   url = null;
-			   signals = null;
-			   audio = null;
-			 }, 
-			 stop : function(ev, ui){
-			   var selected = $("#role > .ui-selected");
-			   var that = this;
-			   selected.each(function(ind, elm)
-					 {
-					   if(that !== elm){
-					     elm.style.left = (parseInt(that.style.left) - elm.anzuHelper.x) + "px";
-					     elm.style.top = (parseInt(that.style.top) - elm.anzuHelper.y) + "px";
-					   }
-					 });
-			 }
-		       })
-// 		     .contextMenu(
-// 		       {
-// 			 menu : "noteContextMenu",
-// 			 beforeCallback : function(){
-// 			   openingContextMenu = true;
-// 			 },
-// 			 afterCallback : function(){
-// 			   openingContextMenu = false;
-// // 			   $(document).click(clickHandler);			   
-// 			 }
-// 		       }, function(action, el, pos){
-// 			 switch(action){
-// 			 case "noteDeleteEvent":
-// 			   el.disableContextMenu();
-// 			   el.draggable("destroy");
-// 			   el.resizable("destroy");
-// 			   el.remove();
-// 			   el = null;
-// 			   break;
-// 			 }
-// 		       })
-		     .appendTo(role);
+		   createNoteDiv({
+				   top : ev.pageY,
+				   left : ev.pageX,
+				   width : 98
+				 }).appendTo($("#role"));
 		 });
 
-    $("body").keydown(function(ev)
+    var killBuffer = [];
+
+    // キーイベント
+    $(window).keydown(function(ev)
 		      {
-			console.log(ev.which);
+			var selected;
+			switch(ev.which){
+			case 8:	// backspace
+			  selected = $("#role > .ui-selected");
+			  selected.each(function(ind, elm)
+					{
+					  var el = $(elm);
+					  el.draggable("destroy");
+					  el.resizable("destroy");
+					  el.remove();
+					  el = null;					  
+					});
+			  
+			  break;
+
+			  case 67: // c
+			  if(! ev.ctrlKey) return;
+			  // Ctrl + c
+			  selected = $("#role > .ui-selected");
+			  if(selected.length === 0) return;
+			  killBuffer = [];
+			  var min = 1000 * 1000;
+			  selected.each(function(ind, elm){
+					  console.log(parseInt(elm.style.left));
+					  if(min > parseInt(elm.style.left)) min = parseInt(elm.style.left);
+					});
+			  selected.each(function(ind, elm)
+					{
+					  var el = $(elm);
+					  killBuffer.push(
+					    {
+					      top : parseInt(elm.style.top), 
+					      width : parseInt(elm.style.width),
+					      left : parseInt(elm.style.left) - min
+					    });
+					});
+			  console.log(killBuffer);
+			  break;
+
+			  case 86: // v
+			  var x = parseInt($("#bar")[0].style.left);
+			  var i, len;
+			  for(i = 0; i < killBuffer.length; i++){
+			    killBuffer[i].left = killBuffer[i].left + x;
+			    var newNoteDiv = createNoteDiv(killBuffer[i]);
+			    newNoteDiv.appendTo($("#role"));
+			  }
+			  console.log("paste");
+			  break;
+			}
 		      });
 
     var prev = new Date();
@@ -153,7 +192,6 @@ $(function(){
     };
 //     $(document).click(clickHandler);
 
-
     initPitchList();
     testSounds = {};
 
@@ -173,11 +211,13 @@ $(function(){
 
     var barTooltip = $("#barTooltip")[0];
     var barTooltipInner = $("#barTooltipInner")[0];
+    var lastBarPos = -1;
 
     $("#bar")
       .draggable(
     {
       axis : "x",
+      grid : [12.5, 1],
       start : function(ev, ui){
 	barTooltip.style.top = (ev.pageY-20) + "px";
 	barTooltip.style.left = ev.pageX + "px";
@@ -185,12 +225,16 @@ $(function(){
 	barTooltip.style.display = "block";
       },
       drag : function(ev, ui){
+	var  barPos = parseInt($("#bar")[0].style.left);
+// 	if(barPos === lastbarPos) return true;
+// 	lastBarPos = barPos;
 	barTooltip.style.top = (ev.pageY-20) + "px";
-	barTooltip.style.left = ev.pageX + "px";
-	barTooltipInner.innerHTML = "&nbsp;" + (Math.floor(ev.pageX / 400)) + " + " + (ev.pageX % 400 / 100);
+	barTooltip.style.left = barPos + "px";
+	barTooltipInner.innerHTML = "&nbsp;" + (Math.floor(barPos / 400)) + " + " + (barPos % 400 / 100);
       },
       stop : function(ev, ui){
 	barTooltip.style.display = "none";
+	lastBarPos =-1;
       }
     });
 
@@ -203,20 +247,20 @@ $(function(){
 	  if(elm.style.position){
 	    $(elm).addClass("anzu-note-selected");
 	    $(elm).animate({backgroundColor : "#66CDAA"}, 300);
-// 	    ui.anzuHelper.x = parseInt(elm.style.left);
-// 	    ui.anzuHelper.y = parseInt(elm.style.top);
 	  }
 	},
 	unselected : function(ev, ui){
 	  var elm = ui.unselected;
 	  if(elm.style.position){
 	    $(ui.unselected).removeClass("anzu-note-selected");
-	    $(ui.unselected).animate({backgroundColor : "#f6a828"}, 300);
+	    $(ui.unselected).animate({backgroundColor : "#f6a828"}, 200);
 	  }
 	},
 	start : function(ev, ui){
+	  window.focus(); // focusを奪う
 	  clickHandler(ev);
-	}
+	},
+	filter : "#role > .ui-widget-header"
       });
 
     // あらかじめスクロールしておく。
