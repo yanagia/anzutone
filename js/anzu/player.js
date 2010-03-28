@@ -31,6 +31,7 @@ Anzu.player = function(){
     },
     stop : function(){
       Anzu.player.score.stop(currentTime);
+      var innerWindow = $("iframe")[0].contentWindow.Anzu.ui.stopAnimation();      
     },
     set : function(){
       $("iframe")[0].contentWindow.Anzu.ui.setTrack(Anzu.player.score.getTrack(currentTrack));

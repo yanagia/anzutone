@@ -263,7 +263,13 @@ Anzu.ui.initPianorole = function(_track){
     var now = new Date();
     x = ((now - animeTim) / 1000) / animePass  * (animeEnd - animeStart);
     $("#bar")[0].style.left = x + animeStart + "px";
-    if(x > animeEnd) clearInterval(animeTimer);
+    if(x > animeEnd) stopAnimation();
+  }
+
+  function stopAnimation(){
+    clearInterval(animeTimer);
+    var x = parseInt($("#bar")[0].style.left);
+    $("#bar")[0].style.left = Math.floor(x / 12.5) * 12.5 + "px";
   }
 
   // publicな何か
@@ -274,7 +280,7 @@ Anzu.ui.initPianorole = function(_track){
   var animeDelta, animeEnd, animeTimer, animeTim, animeStart, animePass;
 
   Anzu.ui.startAnimation = function(spb, end){
-    var fps = 10.0;
+    var fps = 24.0;
     var d;
     animeDelta = spb;
     animeEnd = end * 100.0;
@@ -283,6 +289,8 @@ Anzu.ui.initPianorole = function(_track){
     animeTim = new Date();
     animeTimer = setInterval(barAnimation, 1000 / fps);
   };
+
+  Anzu.ui.stopAnimation = stopAnimation;
 
 };
 
