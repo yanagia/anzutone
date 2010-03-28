@@ -88,6 +88,17 @@ $(function(){
 			   url = null;
 			   signals = null;
 			   audio = null;
+			 }, 
+			 stop : function(ev, ui){
+			   var selected = $("#role > .ui-selected");
+			   var that = this;
+			   selected.each(function(ind, elm)
+					 {
+					   if(that !== elm){
+					     elm.style.left = (parseInt(that.style.left) - elm.anzuHelper.x) + "px";
+					     elm.style.top = (parseInt(that.style.top) - elm.anzuHelper.y) + "px";
+					   }
+					 });
 			 }
 		       })
 // 		     .contextMenu(
