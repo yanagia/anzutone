@@ -55,8 +55,29 @@ $(function(){
 			   url = null;
 			   signals = null;
 			   audio = null;
+			   var selected = $("#role > .ui-selected");
+			   var that = this;
+			   selected.each(function(ind, elm)
+					 {
+					   if(that !== elm){
+					     elm.anzuHelper = {};
+					     elm.anzuHelper.x = parseInt(that.style.left) - parseInt(elm.style.left);
+					     elm.anzuHelper.y = parseInt(that.style.top) - parseInt(elm.style.top);
+					   }
+					 });
+			   
 			 },
 			 drag : function(ev, ui){
+			   var selected = $("#role > .ui-selected");
+			   var that = this;
+			   selected.each(function(ind, elm)
+					 {
+					   if(that !== elm){
+					     elm.style.left = (parseInt(that.style.left) - elm.anzuHelper.x) + "px";
+					     elm.style.top = (parseInt(that.style.top) - elm.anzuHelper.y) + "px";
+					   }
+					 });
+
 			   var key = posKeyList[Math.floor(ev.pageY / 20) * 20];
 			   if(lastKey === key) return;
 			   var signals = createSquareSignal(0.2, convertToPitch(key));
@@ -93,6 +114,11 @@ $(function(){
 		     .appendTo(role);
 		 });
 
+    $("body").keydown(function(ev)
+		      {
+			console.log(ev.which);
+		      });
+
     var prev = new Date();
     var lastKeyIndex = 0;
     // 音を鳴らす。ダブルクリックの時は鳴らさない。
@@ -113,7 +139,6 @@ $(function(){
       audio = null;
       signals = null;
       url = null;
-      console.log("I play!!");
     };
 //     $(document).click(clickHandler);
 
@@ -165,8 +190,10 @@ $(function(){
 	selected : function(ev, ui){
 	  var elm = ui.selected;
 	  if(elm.style.position){
-	    $(ui.selected).addClass("anzu-note-selected");
-	    $(ui.selected).animate({backgroundColor : "#66CDAA"}, 300);
+	    $(elm).addClass("anzu-note-selected");
+	    $(elm).animate({backgroundColor : "#66CDAA"}, 300);
+// 	    ui.anzuHelper.x = parseInt(elm.style.left);
+// 	    ui.anzuHelper.y = parseInt(elm.style.top);
 	  }
 	},
 	unselected : function(ev, ui){
@@ -188,7 +215,7 @@ $(function(){
 function playShortAudio(audio, t){
   var jo = $(audio);
   $("#audioStream").append(jo);
-  audio.volume = 0.2;
+  audio.volume = 0.1;
   audio.loop = false;
   audio.play();
   setTimeout(function()
