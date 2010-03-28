@@ -12,13 +12,17 @@
 <script type="text/javascript" src="js/anzu/core.js"></script>
 <script type="text/javascript" src="js/anzu/wave.js"></script>
 <script type="text/javascript" src="js/anzu/score.js"></script>
+<script type="text/javascript" src="js/anzu/tone.js"></script>
+<script type="text/javascript" src="js/anzu/player.js"></script>
 
 </head>
 
 <body>
 aa
 <form>
-<input type="button" value="再生" onclick="playScore()">
+<input type="button" value="再生" onclick="Anzu.player.play()">
+<input type="button" value="停止" onclick="Anzu.pkayer.stop()">
+<input type="button" value="セット" onclick="Anzu.player.set()">
 </form>
 <iframe src="pianorole.html?abcd" width="100%" height="80%" frameborder=0 id="pianorole" tabindex=1></iframe>
 <!-- <div id="role-bg" class="pianorole-bg"> -->

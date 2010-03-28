@@ -1,11 +1,16 @@
 Anzu.Score = function(){
   
-  return function(){
-    var tracks = [];
+  return function(obj){
+    obj = eval(obj);
+    var tracks = obj.tracks;
+    var audio;
     return {
-      bpm : 120,
+      bpm : obj.bpm,
       addTrack : function(t){
 	tracks.push(t);
+      },
+      updateTrack : function(i, src){
+	tracks[i] = Anzu.Track(eval("(" + src + ")"));
       },
       play : function(beginTime){ // beginTime は 4分音符を1とした値
 	var i, len, track, baseSignals, signals, spb, endTime, alen, srate;
@@ -27,10 +32,17 @@ Anzu.Score = function(){
 	console.log(endTime - beginTime);
 	var binary = Anzu.wave.convertToBinary(baseSignals);
 	var url = Anzu.wave.convertToURL(binary);
-	var audio = new Audio(url);
+	audio = new Audio(url);
 	Anzu.core.audioStream.append($(audio));
 	audio.volume = 1.0;
-	audio.play();
+	setTimeout(function(){
+		     audio.play();
+		   }, 1);
+      },
+      stop : function(){
+	audio.pause();
+	$(audio).remove();
+	audio = null;
       },
       getEndTime : function(){
 	var i, len, track, ln, endTime, ent;
@@ -43,6 +55,19 @@ Anzu.Score = function(){
 	  if(ent > endTime) endTime = ent;
 	}
 	return endTime;
+      },
+      getTrack : function(i){
+	return tracks[i];
+      },
+      dump : function(){
+	return "{" + 
+	  '"tracks":' + "[" + 
+	  tracks.map(function(el)
+		     {
+		       return el.dump();
+		     }).join(",") + "]" + "," +
+	  '"bpm":' + bpm +
+	  "}";
       }
     };
   };
@@ -50,13 +75,41 @@ Anzu.Score = function(){
 
 Anzu.Track = function(){
 
-  return function(){
+  return function(obj){
     var notes, tone;
-    notes = [];
-    tone = Anzu.wave.createSquareSignal;
+    notes = obj.notes;
+    for(var i = 0; i < notes.length; i++){
+      notes[i] = Anzu.Note(notes[i]);
+    }
+
+    tone = obj.tone/*Anzu.wave.createSquareSignal*/;
     return {
       addNote : function(note){
 	notes.push(note);
+      },
+      deleteNote : function(note){
+	for(var i = 0; notes.length; i++){
+	  if(notes[i] === note){
+	    notes.splice(i, 1);
+	    return;
+	  }
+	}
+      },
+      deleteNoteFromDiv : function(div){
+	for(var i = 0; i < notes.length; i++){
+	  if(notes[i].divID === div.id){
+	    notes.splice(i, 1);
+	    return;
+	  }
+	}
+      },
+      changeNote : function(div){
+	for(var i = 0; i < notes.length; i++){
+	  if(notes[i].divID === div.id){
+	    notes[i].setDiv(div);
+	    return;
+	  }
+	}
       },
       setTone : function(ts){
 	/* なにかする！ */
@@ -71,15 +124,10 @@ Anzu.Track = function(){
       },
       getSignal : function(beginTime, spb){
 	var srate = Anzu.core.samplingRate;
-	var baseSignals, lastNote, len, alen, i, note, signals;
+	var baseSignals, lastNote, len, alen, i, note, signals, ftone;
+	ftone = Anzu.tone.getTone(tone);
 	len = notes.length;
 	lastNote = this.getLastNote();
-
-	// 開始時間でソートし直す
-// 	tracks.sort(function(a, b)
-// 		   {
-// 		     return a.begin - b.begin;
-// 		   });
 
 	// 合成のベースになる配列をつくる
 	alen = Math.ceil((lastNote.begin + lastNote.length) * spb * srate);
@@ -92,11 +140,21 @@ Anzu.Track = function(){
 	for(i = 0; i < len; i++){
 	  note = notes[i];
 	  if(note.begin < beginTime) continue;
-	  signals = note.getSignal(tone, spb);
+	  signals = note.getSignal(ftone, spb);
 	  Anzu.wave.mixSignal(baseSignals, signals, (note.begin - beginTime) * spb * srate);
 	}
 
 	return baseSignals;
+      },
+      dump : function(){
+	return "{" +
+	  '"notes":' + "[" + 
+	  notes.map(function(el)
+		    {
+		      return el.dump();
+		    }).join(",") + "]" + "," + 
+	  '"tone":' + '"'+ tone + '"'
+	+ "}";
       }
     };
   };
@@ -105,11 +163,13 @@ Anzu.Track = function(){
 Anzu.Note = function(){
 
   return function(obj){
+    obj = ! obj ? {} : obj;
 
     return {
-      begin : 0.0,
-      length : 100.0,
-      key : "A4",
+      begin : obj.begin,
+      length : obj.length,
+      key : obj.key,
+      divID : 0,
       setDiv : function(div){
 	this.div = div;
 	var top, left, width;
@@ -120,11 +180,19 @@ Anzu.Note = function(){
 	// 4分音符が1.0になるように変換
 	this.begin = left / 100.0;
 	this.length = width / 100.0;
-	this.key = posKeyList[Math.floor((top+5) / 20) * 20];
+	this.key = Anzu.ui.posKeyList[Math.floor((top+5) / 20) * 20];
+	this.divID = div.id;
       },
       getSignal : function(tone, spb){
 	var signals = tone(spb * this.length, Anzu.core.convertToPitch(this.key));
 	return signals;
+      },
+      dump : function(){
+	return "{" + 
+	  '"begin":' + this.begin + "," +
+	  '"length":' + this.length + "," +
+	  '"key":' + '"' + this.key + '"' + 
+	  "}";
       }
     };
 

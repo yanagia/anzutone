@@ -1,8 +1,17 @@
-Anzu.ui.initPianorole = function(){
+Anzu.ui.initPianorole = function(_track){
 
   var role = $("#role");
   var noteCSSClass = "ui-widget-header";
   var posKeyList, bodyHeight = 1920;
+  var tracks = Anzu.Track(_track);
+  var divID = 0;
+
+  Anzu.ui.track = tracks;
+  
+  // ごみを消す
+  $(document).unbind("dblclick");
+  $(window).unbind("keydown");
+  $("body").selectable("destroy");
 
   $("#role > .ui-widget-header").each(function(ind, elm)
 				     {
@@ -12,8 +21,10 @@ Anzu.ui.initPianorole = function(){
 				       el.remove();
 				     });
 
+  // 読み込み開始
   var base = ["Ad", "Ad#", "Bd", "Cd", "Cd#", "Dd", "Dd#","Ed", "Fd", "Fd#", "Gd","Gd#"];
   posKeyList = {};
+  Anzu.ui.posKeyList = posKeyList;
 
   // 座標と音名の対応表を作る
   var i, j, len, k;
@@ -41,6 +52,10 @@ Anzu.ui.initPianorole = function(){
     }
   }
 
+  function changeSelectedNotes(ind, elm){
+    tracks.changeNote(elm);
+  }
+
   function getKey(y){
     return posKeyList[Math.floor(y / 20) * 20];
   }
@@ -60,13 +75,20 @@ Anzu.ui.initPianorole = function(){
   };
 
   function createNoteDiv(obj){
-    return $("<div>")
+    var div = $("<div>")
       .addClass(noteCSSClass)
       .attr("style", "width: " + obj.width + "px;" + " height: 17px; margin 0px 20px 20px 0px;" + 
 	    "position: absolute; opacity: 0.9;"  + 
 	    "top:" + (Math.floor(obj.top / 20) * 20 + 1) + "px;" + 
 	    "left:" + (Math.floor(obj.left / 12.5) * 12.5) + "px;")
-      .resizable({ maxHeight : 17, minHeight : 17})
+      .attr("id", "AnzutoneNoteDiv" + divID)
+      .resizable(
+	{ maxHeight : 17, 
+	  minHeight : 17,
+	  stop : function(ev, ui){
+	    tracks.changeNote(this);
+	  }
+	})
       .draggable(
 	{ 
 	  grid : [12.5, 20],
@@ -86,12 +108,22 @@ Anzu.ui.initPianorole = function(){
 	    var selected = $("#role > .ui-selected");
 	    that = this;
 	    selected.each(selectedPosHelperRun);
+	    selected.each(changeSelectedNotes);
+	    tracks.changeNote(this);
 	  }
 	});
+    divID += 1;
+
+    var note = Anzu.Note();
+    note.setDiv(div[0]);
+    tracks.addNote(note);
+
+    return div;
   }
 
   function deleteNoteDiv(elm){
     var el = $(elm);
+    tracks.deleteNoteFromDiv(elm);
     el.draggable("destroy");
     el.resizable("destroy");
     el.remove();
@@ -121,12 +153,13 @@ Anzu.ui.initPianorole = function(){
   // ダブルクリックでノートを追加
   $(document).dblclick(function(ev)
 		       {
-			 createNoteDiv(
+			 var div = createNoteDiv(
 			   {
 			     top : ev.pageY,
 			     left : ev.pageX,
 			     width : 98
-			   }).appendTo($("#role"));
+			   });
+			 div.appendTo($("#role"));
 		       });
 
   // キーイベント
@@ -225,4 +258,40 @@ Anzu.ui.initPianorole = function(){
 	}
       });
 
+  function barAnimation(){
+    var x = parseInt($("#bar")[0].style.left);
+    var now = new Date();
+    x = ((now - animeTim) / 1000) / animePass  * (animeEnd - animeStart);
+    $("#bar")[0].style.left = x + animeStart + "px";
+    if(x > animeEnd) clearInterval(animeTimer);
+  }
+
+  // publicな何か
+  Anzu.ui.getTrack = function(){
+    return tracks.dump();
+  };
+
+  var animeDelta, animeEnd, animeTimer, animeTim, animeStart, animePass;
+
+  Anzu.ui.startAnimation = function(spb, end){
+    var fps = 10.0;
+    var d;
+    animeDelta = spb;
+    animeEnd = end * 100.0;
+    animeStart = parseInt($("#bar")[0].style.left);
+    animePass = (animeEnd - animeStart) / 100.0 * spb;
+    animeTim = new Date();
+    animeTimer = setInterval(barAnimation, 1000 / fps);
+  };
+
 };
+
+Anzu.ui.getCurrentTime = function(){
+  console.log(Anzu.ui.track.dump());
+  return parseInt($("#bar")[0].style.left) / 100.0;
+};
+
+Anzu.ui.setTrack = function(t){
+  Anzu.ui.initPianorole(t);
+};
+

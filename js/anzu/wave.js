@@ -47,7 +47,7 @@ Anzu.wave = function(){
 	//     sig = sig > 255 ? 255 : sig; // 255でカット
 	sig = sig > 1.0 ? 1.0 : sig;
 	sig = sig < -1.0 ? -1.0 : sig;
-	sig *= 0.7;
+// 	sig *= 0.7;
 	base[i+offset] = sig;
       }
     },
