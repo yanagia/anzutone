@@ -81,6 +81,7 @@ Anzu.player = function(){
       s_name = s.name;
       s_comment = s.comment;
       Anzu.player.score = Anzu.Score(s.score);
+      $("#bpmInput").val(Anzu.player.score.bpm);
 
       currentTime = 0;
       currentTrack = 0;

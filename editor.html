@@ -30,10 +30,10 @@
 <input type="button" value=">" onclick="Anzu.player.moveBar(+100)">
 <input type="button" value=">>" onclick="Anzu.player.moveBar(+400)">
 <input type="button" value="export" onclick="Anzu.player.openExportDialog()">
-<input type="text" value="120" onChange="Anzu.player.changeBPM(this)">
+<input type="text" value="120" onChange="Anzu.player.changeBPM(this)" id="bpmInput">
 </form>
 <ul id="tracklist">
-  <li value="1" onclick="Anzu.player.selectTrack(this)">track1</li>
+  <li value="1" class="current" onclick="Anzu.player.selectTrack(this)">track1</li>
   <li value="2" onclick="Anzu.player.selectTrack(this)">track2</li>
 </ul>
 <div id="trackinfo">

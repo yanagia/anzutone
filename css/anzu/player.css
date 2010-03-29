@@ -1,0 +1,32 @@
+#tracklist {
+    margin-left: 5px;
+    margin-bottom: 0px;
+    padding: 3px 0;
+}
+
+#tracklist li {
+    list-style: none;
+    display: inline;
+    margin: 0;
+    border: 1px solid #778;
+    border-bottom: none;
+    font-size: large;
+    background: #ffffff;
+}
+
+#tracklist li.current{
+    background: lightyellow;
+}
+
+.trackview {
+/*     border: 1px solid #778;     */
+}
+
+#trackinfo {
+    padding-top: 5px;
+    padding-left: 5px;
+    border: 1px solid #778;
+    margin-top: 0px;
+    height: 40px;
+}
+
