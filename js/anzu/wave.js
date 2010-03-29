@@ -58,26 +58,6 @@ Anzu.wave = function(){
 	return signals;
       }
     },
-//     createSquareSignal : function(t, sinF){
-//       var i;
-//       var signals, sig, phase, hz;
-
-//       hz = 22050;			// 11025
-//       phase = 0;
-//       t = Math.round(t*hz);
-//       var freq = sinF * 2.0 * Math.PI / hz;
-//       signals = new Array(t);
-
-//       for(i = 0; i < t; i++){
-// 	sig = Math.sin(phase);
-// 	sig = sig > 0.0 ? 1.0 : -1.0;
-// 	signals[i] = sig;
-
-// 	phase += freq;
-//       };
-
-//       return signals;
-//     },
 
     // この関数も重い。
     mixSignal : function(base, up, offset){
@@ -100,8 +80,8 @@ Anzu.wave = function(){
       for(i = 0; i < len; i++){
 	sig = signals[i];
 	// 163835 = 32767 * 5
-	sig = sig > 163835 ? 163835 : (sig; 
-	sig = sig < -163835 ? -163835 : sig;
+	sig = sig > 163835 ? 163835 : (sig < -163835 ? -163835 : sig); 
+// 	sig = sig < -163835 ? -163835 : sig;
 	signals[i] = String.fromCharCode((sig + 163835)/327670 * 256);
 // 	bin += String.fromCharCode(Math.floor((signals[i] + 1.0)/2.0 * 255));
       }

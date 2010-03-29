@@ -35,8 +35,8 @@ Anzu.Score = function(){
 
 	for(i = 0; i < len; i++){
 	  track = tracks[i];
-	  signals = track.getSignal(beginTime, spb);
-	  Anzu.wave.mixSignal(baseSignals, signals, 0);
+	  signals = track.getSignalOpt(baseSignals, beginTime, spb);
+// 	  Anzu.wave.mixSignal(baseSignals, signals, 0);
 	}
 	var binary = Anzu.wave.convertToBinary(baseSignals);
 	var url = Anzu.wave.convertToURL(binary);
@@ -183,6 +183,32 @@ Anzu.Track = function(){
 
 	return baseSignals;
       },
+      // 高速版。引数が違う。
+      getSignalOpt : function(baseSignals, beginTime, spb){
+	var srate = Anzu.core.samplingRate;
+	var lastNote, len, alen, i, note, signals, ftone;
+	ftone = Anzu.tone.getTone(tone);
+	len = notes.length;
+	lastNote = this.getLastNote();
+
+	// 合成のベースになる配列をつくる
+	alen = Math.ceil((lastNote.begin + lastNote.length) * spb * srate);
+// 	baseSignals = new Array(alen);
+// 	for(i = 0; i < alen; i++){
+// 	  baseSignals[i] = 0.0;
+// 	}
+
+	// 合成
+	for(i = 0; i < len; i++){
+	  note = notes[i];
+	  if(note.begin < beginTime) continue;
+	  signals = note.getSignal(ftone, spb);
+	  Anzu.wave.mixSignal(baseSignals, signals, (note.begin - beginTime) * spb * srate);
+	}
+
+	return baseSignals;
+      },
+
       dump : function(){
 	return "{" +
 	  '"notes":' + "[" + 
