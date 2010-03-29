@@ -26,8 +26,8 @@ Anzu.player = function(){
       console.log(parseFrame());
       getCurrentTime();
       Anzu.player.score.updateTrack(currentTrack, parseFrame());
+      Anzu.player.score.setCallback(innerWindow.Anzu.ui.startAnimation);
       Anzu.player.score.play(currentTime);
-      innerWindow.Anzu.ui.startAnimation(60.0 / Anzu.player.score.bpm, Anzu.player.score.getEndTime());
     },
     stop : function(){
       Anzu.player.score.stop(currentTime);

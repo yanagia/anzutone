@@ -263,7 +263,7 @@ Anzu.ui.initPianorole = function(_track){
     var now = new Date();
     x = ((now - animeTim) / 1000) / animePass  * (animeEnd - animeStart);
     $("#bar")[0].style.left = x + animeStart + "px";
-    if(x > animeEnd) stopAnimation();
+    if(x > animeEnd + 0.2) stopAnimation();
   }
 
   function stopAnimation(){
