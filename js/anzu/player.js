@@ -35,6 +35,9 @@ Anzu.player = function(){
     },
     set : function(){
       $("iframe")[0].contentWindow.Anzu.ui.setTrack(Anzu.player.score.getTrack(currentTrack));
+    },
+    moveBar : function(delta){
+      $("iframe")[0].contentWindow.Anzu.ui.moveBar(delta);
     }
   };
 }();

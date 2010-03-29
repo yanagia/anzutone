@@ -292,6 +292,16 @@ Anzu.ui.initPianorole = function(_track){
 
   Anzu.ui.stopAnimation = stopAnimation;
 
+  Anzu.ui.moveBar = function(delta){
+    var x = parseInt($("#bar")[0].style.left);
+    if(x + delta < 0){
+      $("#bar")[0].style.left = 0 + "px";
+      return;
+    }
+    x = Math.ceil((x + delta) / 100.0) * 100;
+    $("#bar")[0].style.left = x + "px";
+  };
+
 };
 
 Anzu.ui.getCurrentTime = function(){
