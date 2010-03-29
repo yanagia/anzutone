@@ -30,7 +30,7 @@ Anzu.wave = function(){
 	for(i = 0; i < t; i++){
 	  sig = Math.sin(phase);
 	  sig = sig > 0.0 ? 1.0 : -1.0;
-	  signals[i] = sig;
+	  signals[i] = ~~ (sig * 32767); // 32767 = 2**15-1
 
 	  phase += freq;
 	};
@@ -50,7 +50,7 @@ Anzu.wave = function(){
 
 	for(i = 0; i < t; i++){
 	  sig = Math.sin(phase);
-	  signals[i] = sig;
+	  signals[i] = ~~ (sig * 32767);
 
 	  phase += freq;
 	};
@@ -85,7 +85,7 @@ Anzu.wave = function(){
       len = up.length;
       offset = Math.floor(offset);
       for(i = 0; i < len; i++){
-	sig = base[i+offset] + up[i] * 0.2;
+	sig = base[i+offset] + up[i];
 	//     sig = sig > 255 ? 255 : sig; // 255でカット
 // 	sig *= 0.7;
 	base[i+offset] = sig;
@@ -99,9 +99,10 @@ Anzu.wave = function(){
 
       for(i = 0; i < len; i++){
 	sig = signals[i];
-	sig = sig > 1.0 ? 1.0 : sig;
-	sig = sig < -1.0 ? -1.0 : sig;
-	signals[i] = String.fromCharCode(Math.floor((sig + 1.0)/2.0 * 255));
+	// 163835 = 32767 * 5
+	sig = sig > 163835 ? 163835 : (sig; 
+	sig = sig < -163835 ? -163835 : sig;
+	signals[i] = String.fromCharCode((sig + 163835)/327670 * 256);
 // 	bin += String.fromCharCode(Math.floor((signals[i] + 1.0)/2.0 * 255));
       }
       return signals.join("");

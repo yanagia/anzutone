@@ -24,7 +24,7 @@ Anzu.ShortAudio = function(){
     return {
       play : function(){
 	audioStream.append(jo);
-	audio.volume = 0.1;
+	audio.volume = 0.2;
 	audio.loop = false;
 	audio.play();
 	setTimeout(disposeAudio, Math.floor(duration * 1000 * 1.2));

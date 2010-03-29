@@ -30,7 +30,7 @@ Anzu.Score = function(){
 	if(alen <= 0.0) alen = 1;
 	baseSignals = new Array(alen);
 	for(i = 0; i < alen; i++){
-	  baseSignals[i] = 0.0;
+	  baseSignals[i] = 0;
 	}
 
 	for(i = 0; i < len; i++){
@@ -42,7 +42,7 @@ Anzu.Score = function(){
 	var url = Anzu.wave.convertToURL(binary);
 	audio = new Audio(url);
 	Anzu.core.audioStream.append($(audio));
-	audio.volume = 1.0;
+	audio.volume = 0.2;
 // 	setTimeout(function(){
 // 		     audio.play();
 // 		   }, 1);
