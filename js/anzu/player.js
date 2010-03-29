@@ -1,16 +1,18 @@
 $(function()
   {
     Anzu.player.score = Anzu.Score(
-      '({"tracks" : [ { "notes" : [], "tone" : "Anzu.Sequare"}, { "notes" : [], "tone" : "Anzu.Sequare"}, { "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"} ], "bpm" : 120})'
+      '({"tracks" : [ { "notes" : [], "tone" : "Anzu.SquareWave"}, { "notes" : [], "tone" : "Anzu.SquareWave"}, { "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"} ], "bpm" : 120})'
       );
     
+//     $("#trackVolumeSlider").slider();
+
     setTimeout(Anzu.player.parseURL, 500);
     setTimeout(Anzu.player.setEventManager, 500);
   });
 
 Anzu.player = function(){
 //   var score = Anzu.Score({tracks : [], bpm : 120});
-//   score.addTrack({notes : [], tone : "Anzu.Sequare"});
+//   score.addTrack({notes : [], tone : "Anzu.Square"});
   var currentTime = 0;
   var currentTrack = 0;
   var playing = false;
@@ -34,6 +36,9 @@ Anzu.player = function(){
       getCurrentTime();
       Anzu.player.score.updateTrack(currentTrack, parseFrame());
       Anzu.player.score.setCallback(innerWindow.Anzu.ui.startAnimation);
+      Anzu.player.score.setAfterCallback(function(){
+					   playing = false;
+					 });
       Anzu.player.score.play(currentTime);
     },
     stop : function(){

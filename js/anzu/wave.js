@@ -29,7 +29,7 @@ Anzu.wave = function(){
 
 	for(i = 0; i < t; i++){
 	  sig = Math.sin(phase);
-	  sig = sig > 0.0 ? 1.0 : -1.0;
+	  sig = sig > 0.0 ? 0.7 : -0.7;
 	  signals[i] = ~~ (sig * 32767); // 32767 = 2**15-1
 
 	  phase += freq;
@@ -56,7 +56,47 @@ Anzu.wave = function(){
 	};
 
 	return signals;
+      },
+      
+      createSawtoothSignal : function(t, sinF){
+	var i;
+	var signals, sig, phase, hz;
+
+	hz = 22050;
+	phase = 0;
+	t = Math.round(t*hz);
+	var freq = hz / sinF;
+	signals = new Array(t);
+
+	for(i = 0; i < t; i++){
+	  if(phase > freq){
+	    phase -= freq;
+	  }
+	  sig = (phase*2 / freq - 1);
+	  signals[i] = ~~ (sig * 32767);
+
+	  phase += 1;
+	};
+
+	return signals;
+      },
+
+      createWhiteNoiseSignal : function(t, sinF){
+	var i;
+	var signals, sig, phase, hz;
+
+	hz = 22050;
+	t = Math.round(t*hz);
+	signals = new Array(t);
+
+	for(i = 0; i < t; i++){
+	  sig = Math.random() * 2 - 1;
+	  signals[i] = ~~ (sig * 32767);
+	};
+
+	return signals;
       }
+
     },
 
     // この関数も重い。

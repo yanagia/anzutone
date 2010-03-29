@@ -3,7 +3,7 @@ Anzu.Score = function(){
   return function(obj){
     if(typeof obj === "string") obj = eval(obj);
     var tracks = [];
-    var audio, callback;
+    var audio, callback, acallback;
 
     for(var i = 0; i < obj.tracks.length; i++){
       tracks[i] = Anzu.Track(obj.tracks[i]);
@@ -19,6 +19,9 @@ Anzu.Score = function(){
       },
       setCallback : function(f){
 	callback = f;
+      },
+      setAfterCallback : function(f){
+	acallback = f;
       },
       play : function(beginTime){ // beginTime は 4分音符を1とした値
 	var i, len, track, baseSignals, signals, spb, endTime, alen, srate;
@@ -43,9 +46,12 @@ Anzu.Score = function(){
 	audio = new Audio(url);
 	Anzu.core.audioStream.append($(audio));
 	audio.volume = 0.2;
-// 	setTimeout(function(){
-// 		     audio.play();
-// 		   }, 1);
+
+	baseSignals = null;
+	signals = null;
+	binary = null;
+	url = null;
+
 	if(callback){
 	  var tim = setInterval(function()
 				{
@@ -54,6 +60,17 @@ Anzu.Score = function(){
 				    callback(spb, endTime - beginTime);
 				  }
 				}, 1000/10);
+	}
+	if(acallback){
+	  setTimeout(function()
+		     {
+		       acallback();
+		       if(audio){
+			 audio.pause();
+			 audio.src = undefined;
+			 $(audio).remove();
+		       }
+		     }, alen / srate * 1000 + 100);
 	}
 	audio.play();
       },

@@ -2,8 +2,10 @@ Anzu.tone = function(){
   var toneList = {};
   var defaultTone = Anzu.wave.createSquareSignal;
 
-  toneList["Anzu.Sequare"] = Anzu.wave.generator.createSquareSignal;
-  toneList["Anzu.Sin"] = Anzu.wave.generator.createSinSignal;
+  toneList["Anzu.SquareWave"] = Anzu.wave.generator.createSquareSignal;
+  toneList["Anzu.SineWave"] = Anzu.wave.generator.createSinSignal;
+  toneList["Anzu.SawtoothWave"] = Anzu.wave.generator.createSawtoothSignal;
+  toneList["Anzu.WhiteNoise"] = Anzu.wave.generator.createWhiteNoiseSignal;
 
   return {
     addTone : function(name, f){
