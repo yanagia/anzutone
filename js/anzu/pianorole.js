@@ -5,7 +5,7 @@ Anzu.ui.initPianorole = function(_track){
   var posKeyList, bodyHeight = 1920;
   var tracks = Anzu.Track(_track);
   var divID = 0;
-  console.log(tracks);
+
   Anzu.ui.track = tracks;
   
   // ごみを消す
@@ -162,7 +162,6 @@ Anzu.ui.initPianorole = function(_track){
   // ノートの読み込み、表示を開始
   len = tracks._notes().length;
   var _notes = tracks._notes();
-  console.log(tracks._notes());
   for(i = 0; i < len; i++){
     createDivFromNote(_notes[i]).appendTo($("#role"));
   }
@@ -336,13 +335,10 @@ Anzu.ui.initPianorole = function(_track){
 };
 
 Anzu.ui.getCurrentTime = function(){
-  console.log(Anzu.ui.track.dump());
   return parseInt($("#bar")[0].style.left) / 100.0;
 };
 
 Anzu.ui.setTrack = function(t){
-  console.log("set");
-  console.log(t);
   Anzu.ui.initPianorole(t);
 };
 

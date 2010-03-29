@@ -28,7 +28,6 @@ Anzu.player = function(){
   return {
     play : function(){
       var innerWindow = $("iframe")[0].contentWindow;
-      console.log(parseFrame());
       getCurrentTime();
       Anzu.player.score.updateTrack(currentTrack, parseFrame());
       Anzu.player.score.setCallback(innerWindow.Anzu.ui.startAnimation);
@@ -50,7 +49,6 @@ Anzu.player = function(){
       $("iframe")[0].contentWindow.Anzu.ui.changeTone(obj.value);
     },
     selectTrack : function(obj){
-      console.log("changeTrack:start");
       Anzu.player.score.updateTrack(currentTrack, parseFrame());
       var trackNumber = parseInt(obj.value);
       currentTrack = trackNumber-1;
@@ -60,7 +58,6 @@ Anzu.player = function(){
 				 obj.className = "";
 			       });
       obj.className = "current";
-      console.log("changeTrack:done.");
       return false;
     },
     exportAsURL : function(obj){
@@ -74,8 +71,7 @@ Anzu.player = function(){
 	"}";
     },
     openExportDialog : function(){
-      var url = this.exportAsURL({name : "Sakura", comment : "first"});
-      console.log(url);
+      var url = this.exportAsURL({name : "Anzu", comment : "first"});
       $("#exportDialog").dialog();
       $("#exportDialogURL").html("以下のリンクに出力しました。<br>" + 
 				 "<a href='" + url + "'>ここ！</a>");
@@ -85,7 +81,7 @@ Anzu.player = function(){
       s_name = s.name;
       s_comment = s.comment;
       Anzu.player.score = Anzu.Score(s.score);
-      console.log(s.score);
+
       currentTime = 0;
       currentTrack = 0;
       Anzu.player.set();
@@ -93,12 +89,15 @@ Anzu.player = function(){
     parseURL : function(){
       var url = document.location.href;
       var data;
-      console.log(url);
       if(url.match(/.+?load=(.+)/)){
 	data = RegExp.$1;
-	console.log(decodeURI(data));
 	Anzu.player.load(decodeURI(data));
       }
+    },
+    changeBPM : function(obj){
+      var bpm = parseFloat(obj.value);
+      if(bpm <= 0.0 || bpm === NaN) return;
+      Anzu.player.score.changeBPM(bpm);
     }
 
   };

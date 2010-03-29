@@ -15,7 +15,6 @@ Anzu.Score = function(){
 	tracks.push(t);
       },
       updateTrack : function(i, src){
-	console.log(eval("(" + src + ")"));
 	tracks[i] = Anzu.Track(eval("(" + src + ")"));
       },
       setCallback : function(f){
@@ -39,7 +38,6 @@ Anzu.Score = function(){
 	  signals = track.getSignal(beginTime, spb);
 	  Anzu.wave.mixSignal(baseSignals, signals, 0);
 	}
-	console.log(endTime - beginTime);
 	var binary = Anzu.wave.convertToBinary(baseSignals);
 	var url = Anzu.wave.convertToURL(binary);
 	audio = new Audio(url);
@@ -88,6 +86,9 @@ Anzu.Score = function(){
 		     }).join(",") + "]" + "," +
 	  '"bpm":' + this.bpm +
 	  "}";
+      },
+      changeBPM : function(b){
+	this.bpm = b;
       }
     };
   };
