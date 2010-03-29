@@ -27,6 +27,11 @@ aa
 <input type="button" value="<" onclick="Anzu.player.moveBar(-100)">
 <input type="button" value=">" onclick="Anzu.player.moveBar(+100)">
 <input type="button" value=">>" onclick="Anzu.player.moveBar(+400)">
+
+<select onchange="Anzu.player.changeTone(this)" id="toneSelect">
+<option value="Anzu.Sequare" selected="selected">Anzu.Sequare</option>
+<option value="Anzu.Sin">Anzu.Sin</option>
+</select>
 </form>
 <iframe src="pianorole.html?abcd" width="100%" height="80%" frameborder=0 id="pianorole" tabindex=1></iframe>
 <!-- <div id="role-bg" class="pianorole-bg"> -->

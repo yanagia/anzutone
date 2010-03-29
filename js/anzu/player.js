@@ -38,6 +38,9 @@ Anzu.player = function(){
     },
     moveBar : function(delta){
       $("iframe")[0].contentWindow.Anzu.ui.moveBar(delta);
+    },
+    changeTone : function(obj){
+      $("iframe")[0].contentWindow.Anzu.ui.changeTone(obj.value);
     }
   };
 }();

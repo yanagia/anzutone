@@ -3,8 +3,9 @@
 Anzu.ShortAudio = function(){
 
   return function(duration, key){
+    var generator = Anzu.tone.getDefaultTone();
     var pitch = Anzu.core.convertToPitch(key);
-    var signals = createSquareSignal(duration, pitch);
+    var signals = generator(duration, pitch);
     var url = convertToURL(convertToBinary(signals));
     var audio = new Audio(url);
     var jo = $(audio);

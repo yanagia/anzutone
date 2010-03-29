@@ -5,7 +5,7 @@ Anzu.ui.initPianorole = function(_track){
   var posKeyList, bodyHeight = 1920;
   var tracks = Anzu.Track(_track);
   var divID = 0;
-
+  console.log(tracks);
   Anzu.ui.track = tracks;
   
   // ごみを消す
@@ -22,6 +22,10 @@ Anzu.ui.initPianorole = function(_track){
 				     });
 
   // 読み込み開始
+
+  // 音色を設定
+  Anzu.tone.defaultTone = tracks.getTone();
+
   var base = ["Ad", "Ad#", "Bd", "Cd", "Cd#", "Dd", "Dd#","Ed", "Fd", "Fd#", "Gd","Gd#"];
   posKeyList = {};
   Anzu.ui.posKeyList = posKeyList;
@@ -264,6 +268,7 @@ Anzu.ui.initPianorole = function(_track){
     x = ((now - animeTim) / 1000) / animePass  * (animeEnd - animeStart);
     $("#bar")[0].style.left = x + animeStart + "px";
     if(x > animeEnd + 0.2) stopAnimation();
+    document.body.scrollLeft = scrollStart + x;
   }
 
   function stopAnimation(){
@@ -277,7 +282,7 @@ Anzu.ui.initPianorole = function(_track){
     return tracks.dump();
   };
 
-  var animeDelta, animeEnd, animeTimer, animeTim, animeStart, animePass;
+  var animeDelta, animeEnd, animeTimer, animeTim, animeStart, animePass, scrollStart;
 
   Anzu.ui.startAnimation = function(spb, end){
     var fps = 24.0;
@@ -287,6 +292,7 @@ Anzu.ui.initPianorole = function(_track){
     animeStart = parseInt($("#bar")[0].style.left);
     animePass = (animeEnd - animeStart) / 100.0 * spb;
     animeTim = new Date();
+    scrollStart = document.body.scrollLeft;
     animeTimer = setInterval(barAnimation, 1000 / fps);
   };
 
@@ -300,6 +306,12 @@ Anzu.ui.initPianorole = function(_track){
     }
     x = Math.ceil((x + delta) / 100.0) * 100;
     $("#bar")[0].style.left = x + "px";
+    document.body.scrollLeft = x - 400;
+  };
+
+  Anzu.ui.changeTone = function(tone){
+    tracks.setTone(tone);
+    Anzu.tone.setDefaultTone(tone);
   };
 
 };

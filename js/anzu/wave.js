@@ -16,6 +16,48 @@ Anzu.wave = function(){
   }
 
   return {
+    generator : {
+      createSquareSignal : function(t, sinF){
+	var i;
+	var signals, sig, phase, hz;
+
+	hz = 22050;
+	phase = 0;
+	t = Math.round(t*hz);
+	var freq = sinF * 2.0 * Math.PI / hz;
+	signals = new Array(t);
+
+	for(i = 0; i < t; i++){
+	  sig = Math.sin(phase);
+	  sig = sig > 0.0 ? 1.0 : -1.0;
+	  signals[i] = sig;
+
+	  phase += freq;
+	};
+
+	return signals;
+      },
+
+      createSinSignal : function(t, sinF){
+	var i;
+	var signals, sig, phase, hz;
+
+	hz = 22050;
+	phase = 0;
+	t = Math.round(t*hz);
+	var freq = sinF * 2.0 * Math.PI / hz;
+	signals = new Array(t);
+
+	for(i = 0; i < t; i++){
+	  sig = Math.sin(phase);
+	  signals[i] = sig;
+
+	  phase += freq;
+	};
+
+	return signals;
+      }
+    },
     createSquareSignal : function(t, sinF){
       var i;
       var signals, sig, phase, hz;
@@ -28,7 +70,6 @@ Anzu.wave = function(){
 
       for(i = 0; i < t; i++){
 	sig = Math.sin(phase);
-	//     sig = sig > 0 ? 180 : 75;
 	sig = sig > 0.0 ? 1.0 : -1.0;
 	signals[i] = sig;
 

@@ -128,6 +128,9 @@ Anzu.Track = function(){
 	/* なにかする！ */
 	tone = ts;
       },
+      getTone : function(){
+	return tone;
+      },
       getLastNote : function(){
 	// 一番後ろにいるノートを探す
 	notes.sort(function(a, b){
