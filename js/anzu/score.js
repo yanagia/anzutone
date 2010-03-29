@@ -131,6 +131,7 @@ Anzu.Track = function(){
       deleteNoteFromDiv : function(div){
 	for(var i = 0; i < notes.length; i++){
 	  if(notes[i].divID === div.id){
+	    Anzu.eventManager.add("deleteNote", notes[i]);
 	    notes.splice(i, 1);
 	    return;
 	  }
@@ -140,6 +141,7 @@ Anzu.Track = function(){
 	for(var i = 0; i < notes.length; i++){
 	  if(notes[i].divID === div.id){
 	    notes[i].setDiv(div);
+// 	    Anzu.eventManager.add("changeNote", notes[i]);
 	    return;
 	  }
 	}
@@ -244,6 +246,8 @@ Anzu.Note = function(){
 	this.length = width / 100.0;
 	this.key = Anzu.ui.posKeyList[Math.floor((top+5) / 20) * 20];
 	this.divID = div.id;
+
+	Anzu.eventManager.add("addNote", this);
       },
       getSignal : function(tone, spb){
 	var signals = tone(spb * this.length, Anzu.core.convertToPitch(this.key));

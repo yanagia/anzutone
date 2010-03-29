@@ -1,10 +1,11 @@
 $(function()
   {
     Anzu.player.score = Anzu.Score(
-      '({"tracks" : [ { "notes" : [], "tone" : "Anzu.Sequare"}, { "notes" : [], "tone" : "Anzu.Sequare"} ], "bpm" : 120})'
+      '({"tracks" : [ { "notes" : [], "tone" : "Anzu.Sequare"}, { "notes" : [], "tone" : "Anzu.Sequare"}, { "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"},{ "notes" : [], "tone" : "Anzu.Sequare"} ], "bpm" : 120})'
       );
     
     setTimeout(Anzu.player.parseURL, 500);
+    setTimeout(Anzu.player.setEventManager, 500);
   });
 
 Anzu.player = function(){
@@ -12,10 +13,12 @@ Anzu.player = function(){
 //   score.addTrack({notes : [], tone : "Anzu.Sequare"});
   var currentTime = 0;
   var currentTrack = 0;
+  var playing = false;
 
   var s_name = "";
   var s_comment = "";
-  var loaderURL = "file:///Users/yanagi/Documents/program/anzutone/editor.html?load=";
+  var loaderURL = "http://dl.dropbox.com/u/294534/anzutone/editor.html?load=";
+  loaderURL = "file:///Users/yanagi/Documents/program/anzutone/editor.html?load=";
 
   function getCurrentTime(){
     currentTime = $("iframe")[0].contentWindow.Anzu.ui.getCurrentTime();
@@ -37,10 +40,18 @@ Anzu.player = function(){
       Anzu.player.score.stop(currentTime);
       var innerWindow = $("iframe")[0].contentWindow.Anzu.ui.stopAnimation();      
     },
+    playstop : function(){
+      if(playing) this.stop();
+      else this.play();
+      playing = ! playing;
+    },
     set : function(){
       var t = Anzu.player.score.getTrack(currentTrack);
       $("iframe")[0].contentWindow.Anzu.ui.setTrack(t.dump());
       $("#toneSelect").val(t.getTone());
+    },
+    setEventManager : function(){
+      $("iframe")[0].contentWindow.Anzu.eventManager = Anzu.eventManager;
     },
     moveBar : function(delta){
       $("iframe")[0].contentWindow.Anzu.ui.moveBar(delta);

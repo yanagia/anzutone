@@ -16,9 +16,15 @@ Anzu.ui.initPianorole = function(_track){
   $("#role > .ui-widget-header").each(function(ind, elm)
 				     {
 				       var el = $(elm);
+				       el.animate({opacity : 0}, 200, "linear", function()
+						 {
 				       el.draggable("destroy");
 				       el.resizable("destroy");
-				       el.remove();
+				       el.remove();						   
+						 });
+// 				       el.draggable("destroy");
+// 				       el.resizable("destroy");
+// 				       el.remove();
 				     });
 
   // 読み込み開始
@@ -91,7 +97,7 @@ Anzu.ui.initPianorole = function(_track){
     var div = $("<div>")
       .addClass(noteCSSClass)
       .attr("style", "width: " + obj.width + "px;" + " height: 17px; margin 0px 20px 20px 0px;" + 
-	    "position: absolute; opacity: 0.9;"  + 
+	    "position: absolute; opacity: 0.0;"  + 
 	    "top:" + (Math.floor(obj.top / 20) * 20 + 1) + "px;" + 
 	    "left:" + (Math.floor(obj.left / 12.5) * 12.5) + "px;")
       .attr("id", "AnzutoneNoteDiv" + divID)
@@ -126,6 +132,10 @@ Anzu.ui.initPianorole = function(_track){
 	  }
 	});
     divID += 1;
+
+    // 将来的にdivIDを同期させる必要がありそうなので、アニメーションで遅さをごまかす。
+    div.animate({ opacity : 0.9}, 150);
+
 
     var note = Anzu.Note();
     note.setDiv(div[0]);
@@ -165,7 +175,8 @@ Anzu.ui.initPianorole = function(_track){
   len = tracks._notes().length;
   var _notes = tracks._notes();
   for(i = 0; i < len; i++){
-    createDivFromNote(_notes[i]).appendTo($("#role"));
+    var div = createDivFromNote(_notes[i]);
+    div.appendTo($("#role"));
   }
   tracks.deleteUnlinkNotes();
 
