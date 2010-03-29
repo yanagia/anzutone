@@ -9,9 +9,9 @@ Anzu.ui.initPianorole = function(_track){
   Anzu.ui.track = tracks;
   
   // ごみを消す
-  $(document).unbind("dblclick");
+  $(window).unbind("dblclick");
   $(window).unbind("keydown");
-  $("body").selectable("destroy");
+  $(document).selectable("destroy");
 
   $("#role > .ui-widget-header").each(function(ind, elm)
 				     {
@@ -170,7 +170,7 @@ Anzu.ui.initPianorole = function(_track){
   // イベントのバインド
 
   // ダブルクリックでノートを追加
-  $(document).dblclick(function(ev)
+  $(window).dblclick(function(ev)
 		       {
 			 var div = createNoteDiv(
 			   {
@@ -228,7 +228,7 @@ Anzu.ui.initPianorole = function(_track){
 		   );
 
   // ノートを選択できるようにする
-  $("body").selectable(
+  $(document).selectable(
     {
       selected : function(ev, ui){
 	var elm = ui.selected;
@@ -300,7 +300,7 @@ Anzu.ui.initPianorole = function(_track){
   var animeDelta, animeEnd, animeTimer, animeTim, animeStart, animePass, scrollStart;
 
   Anzu.ui.startAnimation = function(spb, end){
-    var fps = 24.0;
+    var fps = 20.0;
     var d;
     animeDelta = spb;
     animeEnd = end * 100.0;

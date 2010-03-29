@@ -58,27 +58,28 @@ Anzu.wave = function(){
 	return signals;
       }
     },
-    createSquareSignal : function(t, sinF){
-      var i;
-      var signals, sig, phase, hz;
+//     createSquareSignal : function(t, sinF){
+//       var i;
+//       var signals, sig, phase, hz;
 
-      hz = 22050;			// 11025
-      phase = 0;
-      t = Math.round(t*hz);
-      var freq = sinF * 2.0 * Math.PI / hz;
-      signals = new Array(t);
+//       hz = 22050;			// 11025
+//       phase = 0;
+//       t = Math.round(t*hz);
+//       var freq = sinF * 2.0 * Math.PI / hz;
+//       signals = new Array(t);
 
-      for(i = 0; i < t; i++){
-	sig = Math.sin(phase);
-	sig = sig > 0.0 ? 1.0 : -1.0;
-	signals[i] = sig;
+//       for(i = 0; i < t; i++){
+// 	sig = Math.sin(phase);
+// 	sig = sig > 0.0 ? 1.0 : -1.0;
+// 	signals[i] = sig;
 
-	phase += freq;
-      };
+// 	phase += freq;
+//       };
 
-      return signals;
-    },
+//       return signals;
+//     },
 
+    // この関数も重い。
     mixSignal : function(base, up, offset){
       var i, len, sig;
       len = up.length;
@@ -86,21 +87,24 @@ Anzu.wave = function(){
       for(i = 0; i < len; i++){
 	sig = base[i+offset] + up[i] * 0.2;
 	//     sig = sig > 255 ? 255 : sig; // 255でカット
-	sig = sig > 1.0 ? 1.0 : sig;
-	sig = sig < -1.0 ? -1.0 : sig;
 // 	sig *= 0.7;
 	base[i+offset] = sig;
       }
     },
 
-    convertToBinary : function(signals){ // signals は 8bit unsigned charの配列
-      var i, len, bin;
+    // この関数が重い。
+    convertToBinary : function(signals){ // signals は floatの配列
+      var i, len, sig;
       len = signals.length;
-      bin = "";
+
       for(i = 0; i < len; i++){
-	bin += String.fromCharCode(Math.floor((signals[i] + 1.0)/2.0 * 255));
+	sig = signals[i];
+	sig = sig > 1.0 ? 1.0 : sig;
+	sig = sig < -1.0 ? -1.0 : sig;
+	signals[i] = String.fromCharCode(Math.floor((sig + 1.0)/2.0 * 255));
+// 	bin += String.fromCharCode(Math.floor((signals[i] + 1.0)/2.0 * 255));
       }
-      return bin;
+      return signals.join("");
     },
 
     convertToURL : function(signals){
