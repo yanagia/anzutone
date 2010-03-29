@@ -81,6 +81,8 @@ Anzu.ui.initPianorole = function(_track){
     var key = posKeyList[Math.floor(ev.pageY / 20) * 20];
     var sa = Anzu.ShortAudio(0.2, key);
     sa.play();
+    sa = null;
+    key = null;
     prev = now;
     lastKeyIndex = nowKeyIndex;
   };

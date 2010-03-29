@@ -73,7 +73,7 @@ Anzu.wave = function(){
     },
 
     // この関数が重い。
-    convertToBinary : function(signals){ // signals は floatの配列
+    convertToBinary : function(signals){ // signals は intの配列
       var i, len, sig;
       len = signals.length;
 
@@ -82,7 +82,8 @@ Anzu.wave = function(){
 	// 163835 = 32767 * 5
 	sig = sig > 163835 ? 163835 : (sig < -163835 ? -163835 : sig); 
 // 	sig = sig < -163835 ? -163835 : sig;
-	signals[i] = String.fromCharCode((sig + 163835)/327670 * 256);
+	signals[i] = String.fromCharCode((sig + 163835)/327670 * 256); // あれ？ これって常に0になるんじゃないの。型変換されてる？
+	// 型変換されてた。なんてこった！
 // 	bin += String.fromCharCode(Math.floor((signals[i] + 1.0)/2.0 * 255));
       }
       return signals.join("");

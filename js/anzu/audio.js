@@ -10,15 +10,21 @@ Anzu.ShortAudio = function(){
     var audio = new Audio(url);
     var jo = $(audio);
     var audioStream = Anzu.core.audioStream;
+    var t = duration;
     url = null;
     signals = null;
+    generator = null;
+    pitch = null;
 
     function disposeAudio(){
       audio.pause();
       audio.loop = false;
       audio = null;
+      jo[0].src = undefined;
       jo.remove();
       jo = null;
+      audioStream = null;
+      t = null;
     }
 
     return {
@@ -27,7 +33,9 @@ Anzu.ShortAudio = function(){
 	audio.volume = 0.2;
 	audio.loop = false;
 	audio.play();
-	setTimeout(disposeAudio, Math.floor(duration * 1000 * 1.2));
+	audioStream = null;
+	setTimeout(disposeAudio, Math.floor(t * 1000 * 1.2));
+	t = null;
       }
     };
   };
