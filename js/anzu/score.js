@@ -1,15 +1,21 @@
 Anzu.Score = function(){
   
   return function(obj){
-    obj = eval(obj);
-    var tracks = obj.tracks;
+    if(typeof obj === "string") obj = eval(obj);
+    var tracks = [];
     var audio, callback;
+
+    for(var i = 0; i < obj.tracks.length; i++){
+      tracks[i] = Anzu.Track(obj.tracks[i]);
+    }
+
     return {
       bpm : obj.bpm,
       addTrack : function(t){
 	tracks.push(t);
       },
       updateTrack : function(i, src){
+	console.log(eval("(" + src + ")"));
 	tracks[i] = Anzu.Track(eval("(" + src + ")"));
       },
       setCallback : function(f){
@@ -22,6 +28,7 @@ Anzu.Score = function(){
 	endTime = this.getEndTime();
 	spb = 60.0 / this.bpm;
 	alen = Math.ceil((endTime - beginTime) * spb * srate);
+	if(alen <= 0.0) alen = 1;
 	baseSignals = new Array(alen);
 	for(i = 0; i < alen; i++){
 	  baseSignals[i] = 0.0;
@@ -79,7 +86,7 @@ Anzu.Score = function(){
 		     {
 		       return el.dump();
 		     }).join(",") + "]" + "," +
-	  '"bpm":' + bpm +
+	  '"bpm":' + this.bpm +
 	  "}";
       }
     };
@@ -89,6 +96,7 @@ Anzu.Score = function(){
 Anzu.Track = function(){
 
   return function(obj){
+    if(typeof obj === "string") obj = eval("(" + obj + ")");
     var notes, tone;
     notes = obj.notes;
     for(var i = 0; i < notes.length; i++){
@@ -107,6 +115,17 @@ Anzu.Track = function(){
 	    return;
 	  }
 	}
+      },
+      deleteUnlinkNotes : function(){
+	var len = notes.length;
+	for(var i = len-1; i >= 0; i--){
+	  if(! notes[i].divID){
+	    notes.splice(i, 1);
+	  }
+	}
+      },
+      _notes : function(){
+	return notes;
       },
       deleteNoteFromDiv : function(div){
 	for(var i = 0; i < notes.length; i++){
@@ -132,6 +151,7 @@ Anzu.Track = function(){
 	return tone;
       },
       getLastNote : function(){
+	if(notes.length === 0) return Anzu.Note({begin : 0, length : 0, key : "A4"});
 	// 一番後ろにいるノートを探す
 	notes.sort(function(a, b){
 		      return (a.begin + a.length) - (b.begin + b.length);
@@ -185,7 +205,6 @@ Anzu.Note = function(){
       begin : obj.begin,
       length : obj.length,
       key : obj.key,
-      divID : 0,
       setDiv : function(div){
 	this.div = div;
 	var top, left, width;

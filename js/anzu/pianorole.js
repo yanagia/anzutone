@@ -23,22 +23,29 @@ Anzu.ui.initPianorole = function(_track){
 
   // 読み込み開始
 
-  // 音色を設定
-  Anzu.tone.defaultTone = tracks.getTone();
-
+  // 座標と音名の対応表を作る
   var base = ["Ad", "Ad#", "Bd", "Cd", "Cd#", "Dd", "Dd#","Ed", "Fd", "Fd#", "Gd","Gd#"];
   posKeyList = {};
+  var posKeyRev = {};
   Anzu.ui.posKeyList = posKeyList;
-
-  // 座標と音名の対応表を作る
   var i, j, len, k;
   len = base.length;
   k = 0;
   for(i = 1; i <= 9; i++){
     for(j = 0; j < len; j++){
       posKeyList[bodyHeight - k + 40] = base[j].replace("d", i.toString(10));
+      posKeyRev[base[j].replace("d", i.toString(10))] = bodyHeight - k + 40;
       k += 20;
     }
+  }
+
+  function createDivFromNote(note){
+    var obj = {};
+
+    obj.width = note.length * 100;
+    obj.left = note.begin * 100;
+    obj.top = posKeyRev[note.key];
+    return createNoteDiv(obj);
   }
 
   var that;
@@ -151,6 +158,15 @@ Anzu.ui.initPianorole = function(_track){
 		      });
 		  });
   }
+
+  // ノートの読み込み、表示を開始
+  len = tracks._notes().length;
+  var _notes = tracks._notes();
+  console.log(tracks._notes());
+  for(i = 0; i < len; i++){
+    createDivFromNote(_notes[i]).appendTo($("#role"));
+  }
+  tracks.deleteUnlinkNotes();
 
   // イベントのバインド
 
@@ -314,6 +330,9 @@ Anzu.ui.initPianorole = function(_track){
     Anzu.tone.setDefaultTone(tone);
   };
 
+  // 音色を設定
+  Anzu.ui.changeTone(tracks.getTone());
+
 };
 
 Anzu.ui.getCurrentTime = function(){
@@ -322,6 +341,8 @@ Anzu.ui.getCurrentTime = function(){
 };
 
 Anzu.ui.setTrack = function(t){
+  console.log("set");
+  console.log(t);
   Anzu.ui.initPianorole(t);
 };
 

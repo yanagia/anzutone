@@ -1,9 +1,10 @@
 $(function()
   {
     Anzu.player.score = Anzu.Score(
-      '({"tracks" : [ { "notes" : [], "tone" : "Anzu.Sequare"} ], "bpm" : 120})'
+      '({"tracks" : [ { "notes" : [], "tone" : "Anzu.Sequare"}, { "notes" : [], "tone" : "Anzu.Sequare"} ], "bpm" : 120})'
       );
     
+    setTimeout(Anzu.player.parseURL, 500);
   });
 
 Anzu.player = function(){
@@ -11,6 +12,10 @@ Anzu.player = function(){
 //   score.addTrack({notes : [], tone : "Anzu.Sequare"});
   var currentTime = 0;
   var currentTrack = 0;
+
+  var s_name = "";
+  var s_comment = "";
+  var loaderURL = "file:///Users/yanagi/Documents/program/anzutone/editor.html?load=";
 
   function getCurrentTime(){
     currentTime = $("iframe")[0].contentWindow.Anzu.ui.getCurrentTime();
@@ -34,13 +39,67 @@ Anzu.player = function(){
       var innerWindow = $("iframe")[0].contentWindow.Anzu.ui.stopAnimation();      
     },
     set : function(){
-      $("iframe")[0].contentWindow.Anzu.ui.setTrack(Anzu.player.score.getTrack(currentTrack));
+      var t = Anzu.player.score.getTrack(currentTrack);
+      $("iframe")[0].contentWindow.Anzu.ui.setTrack(t.dump());
+      $("#toneSelect").val(t.getTone());
     },
     moveBar : function(delta){
       $("iframe")[0].contentWindow.Anzu.ui.moveBar(delta);
     },
     changeTone : function(obj){
       $("iframe")[0].contentWindow.Anzu.ui.changeTone(obj.value);
+    },
+    selectTrack : function(obj){
+      console.log("changeTrack:start");
+      Anzu.player.score.updateTrack(currentTrack, parseFrame());
+      var trackNumber = parseInt(obj.value);
+      currentTrack = trackNumber-1;
+      this.set();
+      $("#tracklist > li").each(function(ind, obj)
+			       {
+				 obj.className = "";
+			       });
+      obj.className = "current";
+      console.log("changeTrack:done.");
+      return false;
+    },
+    exportAsURL : function(obj){
+      Anzu.player.score.updateTrack(currentTrack, parseFrame());
+      var scoreDump = Anzu.player.score.dump();
+      return loaderURL + 
+	"{" + 
+	'"name":'  + '"' + encodeURI(obj.name) + '"' + "," +
+	'"comment":' + '"' + encodeURI(obj.comment) + '"' + "," +
+	'"score":' + scoreDump +
+	"}";
+    },
+    openExportDialog : function(){
+      var url = this.exportAsURL({name : "Sakura", comment : "first"});
+      console.log(url);
+      $("#exportDialog").dialog();
+      $("#exportDialogURL").html("以下のリンクに出力しました。<br>" + 
+				 "<a href='" + url + "'>ここ！</a>");
+    },
+    load : function(data){
+      var s = eval( "(" + data + ")" );
+      s_name = s.name;
+      s_comment = s.comment;
+      Anzu.player.score = Anzu.Score(s.score);
+      console.log(s.score);
+      currentTime = 0;
+      currentTrack = 0;
+      Anzu.player.set();
+    },
+    parseURL : function(){
+      var url = document.location.href;
+      var data;
+      console.log(url);
+      if(url.match(/.+?load=(.+)/)){
+	data = RegExp.$1;
+	console.log(decodeURI(data));
+	Anzu.player.load(decodeURI(data));
+      }
     }
+
   };
 }();
