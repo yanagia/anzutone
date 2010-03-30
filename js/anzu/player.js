@@ -205,7 +205,7 @@ Anzu.player = function(){
 	"{" + 
 	'"name":'  + '"' + encodeURI(obj.name) + '"' + "," +
 	'"comment":' + '"' + encodeURI(obj.comment) + '"' + "," +
-	'"version:"' + '"' + obj.version + '"' +
+	'"version":' + '"' + obj.version + '"' + "," + 
 	'"score":' + scoreDump +
 	"}";
     },

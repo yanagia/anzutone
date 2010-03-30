@@ -1,10 +1,18 @@
+Anzu.ui = function(){
+  Anzu.ui.killBuffer = [];
+  Anzu.ui.divID = 0;
+
+  return {};
+}();
+
 Anzu.ui.initPianorole = function(_track){
 
   var role = $("#role");
   var noteCSSClass = "ui-widget-header";
   var posKeyList, bodyHeight = 1920;
   var tracks = Anzu.Track(_track);
-  var divID = 0;
+//   var divID = Anzu.ui.divID ? Anzu.ui.divID : 0;
+  Anzu.ui.divID = Anzu.ui.divID ? Anzu.ui.divID : 0;
 
   Anzu.ui.track = tracks;
   
@@ -100,7 +108,7 @@ Anzu.ui.initPianorole = function(_track){
 	    "position: absolute; opacity: 0.0;"  + 
 	    "top:" + (Math.floor(obj.top / 20) * 20 + 1) + "px;" + 
 	    "left:" + (Math.floor(obj.left / 12.5) * 12.5) + "px;")
-      .attr("id", "AnzutoneNoteDiv" + divID)
+      .attr("id", "AnzutoneNoteDiv" + Anzu.ui.divID)
       .resizable(
 	{ maxHeight : 17, 
 	  minHeight : 17,
@@ -131,7 +139,8 @@ Anzu.ui.initPianorole = function(_track){
 	    tracks.changeNote(this);
 	  }
 	});
-    divID += 1;
+    // Waveでは同期が必要。
+    Anzu.ui.divID += 1;
 
     // 将来的にdivIDを同期させる必要がありそうなので、アニメーションで遅さをごまかす。
     div.animate({ opacity : 0.9}, 150);
@@ -152,9 +161,9 @@ Anzu.ui.initPianorole = function(_track){
     el.remove();
   }
 
-  var killBuffer = [];
+//   var killBuffer = Anzu.ui.killBuffer;
   function copyToKillBuffer(selected){
-    killBuffer = [];
+    Anzu.ui.killBuffer = [];
     var min = 1000 * 1000;
     selected.each(function(ind, elm){
 		    if(min > parseInt(elm.style.left)) min = parseInt(elm.style.left);
@@ -162,7 +171,7 @@ Anzu.ui.initPianorole = function(_track){
     selected.each(function(ind, elm)
 		  {
 		    var el = $(elm);
-		    killBuffer.push(
+		    Anzu.ui.killBuffer.push(
 		      {
 			top : parseInt(elm.style.top), 
 			width : parseInt(elm.style.width),
@@ -200,6 +209,7 @@ Anzu.ui.initPianorole = function(_track){
 		      var selected;
 		      switch(ev.keyCode){
 		      case 8:	// backspace
+		      case 46:	// delete
 			selected = $("#role > .ui-selected");
 			selected.each(function(ind, elm)
 				      {
@@ -219,9 +229,9 @@ Anzu.ui.initPianorole = function(_track){
 		      case 89: // y
 			var x = parseInt($("#bar")[0].style.left);
 			var i, len;
-			for(i = 0; i < killBuffer.length; i++){
-			  killBuffer[i].left = killBuffer[i].left + x;
-			  var newNoteDiv = createNoteDiv(killBuffer[i]);
+			for(i = 0; i < Anzu.ui.killBuffer.length; i++){
+			  Anzu.ui.killBuffer[i].left = Anzu.ui.killBuffer[i].left + x;
+			  var newNoteDiv = createNoteDiv(Anzu.ui.killBuffer[i]);
 			  newNoteDiv.appendTo($("#role"));
 			}
 			break;
@@ -247,14 +257,14 @@ Anzu.ui.initPianorole = function(_track){
 	var elm = ui.selected;
 	if(elm.style.position){
 	  $(elm).addClass("anzu-note-selected");
-	  $(elm).animate({backgroundColor : "#66CDAA"}, 300);
+// 	  $(elm).animate({backgroundColor : "#66CDAA"}, 300);
 	}
       },
       unselected : function(ev, ui){
 	var elm = ui.unselected;
 	if(elm.style.position){
 	  $(ui.unselected).removeClass("anzu-note-selected");
-	  $(ui.unselected).animate({backgroundColor : "#f6a828"}, 200);
+// 	  $(ui.unselected).animate({backgroundColor : "#f6a828"}, 200);
 	}
       },
       start : function(ev, ui){
@@ -354,7 +364,8 @@ Anzu.ui.initPianorole = function(_track){
 
   // 音色を設定
   Anzu.ui.changeTone(tracks.getTone());
-
+  
+  window.focus();
 };
 
 Anzu.ui.getCurrentTime = function(){
