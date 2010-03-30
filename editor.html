@@ -1,8 +1,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link type="text/css" href="css/anzu/anzu.css" rel="stylesheet" />	
-<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.custom.css" rel="stylesheet" />	
+<link type="text/css" href="css/anzu/anzu.css" rel="stylesheet" />
+<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.custom.css" rel="stylesheet" />
+<!-- <link type="text/css" href="css/demos.css" rel="stylesheet" /> -->
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.custom.min.js"></script>
 <!-- <script type="text/javascript" src="js/anzu.js"></script> -->
@@ -21,22 +22,29 @@
 </head>
 
 <body>
-Anzu Tone
-
-<div id="playerControll">
-<form>
-<input type="button" value="再生/停止" onclick="Anzu.player.playstop()">
-<input type="button" value="<<" onclick="Anzu.player.moveBar(-400)">
-<input type="button" value="<" onclick="Anzu.player.moveBar(-100)">
-<input type="button" value=">" onclick="Anzu.player.moveBar(+100)">
-<input type="button" value=">>" onclick="Anzu.player.moveBar(+400)">
-<input type="button" value="export" onclick="Anzu.player.openExportDialog()">
-<input type="text" value="120" onChange="Anzu.player.changeBPM(this)" id="bpmInput">
-</form>
-</div>
+Anzutone
+<!-- <div id="playerControll"> -->
+<!-- <form> -->
+<!-- <input type="button" value="再生/停止" onclick="Anzu.player.playstop()"> -->
+<!-- <input type="button" value="<<" onclick="Anzu.player.moveBar(-400)"> -->
+<!-- <input type="button" value="<" onclick="Anzu.player.moveBar(-100)"> -->
+<!-- <input type="button" value=">" onclick="Anzu.player.moveBar(+100)"> -->
+<!-- <input type="button" value=">>" onclick="Anzu.player.moveBar(+400)"> -->
+<!-- <input type="button" value="export" onclick="Anzu.player.openExportDialog()"> -->
+<!-- <input type="text" value="120" onChange="Anzu.player.changeBPM(this)" id="bpmInput"> -->
+<!-- </form> -->
+<!-- </div> -->
 
 <div id="tracks" class="">
-<button class="playControlls" id="playButton">play</button>
+<span id="" class="toolbar">
+<button class="" id="back1Button">back1</button>
+<button class="" id="back4Button">back4</button>
+<button class="" id="playstopButton">playstop</button>
+<button class="" id="play1Button">play1</button>
+<button class="" id="play4Button">play4</button>
+<button class="" id="bpmButton">BPM=120</button>
+<button class="" id="saveButton">Save</button>
+</span>
 <ul id="tracklist" class="">
   <li value="1" class="current" onclick="Anzu.player.selectTrack(this)">track1</li>
   <li value="2" onclick="Anzu.player.selectTrack(this)">track2</li>
@@ -51,15 +59,27 @@ Anzu Tone
   <li value="11" onclick="Anzu.player.selectTrack(this)">track11</li>
   <li value="12" onclick="Anzu.player.selectTrack(this)">track12</li>
 </ul>
-<div id="trackinfo" class="">
+<div id="trackinfo" class="ui-widget-content">
 <form>
-tone : 
-<select onchange="Anzu.player.changeTone(this)" id="toneSelect">
-<option value="Anzu.SquareWave" selected="selected">Anzu.SquareWave</option>
-<option value="Anzu.SineWave">Anzu.SineWave</option>
-<option value="Anzu.SawtoothWave">Anzu.Sawtooth</option>
-<option value="Anzu.WhiteNoise">Anzu.WhiteNoise</option>
-</select>
+<!-- <select onchange="Anzu.player.changeTone(this)" id="toneSelect"> -->
+<!-- <option value="Anzu.SquareWave" selected="selected">Anzu.SquareWave</option> -->
+<!-- <option value="Anzu.SineWave">Anzu.SineWave</option> -->
+<!-- <option value="Anzu.SawtoothWave">Anzu.Sawtooth</option> -->
+<!-- <option value="Anzu.WhiteNoise">Anzu.WhiteNoise</option> -->
+<div onclick="Anzu.player.changeTone()" id="toneSelect">
+<input type="radio" name="tone" id="radio.Anzu.SquareWave" value="Anzu.SquareWave" checked="checked">
+<label for="radio.Anzu.SquareWave">SquareWave</label></input>
+<input type="radio" name="tone" id="radio.Anzu.SineWave" value="Anzu.SineWave">
+<label for="radio.Anzu.SineWave">SineWave</label></input>
+<input type="radio" name="tone" id="radio.Anzu.SawtoothWave" value="Anzu.SawtoothWave">
+<label for="radio.Anzu.SawtoothWave">SawtoothWave</label></input>
+<input type="radio" name="tone" id="radio.Anzu.WhiteNoise" value="Anzu.WhiteNoise">
+<label for="radio.Anzu.WhiteNoise">WhiteNoise</label></input>
+<!-- <option value="Anzu.SineWave">Anzu.SineWave</option> -->
+<!-- <option value="Anzu.SawtoothWave">Anzu.Sawtooth</option> -->
+<!-- <option value="Anzu.WhiteNoise">Anzu.WhiteNoise</option> -->
+</div>
+
 </form>
 </div>
 <iframe src="pianorole.html" class="trackview" width="100%" height="80%" frameborder=0 id="pianorole" tabindex=1></iframe>
@@ -67,10 +87,17 @@ tone :
 <div id="outAudioStream"></div>
 <div id="audioStream"></div>
 
-<div id="exportDialog" title="export">
+<div id="exportDialog" title="Save">
   <div id="exportDialogURL"></div>
 </div>
-<!-- <a href='file:///Users/yanagi/Documents/program/anzutone/editor.html?load={"name":"Sakura","comment":"first","score":{"tracks":[{"notes":[{"begin":2,"length":0.98,"key":"A3#"}],"tone":"Anzu.Sequare"},{"notes":[],"tone":"Anzu.Sequare"}],"bpm":120}}'here</a> -->
+
+<div id="bpmDialog" title="Type new BPM">
+  <form>
+    <label for="bpm">BPM</label>
+    <input type="text" name="bpm" id="bpmForm" class="ui-widget-content ui-corner-all" value="120"/>
+  </form>
+</div>
+
 </div>
 </body>
 </html>

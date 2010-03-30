@@ -1,25 +1,42 @@
 body {
     background: #ffffff;
+/*     font-size: 62.5%; */
 }
 
 #tracks {
     background: #ffbf40;
     background: #ffe373;
+    padding: 6px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
 }
 
-.playControlls {
+.toolbar {
+    padding: 8px 12px 4px 10px;
     float: left;
+/*     margin-left: 10px; */
+/*     margin-top: 10px; */
+    font-size: 11px;
+/*     padding : 10px 4px; */
+/*     height: 40px; */
+/*     font-size: 8px; */
+/*     font-size: small; */
+/*     width: 30px; */
+    height: 30px;
+}
+
+.anzu-button {
+    height: 24.2px;
 }
 
 #tracklist {
+/*     float: right; */
     margin-top: 0px;
-    margin-left: 5px;
+/*     margin-left: 5px; */
     margin-bottom: 0px;
     padding-left: 5px;
 /*     padding-bottom: -20px; */
-    padding-top: 10px;
+    padding-top: 5px;
 }
 
 #tracklist li {
@@ -30,20 +47,48 @@ body {
 /*     border-bottom: 1px solid #778; */
     font-size: small;
     color: #ffffff;
+    color: #1C94C4;
+    font-weight: bold;
     background: #ffaa00;
+    background: url("../ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png") repeat-x scroll 50% 50% #F6F6F6;
     padding-right: 5px;
     padding-left: 5px;
-    padding-top: 5px;
+    padding-top: 15px;
+    position: relative;
+    top: -1px;
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topright: 5px;
+}
+
+#tracklist li:hover {
+    cursor: pointer;
+    background: #fdf5ce url(../ui-lightness/images/ui-bg_glass_100_fdf5ce_1x400.png) 50% 50% repeat-x; 
+    font-weight: bold; color: #c77405;
 }
 
 #tracklist li.current{
+    background: #eeeeee;
     background: #ffffff;
     opacity: 1.0;
-    color: #000000;
-    border: 1px solid #778;
+    color: #ffaa00;
+    font-weight: bold;
+    border: 1px solid #dddddd;
     border-bottom: none;
     position: relative;
     top: 1px;
+    height: 20px;
+}
+
+#bpmDialog {
+/*     font-size: 10px; */
+}
+
+.trackText {
+    margin-top: -5px;
+    padding-top: 0px;
+    padding-bottom: 5px;
 }
 
 #tracklist:after{
@@ -54,22 +99,26 @@ body {
    visibility: hidden;
 }
 
+#toneSelect {
+    font-size: 12px;
+}
+
 #playerControll {
     background: #ffe373;
 }
 
 .trackview {
 /*     border: 1px solid #778;     */
-    margin-left: 5px;
+/*     margin-left: 5px; */
 }
 
 #trackinfo {
     padding-top: 5px;
     padding-left: 5px;
-    margin-left: 5px;
+/*     margin-left: 5px; */
 /*     border: 1px solid #778; */
     margin-top: 0px;
     height: 40px;
-    background: #ffffff;
+    background: #eeeeee;
 }
 

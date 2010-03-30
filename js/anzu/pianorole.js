@@ -85,7 +85,7 @@ Anzu.ui.initPianorole = function(_track){
     var nowKeyIndex = Math.floor(ev.pageY / 20) * 20;
     if(lastKeyIndex === nowKeyIndex /*&& now - prev < 400*/) return; // ダブルクリック対策
     var key = posKeyList[Math.floor(ev.pageY / 20) * 20];
-    var sa = Anzu.ShortAudio(0.2, key);
+    var sa = Anzu.ShortAudio(0.3, key);
     sa.play();
     sa = null;
     key = null;
