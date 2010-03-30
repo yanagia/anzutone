@@ -302,7 +302,8 @@ Anzu.ui.initPianorole = function(_track){
   function stopAnimation(){
     clearInterval(animeTimer);
     var x = parseInt($("#bar")[0].style.left);
-    $("#bar")[0].style.left = Math.floor(x / 12.5) * 12.5 + "px";
+    $("#bar")[0].style.left = Math.ceil(x / 12.5) * 12.5 + "px";
+    animeTimer = null;
   }
 
   // publicな何か
@@ -315,6 +316,8 @@ Anzu.ui.initPianorole = function(_track){
   Anzu.ui.startAnimation = function(spb, end){
     var fps = 20.0;
     var d;
+    if(end <= 0) return false;
+    if(animeTimer) return false;
     animeDelta = spb;
     animeEnd = end * 100.0;
     animeStart = parseInt($("#bar")[0].style.left);
@@ -322,6 +325,7 @@ Anzu.ui.initPianorole = function(_track){
     animeTim = new Date();
     scrollStart = document.body.scrollLeft;
     animeTimer = setInterval(barAnimation, 1000 / fps);
+    return true;
   };
 
   Anzu.ui.stopAnimation = stopAnimation;

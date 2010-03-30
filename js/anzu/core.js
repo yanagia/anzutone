@@ -38,7 +38,8 @@ Anzu.core = function(){
       return pitchList[key];
     },
     audioStream : $("body"),	// readable & writable
-    samplingRate : 22050
+    samplingRate : 22050,
+    version : "0.0.1"
   };
 }();
 

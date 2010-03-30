@@ -205,14 +205,15 @@ Anzu.player = function(){
 	"{" + 
 	'"name":'  + '"' + encodeURI(obj.name) + '"' + "," +
 	'"comment":' + '"' + encodeURI(obj.comment) + '"' + "," +
+	'"version:"' + '"' + obj.version + '"' +
 	'"score":' + scoreDump +
 	"}";
     },
     openExportDialog : function(){
-      var url = this.exportAsURL({name : "Anzu", comment : "first"});
+      var url = this.exportAsURL({name : "Anzu", comment : "first", version : Anzu.core.version});
       $("#exportDialog").dialog("open");
       $("#exportDialogURL").html("I save your score "+ 
-				 "<a href='" + url + "'>this url</a>" + "." + "<br><br>" + 
+				 "<a href='" + encodeURI(url) + "'>this url</a>" + "." + "<br><br>" + 
 				 "Bookmark it!"
 				 );
     },
@@ -220,6 +221,8 @@ Anzu.player = function(){
       var s = eval( "(" + data + ")" );
       s_name = s.name;
       s_comment = s.comment;
+      var version = s.version;
+
       Anzu.player.score = Anzu.Score(s.score);
       $("#bpmInput").val(Anzu.player.score.bpm);
 
