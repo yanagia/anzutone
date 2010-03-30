@@ -1,8 +1,13 @@
 Anzu.ui = function(){
-  Anzu.ui.killBuffer = [];
-  Anzu.ui.divID = 0;
+//   Anzu.ui.killBuffer = [];
+//   Anzu.ui.divID = 0;
+//   Anzu.ui.browser = IsGecko() ? 0 : 1;
 
-  return {};
+  return {
+    killBuffer : [],
+    divID : 0,
+    browser : IsGecko() ? 0 : 1
+  };
 }();
 
 Anzu.ui.initPianorole = function(_track){
@@ -323,14 +328,14 @@ Anzu.ui.initPianorole = function(_track){
 
   var animeDelta, animeEnd, animeTimer, animeTim, animeStart, animePass, scrollStart;
 
-  Anzu.ui.startAnimation = function(spb, end){
+  Anzu.ui.startAnimation = function(spb, end, offset){
     var fps = 20.0;
     var d;
     if(end <= 0) return false;
     if(animeTimer) return false;
     animeDelta = spb;
     animeEnd = end * 100.0;
-    animeStart = parseInt($("#bar")[0].style.left);
+    animeStart = parseInt($("#bar")[0].style.left) + offset * 100 * Anzu.ui.browser;
     animePass = (animeEnd - animeStart) / 100.0 * spb;
     animeTim = new Date();
     scrollStart = document.body.scrollLeft;

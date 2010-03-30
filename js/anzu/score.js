@@ -57,7 +57,7 @@ Anzu.Score = function(){
 				{
 				  if(audio.currentTime > 0.1){
 				    clearInterval(tim);
-				    callback(spb, endTime - beginTime);
+				    callback(spb, endTime - beginTime, audio.currentTime / spb);
 				  }
 				}, 1000/10);
 	}

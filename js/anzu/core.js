@@ -43,6 +43,17 @@ Anzu.core = function(){
   };
 }();
 
+function IsGecko(){
+    if(navigator){
+        if(navigator.userAgent){
+            if(navigator.userAgent.indexOf("Gecko/") != -1){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 // function convertToPitch(key){
 //   return pitchList[key];
 // }
