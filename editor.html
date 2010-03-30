@@ -22,6 +22,8 @@
 
 <body>
 Anzu Tone
+
+<div id="playerControll">
 <form>
 <input type="button" value="再生/停止" onclick="Anzu.player.playstop()">
 <input type="button" value="<<" onclick="Anzu.player.moveBar(-400)">
@@ -31,10 +33,13 @@ Anzu Tone
 <input type="button" value="export" onclick="Anzu.player.openExportDialog()">
 <input type="text" value="120" onChange="Anzu.player.changeBPM(this)" id="bpmInput">
 </form>
-<div id="tracks" class="ui-widget-content">
+</div>
+
+<div id="tracks" class="">
+<button class="playControlls" id="playButton">play</button>
 <ul id="tracklist" class="">
   <li value="1" class="current" onclick="Anzu.player.selectTrack(this)">track1</li>
-  <li value="2" class="ui-widget-content" onclick="Anzu.player.selectTrack(this)">track2</li>
+  <li value="2" onclick="Anzu.player.selectTrack(this)">track2</li>
   <li value="3" onclick="Anzu.player.selectTrack(this)">track3</li>
   <li value="4" onclick="Anzu.player.selectTrack(this)">track4</li>
   <li value="5" onclick="Anzu.player.selectTrack(this)">track5</li>
@@ -46,7 +51,7 @@ Anzu Tone
   <li value="11" onclick="Anzu.player.selectTrack(this)">track11</li>
   <li value="12" onclick="Anzu.player.selectTrack(this)">track12</li>
 </ul>
-<div id="trackinfo" class="ui-widget-content">
+<div id="trackinfo" class="">
 <form>
 tone : 
 <select onchange="Anzu.player.changeTone(this)" id="toneSelect">
@@ -58,14 +63,6 @@ tone :
 </form>
 </div>
 <iframe src="pianorole.html" class="trackview" width="100%" height="80%" frameborder=0 id="pianorole" tabindex=1></iframe>
-<!-- <div id="role-bg" class="pianorole-bg"> -->
-<!-- <div id="role1" class="pianorole"> -->
-<!--   <div id="note" class="ui-widget-header" style="width: 300px; height: 19px; float: left; margin 0 20px 20px 0;">sample note</div> -->
-<!--   <div id="note2" class="ui-widget-header" style="width: 300px; height: 19px; float: left; margin 0 20px 20px 0;">sample note 2</div> -->
-<!--   <div id="note3" class="ui-widget-header" style="width: 300px; height: 19px; float: left; margin 0 20px 20px 0;">sample note 3</div> -->
-<!-- </div> -->
-<!-- </div> -->
-<!-- </div> -->
 </div>
 <div id="outAudioStream"></div>
 <div id="audioStream"></div>

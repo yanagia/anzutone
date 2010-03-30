@@ -1,36 +1,75 @@
+body {
+    background: #ffffff;
+}
+
+#tracks {
+    background: #ffbf40;
+    background: #ffe373;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+}
+
+.playControlls {
+    float: left;
+}
+
 #tracklist {
     margin-top: 0px;
     margin-left: 5px;
-    margin-bottom: -6px;
-    padding: 3px 0;
+    margin-bottom: 0px;
+    padding-left: 5px;
+/*     padding-bottom: -20px; */
+    padding-top: 10px;
 }
 
 #tracklist li {
     list-style: none;
-    display: inline;
-    margin: 0;
-    border: 1px solid #778;
-    border-bottom: none;
-    font-size: large;
-    background: #444444;
+/*     display: inline; */
+    float: left;
+    margin-left: 5px;
+/*     border-bottom: 1px solid #778; */
+    font-size: small;
+    color: #ffffff;
+    background: #ffaa00;
     padding-right: 5px;
     padding-left: 5px;
+    padding-top: 5px;
 }
 
 #tracklist li.current{
-    background: #dddddd;
+    background: #ffffff;
     opacity: 1.0;
+    color: #000000;
+    border: 1px solid #778;
+    border-bottom: none;
+    position: relative;
+    top: 1px;
+}
+
+#tracklist:after{
+   content: "";
+   display: block;
+   height: 0;
+   clear: both;
+   visibility: hidden;
+}
+
+#playerControll {
+    background: #ffe373;
 }
 
 .trackview {
 /*     border: 1px solid #778;     */
+    margin-left: 5px;
 }
 
 #trackinfo {
     padding-top: 5px;
     padding-left: 5px;
+    margin-left: 5px;
 /*     border: 1px solid #778; */
     margin-top: 0px;
     height: 40px;
+    background: #ffffff;
 }
 

@@ -5,6 +5,7 @@ $(function()
       );
     
 //     $("#trackVolumeSlider").slider();
+    $("#playButton").button();
 
     setTimeout(Anzu.player.parseURL, 500);
     setTimeout(Anzu.player.setEventManager, 500);
