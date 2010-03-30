@@ -342,6 +342,12 @@ Anzu.ui.initPianorole = function(_track){
     Anzu.tone.setDefaultTone(tone);
   };
 
+  Anzu.ui.changeVolume = function(v){
+    tracks.setVolume(v);
+    tracks.setTone(tone);
+    Anzu.tone.setDefaultTone(tone);
+  };
+
   // 音色を設定
   Anzu.ui.changeTone(tracks.getTone());
 

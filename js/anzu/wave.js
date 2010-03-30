@@ -112,6 +112,18 @@ Anzu.wave = function(){
       }
     },
 
+    mixSignalV : function(base, up, offset, volume){
+      var i, len, sig;
+      len = up.length;
+      offset = Math.floor(offset);
+      for(i = 0; i < len; i++){
+	sig = base[i+offset] + ~~(up[i] * volume);
+	//     sig = sig > 255 ? 255 : sig; // 255でカット
+// 	sig *= 0.7;
+	base[i+offset] = sig;
+      }
+    },
+
     // この関数が重い。
     convertToBinary : function(signals){ // signals は intの配列
       var i, len, sig;

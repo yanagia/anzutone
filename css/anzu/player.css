@@ -81,6 +81,13 @@ body {
     height: 20px;
 }
 
+#trackVolume {
+    float: right;
+    margin-top: 10px;
+    margin-right: 10px;
+    width: 220px;
+}
+
 #bpmDialog {
 /*     font-size: 10px; */
 }

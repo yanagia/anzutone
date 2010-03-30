@@ -45,7 +45,7 @@ Anzu.Score = function(){
 	var url = Anzu.wave.convertToURL(binary);
 	audio = new Audio(url);
 	Anzu.core.audioStream.append($(audio));
-	audio.volume = 0.2;
+	audio.volume = 1.0;
 
 	baseSignals = null;
 	signals = null;
@@ -115,13 +115,17 @@ Anzu.Track = function(){
 
   return function(obj){
     if(typeof obj === "string") obj = eval("(" + obj + ")");
-    var notes, tone;
+    var notes, tone, volume = 0.5;
     notes = obj.notes;
     for(var i = 0; i < notes.length; i++){
       notes[i] = Anzu.Note(notes[i]);
     }
 
     tone = obj.tone/*Anzu.wave.createSquareSignal*/;
+    if(obj.volume)
+      volume = Math.abs(obj.volume) > 1.0 ? 0.5 : obj.volume;
+    else
+      volume = 0.5;
     return {
       addNote : function(note){
 	notes.push(note);
@@ -222,10 +226,17 @@ Anzu.Track = function(){
 	  note = notes[i];
 	  if(note.begin < beginTime) continue;
 	  signals = note.getSignal(ftone, spb);
-	  Anzu.wave.mixSignal(baseSignals, signals, (note.begin - beginTime) * spb * srate);
+	  Anzu.wave.mixSignalV(baseSignals, signals, (note.begin - beginTime) * spb * srate, volume);
 	}
 
 	return baseSignals;
+      },
+
+      getVolume : function(){
+	return volume;
+      },
+      setVolume : function(v){
+	volume = v;
       },
 
       dump : function(){
@@ -235,7 +246,8 @@ Anzu.Track = function(){
 		    {
 		      return el.dump();
 		    }).join(",") + "]" + "," + 
-	  '"tone":' + '"'+ tone + '"'
+	  '"tone":' + '"'+ tone + '"' + "," + 
+	  '"volume":' + volume
 	+ "}";
       }
     };

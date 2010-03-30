@@ -60,13 +60,10 @@ Anzutone
   <li value="12" onclick="Anzu.player.selectTrack(this)">track12</li>
 </ul>
 <div id="trackinfo" class="ui-widget-content">
+
 <form>
-<!-- <select onchange="Anzu.player.changeTone(this)" id="toneSelect"> -->
-<!-- <option value="Anzu.SquareWave" selected="selected">Anzu.SquareWave</option> -->
-<!-- <option value="Anzu.SineWave">Anzu.SineWave</option> -->
-<!-- <option value="Anzu.SawtoothWave">Anzu.Sawtooth</option> -->
-<!-- <option value="Anzu.WhiteNoise">Anzu.WhiteNoise</option> -->
-<div onclick="Anzu.player.changeTone()" id="toneSelect">
+<span id="trackVolume"></span>
+<span onclick="Anzu.player.changeTone()" id="toneSelect">
 <input type="radio" name="tone" id="radio.Anzu.SquareWave" value="Anzu.SquareWave" checked="checked">
 <label for="radio.Anzu.SquareWave">SquareWave</label></input>
 <input type="radio" name="tone" id="radio.Anzu.SineWave" value="Anzu.SineWave">
@@ -75,10 +72,7 @@ Anzutone
 <label for="radio.Anzu.SawtoothWave">SawtoothWave</label></input>
 <input type="radio" name="tone" id="radio.Anzu.WhiteNoise" value="Anzu.WhiteNoise">
 <label for="radio.Anzu.WhiteNoise">WhiteNoise</label></input>
-<!-- <option value="Anzu.SineWave">Anzu.SineWave</option> -->
-<!-- <option value="Anzu.SawtoothWave">Anzu.Sawtooth</option> -->
-<!-- <option value="Anzu.WhiteNoise">Anzu.WhiteNoise</option> -->
-</div>
+</span>
 
 </form>
 </div>

@@ -90,6 +90,17 @@ $(function()
 	modal: true
       });
 
+    $("#trackVolume").slider(
+      {
+	value: 50,
+	range: "min",
+	stop: function(ev, ui){
+	  var v = $("#trackVolume").slider("value") / 100.0;
+	  Anzu.player.changeVolume(v);
+	},
+	animate: true
+      });
+
     $("#toneSelect").buttonset();
 
     setTimeout(Anzu.player.parseURL, 500);
@@ -159,6 +170,7 @@ Anzu.player = function(){
 				       elm.checked = false;
 				     }
 				   });
+      $("#trackVolume").slider("value", t.getVolume() * 100);
       $('#toneSelect').button("destroy");
       $('#toneSelect').buttonset();
     },
@@ -170,6 +182,9 @@ Anzu.player = function(){
     },
     changeTone : function(obj){
       $("iframe")[0].contentWindow.Anzu.ui.changeTone($('input[name="tone"]:checked').val());
+    },
+    changeVolume : function(v){
+      $("iframe")[0].contentWindow.Anzu.ui.changeVolume(v);      
     },
     selectTrack : function(obj){
       Anzu.player.score.updateTrack(currentTrack, parseFrame());
