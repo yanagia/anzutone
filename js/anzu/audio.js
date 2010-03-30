@@ -30,7 +30,7 @@ Anzu.ShortAudio = function(){
     return {
       play : function(){
 	audioStream.append(jo);
-	audio.volume = 0.2;
+	audio.volume = 0.3;
 	audio.loop = false;
 	audio.play();
 	audioStream = null;

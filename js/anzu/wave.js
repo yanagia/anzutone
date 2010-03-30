@@ -132,9 +132,9 @@ Anzu.wave = function(){
       for(i = 0; i < len; i++){
 	sig = signals[i];
 	// 163835 = 32767 * 5
-	sig = sig > 163835 ? 163835 : (sig < -163835 ? -163835 : sig); 
+	sig = sig > 393204 ? 393204 : (sig < -393204 ? -393204 : sig); 
 // 	sig = sig < -163835 ? -163835 : sig;
-	signals[i] = String.fromCharCode((sig + 163835)/327670 * 256); // あれ？ これって常に0になるんじゃないの。型変換されてる？
+	signals[i] = String.fromCharCode((sig + 393204)/786408 * 256); // あれ？ これって常に0になるんじゃないの。型変換されてる？
 	// 型変換されてた。なんてこった！
 // 	bin += String.fromCharCode(Math.floor((signals[i] + 1.0)/2.0 * 255));
       }
