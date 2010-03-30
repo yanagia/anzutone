@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Hello Wave" height="500">
+    <Require feature="rpc" />
+  </ModulePrefs>
+  <Content type="html">
+    <![CDATA[
+<script type="text/javascript"
+	src="http://wave-api.appspot.com/public/wave.js"></script>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link type="text/css" href="http://dl.dropbox.com/u/294534/anzutone/css/anzu/anzu.css" rel="stylesheet" />
+<link type="text/css" href="http://dl.dropbox.com/u/294534/anzutone/css/ui-lightness/jquery-ui-1.8.custom.css" rel="stylesheet" />
+<!-- <link type="text/css" href="css/demos.css" rel="stylesheet" /> -->
+<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/jquery-ui-1.8.custom.min.js"></script>
+<!-- <script type="text/javascript" src="js/anzu.js"></script> -->
+<!-- <script type="text/javascript" src="js/wave.js"></script> -->
+<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/base64.js"></script>
+
+<link type="text/css" href="http://dl.dropbox.com/u/294534/anzutone/css/anzu/player.css" rel="stylesheet" />	
+
+<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/anzu/core.js"></script>
+<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/anzu/wave.js"></script>
+<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/anzu/score.js"></script>
+<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/anzu/tone.js"></script>
+<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/anzu/event.js"></script>
+<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/anzu/player.js"></script>
+
+</head>
+
+<body>
+
+<div id="tracks" class="">
+<span id="" class="toolbar">
+<button class="" id="back1Button">back1</button>
+<button class="" id="back4Button">back4</button>
+<button class="" id="playstopButton">playstop</button>
+<button class="" id="play1Button">play1</button>
+<button class="" id="play4Button">play4</button>
+<button class="" id="bpmButton">BPM=120</button>
+<button class="" id="saveButton">Save</button>
+</span>
+<ul id="tracklist" class="">
+  <li value="1" class="current" onclick="Anzu.player.selectTrack(this)">track1</li>
+  <li value="2" onclick="Anzu.player.selectTrack(this)">track2</li>
+  <li value="3" onclick="Anzu.player.selectTrack(this)">track3</li>
+  <li value="4" onclick="Anzu.player.selectTrack(this)">track4</li>
+  <li value="5" onclick="Anzu.player.selectTrack(this)">track5</li>
+  <li value="6" onclick="Anzu.player.selectTrack(this)">track6</li>
+  <li value="7" onclick="Anzu.player.selectTrack(this)">track7</li>
+  <li value="8" onclick="Anzu.player.selectTrack(this)">track8</li>
+  <li value="9" onclick="Anzu.player.selectTrack(this)">track9</li>
+  <li value="10" onclick="Anzu.player.selectTrack(this)">track10</li>
+  <li value="11" onclick="Anzu.player.selectTrack(this)">track11</li>
+  <li value="12" onclick="Anzu.player.selectTrack(this)">track12</li>
+</ul>
+<div id="trackinfo" class="ui-widget-content">
+
+<form>
+<span id="trackVolume"></span>
+<span onclick="Anzu.player.changeTone()" id="toneSelect">
+<input type="radio" name="tone" id="radio.Anzu.SquareWave" value="Anzu.SquareWave" checked="checked">
+<label for="radio.Anzu.SquareWave">SquareWave</label></input>
+<input type="radio" name="tone" id="radio.Anzu.SineWave" value="Anzu.SineWave">
+<label for="radio.Anzu.SineWave">SineWave</label></input>
+<input type="radio" name="tone" id="radio.Anzu.SawtoothWave" value="Anzu.SawtoothWave">
+<label for="radio.Anzu.SawtoothWave">SawtoothWave</label></input>
+<input type="radio" name="tone" id="radio.Anzu.WhiteNoise" value="Anzu.WhiteNoise">
+<label for="radio.Anzu.WhiteNoise">WhiteNoise</label></input>
+</span>
+
+</form>
+</div>
+<div id="pianoroleView"></div>
+<iframe src="data:text/html;charset=utf-8;base64,PGh0bWw+CjxoZWFkPgo8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50LVR5cGUiIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD11dGYtOCIgLz4KPCEtLSBqUXVlcnkgLS0+CjxsaW5rIHR5cGU9InRleHQvY3NzIiBocmVmPSJodHRwOi8vZGwuZHJvcGJveC5jb20vdS8yOTQ1MzQvYW56dXRvbmUvY3NzL3VpLWxpZ2h0bmVzcy9qcXVlcnktdWktMS44LmN1c3RvbS5jc3MiIHJlbD0ic3R5bGVzaGVldCIgLz4KPHNjcmlwdCB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiIHNyYz0iaHR0cDovL2RsLmRyb3Bib3guY29tL3UvMjk0NTM0L2FuenV0b25lL2pzL2pxdWVyeS0xLjQuMi5taW4uanMiPjwvc2NyaXB0Pgo8c2NyaXB0IHR5cGU9InRleHQvamF2YXNjcmlwdCIgc3JjPSJodHRwOi8vZGwuZHJvcGJveC5jb20vdS8yOTQ1MzQvYW56dXRvbmUvanMvanF1ZXJ5LXVpLTEuOC5jdXN0b20ubWluLmpzIj48L3NjcmlwdD4KPCEtLSBqUXVlcnkgUGx1Z2luIC0tPgo8IS0tIGNvbnRleHQgbWVudSAtLT4KPCEtLSA8c2NyaXB0IHNyYz0iaHR0cDovL2RsLmRyb3Bib3guY29tL3UvMjk0NTM0L2FuenV0b25lL2pzL2pxdWVyeS5jb250ZXh0TWVudS5qcyIgdHlwZT0idGV4dC9qYXZhc2NyaXB0Ij48L3NjcmlwdD4gLS0+CjwhLS0gPGxpbmsgaHJlZj0iY3NzL3BsdWdpbi9qcXVlcnkuY29udGV4dE1lbnUuY3NzIiByZWw9InN0eWxlc2hlZXQiIHR5cGU9InRleHQvY3NzIiAvPiAtLT4KPCEtLSBCYXNlNjQgLS0+CjxzY3JpcHQgdHlwZT0idGV4dC9qYXZhc2NyaXB0IiBzcmM9Imh0dHA6Ly9kbC5kcm9wYm94LmNvbS91LzI5NDUzNC9hbnp1dG9uZS9qcy9iYXNlNjQuanMiPjwvc2NyaXB0Pgo8IS0tIEFuenUgLS0+CjwhLS0gPHNjcmlwdCB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiIHNyYz0ianMvcGlhbm9yb2xlLmpzIj48L3NjcmlwdD4gLS0+CjwhLS0gPHNjcmlwdCB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiIHNyYz0ianMvd2F2ZS5qcyI+PC9zY3JpcHQ+IC0tPgo8bGluayB0eXBlPSJ0ZXh0L2NzcyIgaHJlZj0iaHR0cDovL2RsLmRyb3Bib3guY29tL3UvMjk0NTM0L2FuenV0b25lL2Nzcy9hbnp1L3Rvb2x0aXAuY3NzIiByZWw9InN0eWxlc2hlZXQiIC8+CjxsaW5rIHR5cGU9InRleHQvY3NzIiBocmVmPSJodHRwOi8vZGwuZHJvcGJveC5jb20vdS8yOTQ1MzQvYW56dXRvbmUvY3NzL2FuenUvbm90ZS5jc3MiIHJlbD0ic3R5bGVzaGVldCIgLz4KPHNjcmlwdCB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiIHNyYz0iaHR0cDovL2RsLmRyb3Bib3guY29tL3UvMjk0NTM0L2FuenV0b25lL2pzL2FuenUvY29yZS5qcyI+PC9zY3JpcHQ+CjxzY3JpcHQgdHlwZT0idGV4dC9qYXZhc2NyaXB0IiBzcmM9Imh0dHA6Ly9kbC5kcm9wYm94LmNvbS91LzI5NDUzNC9hbnp1dG9uZS9qcy9hbnp1L3dhdmUuanMiPjwvc2NyaXB0Pgo8c2NyaXB0IHR5cGU9InRleHQvamF2YXNjcmlwdCIgc3JjPSJodHRwOi8vZGwuZHJvcGJveC5jb20vdS8yOTQ1MzQvYW56dXRvbmUvanMvYW56dS9zY29yZS5qcyI+PC9zY3JpcHQ+CjxzY3JpcHQgdHlwZT0idGV4dC9qYXZhc2NyaXB0IiBzcmM9Imh0dHA6Ly9kbC5kcm9wYm94LmNvbS91LzI5NDUzNC9hbnp1dG9uZS9qcy9hbnp1L3RvbmUuanMiPjwvc2NyaXB0Pgo8c2NyaXB0IHR5cGU9InRleHQvamF2YXNjcmlwdCIgc3JjPSJodHRwOi8vZGwuZHJvcGJveC5jb20vdS8yOTQ1MzQvYW56dXRvbmUvanMvYW56dS9hdWRpby5qcyI+PC9zY3JpcHQ+CjxzY3JpcHQgdHlwZT0idGV4dC9qYXZhc2NyaXB0IiBzcmM9Imh0dHA6Ly9kbC5kcm9wYm94LmNvbS91LzI5NDUzNC9hbnp1dG9uZS9qcy9hbnp1L2V2ZW50LmpzIj48L3NjcmlwdD4KPHNjcmlwdCB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiIHNyYz0iaHR0cDovL2RsLmRyb3Bib3guY29tL3UvMjk0NTM0L2FuenV0b25lL2pzL2FuenUvcGlhbm9yb2xlLmpzIj48L3NjcmlwdD4KPHNjcmlwdCB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiIHNyYz0iaHR0cDovL2RsLmRyb3Bib3guY29tL3UvMjk0NTM0L2FuenV0b25lL2pzL2luaXQuanMiPjwvc2NyaXB0Pgo8L2hlYWQ+Cjxib2R5IHN0eWxlPSJiYWNrZ3JvdW5kLWltYWdlOiB1cmwoaHR0cDovL2RsLmRyb3Bib3guY29tL3UvMjk0NTM0L2FuenV0b25lL2Nzcy9hbnp1L3BpYW5vLXRhdGUuZ2lmKTsgYmFja2dyb3VuZC1yZXBlYXQ6IHJlcGVhdC14OyBoZWlnaHQ6IDE5MjBweDsiPgo8ZGl2IGlkPSJyb2xlIj4KPC9kaXY+CjxkaXYgaWQ9ImJhciIgY2xhc3M9InVpLXN0YXRlLWhpZ2hsaWdodCIgc3R5bGU9IndpZHRoOiAycHg7IHBvc2l0aW9uOiBhYnNvbHV0ZTsgaGVpZ2h0OiAxOTIwcHg7IHRvcDogMHB4OyBsZWZ0OiAxMDBweDsgei1pbmRleDogOTk5OyI+PC9kaXY+CjxkaXYgY2xhc3M9InRvb2x0aXAiIGlkPSJiYXJUb29sdGlwIj4KPGRpdiBjbGFzcz0idG9vbHRpcFRyaSI+PC9kaXY+PGRpdiBjbGFzcz0idG9vbHRpcEJvZHkiPjxkaXYgY2xhc3M9InRvb2x0aXBJbm5lciIgaWQ9ImJhclRvb2x0aXBJbm5lciI+YWJjPC9kaXY+PC9kaXY+CjwvZGl2Pgo8IS0tIDx1bCBpZD0ibm90ZUNvbnRleHRNZW51IiBjbGFzcz0iY29udGV4dE1lbnUiPiAtLT4KPCEtLSAgIDxsaT48YSBocmVmPSIjbm90ZURlbGV0ZUV2ZW50Ij5EZWxldGU8L2E+PC9saT4gLS0+CjwhLS0gPC91bD4gLS0+CjxkaXYgaWQ9ImF1ZGlvU3RyZWFtIj48L2Rpdj4KPC9ib2R5Pgo=" class="trackview" width="100%" height="80%" frameborder=0 id="pianorole" tabindex=1></iframe>
+</div>
+<div id="outAudioStream"></div>
+<div id="audioStream"></div>
+
+<div id="exportDialog" title="Save">
+  <div id="exportDialogURL"></div>
+</div>
+
+<div id="bpmDialog" title="Type new BPM">
+  <form>
+    <label for="bpm">BPM</label>
+    <input type="text" name="bpm" id="bpmForm" class="ui-widget-content ui-corner-all" value="120"/>
+  </form>
+</div>
+
+</div>
+</body>
+</html>
+
+
+
+    ]]>
+  </Content>
+</Module>
