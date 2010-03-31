@@ -8,10 +8,10 @@ Anzu.eventManager = function(){
       eventQueue.push(
 	{
 	  type : type,
-	  note : target,
+	  value : target,
 	  track : currentTrack
 	});
-//       console.log([type, currentTrack + target.dump()]);
+      console.log([type, currentTrack + target]);
     },
     changeCurrentTrack : function(t){
       currentTrack = t;
@@ -23,11 +23,18 @@ Anzu.eventManager = function(){
     },
     incDivID : function(){
       if(typeof wave !== "undefined"){
-	
+	divID = parseInt(wave.getState().get('divID'), 10) + 1;
+	wave.getState().submitDelta({'divID': divID});
       }else{
 	divID += 1;
       }
-      console.log(divID);
+    },
+    init : function(){
+      if(typeof wave !== "undefined" && wave.getState().get('divID')){
+	divID = wave.getState().get('divID');
+      }else{
+	divID = 0;
+      }
     }
   };
 }();

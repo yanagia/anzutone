@@ -3,50 +3,12 @@ Anzu.ui = function(){
 //   Anzu.ui.divID = 0;
 //   Anzu.ui.browser = IsGecko() ? 0 : 1;
 
-  return {
-    killBuffer : [],
-    divID : 0,
-    browser : IsGecko() ? 0 : 1
-  };
-}();
-
-Anzu.ui.initPianorole = function(_track){
-
-  var role = $("#role");
-  var noteCSSClass = "ui-widget-header";
-  var posKeyList, bodyHeight = 1920;
-  var tracks = Anzu.Track(_track);
-//   var divID = Anzu.ui.divID ? Anzu.ui.divID : 0;
-  Anzu.ui.divID = Anzu.ui.divID ? Anzu.ui.divID : 0;
-
-  Anzu.ui.track = tracks;
-  
-  // ごみを消す
-  $(window).unbind("dblclick");
-  $(window).unbind("keydown");
-  $(document).selectable("destroy");
-
-  $("#role > .ui-widget-header").each(function(ind, elm)
-				     {
-				       var el = $(elm);
-				       el.animate({opacity : 0}, 200, "linear", function()
-						 {
-				       el.draggable("destroy");
-				       el.resizable("destroy");
-				       el.remove();						   
-						 });
-// 				       el.draggable("destroy");
-// 				       el.resizable("destroy");
-// 				       el.remove();
-				     });
-
-  // 読み込み開始
-
   // 座標と音名の対応表を作る
   var base = ["Ad", "Ad#", "Bd", "Cd", "Cd#", "Dd", "Dd#","Ed", "Fd", "Fd#", "Gd","Gd#"];
-  posKeyList = {};
+  var posKeyList = {};
   var posKeyRev = {};
-  Anzu.ui.posKeyList = posKeyList;
+  var bodyHeight = 1920;
+
   var i, j, len, k;
   len = base.length;
   k = 0;
@@ -58,13 +20,60 @@ Anzu.ui.initPianorole = function(_track){
     }
   }
 
+  return {
+    killBuffer : [],
+    divID : 0,
+    browser : IsGecko() ? 0 : 1,
+    posKeyList : posKeyList,
+    posKeyRev : posKeyRev,
+    defualtNoteLen : 98
+  };
+}();
+
+Anzu.ui.initPianorole = function(_track){
+
+  var role = $("#role");
+  var noteCSSClass = "ui-widget-header";
+  var bodyHeight = 1920;
+  var tracks = _track;
+
+//   var divID = Anzu.ui.divID ? Anzu.ui.divID : 0;
+  Anzu.ui.divID = Anzu.ui.divID ? Anzu.ui.divID : 0;
+
+  Anzu.ui.track = tracks;
+  
+  var posKeyList = Anzu.ui.posKeyList;
+  var posKeyRev = Anzu.ui.posKeyRev;
+
+  // ごみを消す
+  $(window).unbind("dblclick");
+  $(window).unbind("keydown");
+  $(document).selectable("destroy");
+
+  $("#role > .ui-widget-header").each(function(ind, elm)
+				     {
+				       var el = $(elm);
+				       el.animate({opacity : 0}, 200, "linear", function()
+						 {
+						   el.draggable("destroy");
+						   el.resizable("destroy");
+						   el.remove();			   
+						 });
+// 				       el.draggable("destroy");
+// 				       el.resizable("destroy");
+// 				       el.remove();
+				     });
+
+  // 読み込み開始
+  var i, j, len, k;
+
   function createDivFromNote(note){
     var obj = {};
 
     obj.width = note.length * 100;
     obj.left = note.begin * 100;
     obj.top = posKeyRev[note.key];
-    return createNoteDiv(obj);
+    return createNoteDiv(obj, note);
   }
 
   var that;
@@ -106,19 +115,37 @@ Anzu.ui.initPianorole = function(_track){
     lastKeyIndex = nowKeyIndex;
   };
 
-  function createNoteDiv(obj){
+  function createNoteDiv(obj, did){
+    var note, id;
+    var top, left;
+
+    if(! did){
+      id = Anzu.eventManager.getDivID();
+      // Waveでは同期が必要。
+      Anzu.eventManager.incDivID();
+      note = new Anzu.Note();
+      tracks.addNote(note);
+      top = Math.floor(obj.top / 20) * 20 + 1;
+      left = Math.floor(obj.left / 12.5) * 12.5;
+    }else{
+      id = did.divID;
+      note = did;
+      top = obj.top;
+      left = obj.left;
+    }
 
     var div = $("<div>")
       .addClass(noteCSSClass)
       .attr("style", "width: " + obj.width + "px;" + " height: 17px; margin 0px 20px 20px 0px;" + 
 	    "position: absolute; opacity: 0.0;"  + 
-	    "top:" + (Math.floor(obj.top / 20) * 20 + 1) + "px;" + 
-	    "left:" + (Math.floor(obj.left / 12.5) * 12.5) + "px;")
-      .attr("id", "AnzutoneNoteDiv" + Anzu.eventManager.getDivID())
+	    "top:" + top + "px;" + 
+	    "left:" + left + "px;")
+      .attr("id", id + "AnzutoneNoteDiv")
       .resizable(
 	{ maxHeight : 17, 
 	  minHeight : 17,
 	  stop : function(ev, ui){
+	    Anzu.ui.defualtNoteLen = parseInt(this.style.width, 10);
 	    tracks.changeNote(this);
 	  }
 	})
@@ -145,16 +172,15 @@ Anzu.ui.initPianorole = function(_track){
 	    tracks.changeNote(this);
 	  }
 	});
-    // Waveでは同期が必要。
-    Anzu.eventManager.incDivID();
 
     // 将来的にdivIDを同期させる必要がありそうなので、アニメーションで遅さをごまかす。
     div.animate({ opacity : 0.9}, 150);
 
-
-    var note = Anzu.Note();
     note.setDiv(div[0]);
-    tracks.addNote(note);
+
+    if(! did){
+      Anzu.eventManager.add("addNote", note);
+    }
 
     return div;
   }
@@ -193,7 +219,6 @@ Anzu.ui.initPianorole = function(_track){
     var div = createDivFromNote(_notes[i]);
     div.appendTo($("#role"));
   }
-  tracks.deleteUnlinkNotes();
 
   // イベントのバインド
 
@@ -204,7 +229,7 @@ Anzu.ui.initPianorole = function(_track){
 			   {
 			     top : ev.pageY,
 			     left : ev.pageX,
-			     width : 98
+			     width : Anzu.ui.defualtNoteLen
 			   });
 			 div.appendTo($("#role"));
 		       });
@@ -324,7 +349,7 @@ Anzu.ui.initPianorole = function(_track){
 
   // publicな何か
   Anzu.ui.getTrack = function(){
-    return tracks.dump();
+    return tracks;
   };
 
   var animeDelta, animeEnd, animeTimer, animeTim, animeStart, animePass, scrollStart;

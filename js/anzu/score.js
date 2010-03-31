@@ -15,7 +15,8 @@ Anzu.Score = function(){
 	tracks.push(t);
       },
       updateTrack : function(i, src){
-	tracks[i] = Anzu.Track(eval("(" + src + ")"));
+	tracks[i] = src;
+// 	tracks[i] = Anzu.Track(eval("(" + src + ")"));
       },
       setCallback : function(f){
 	callback = f;
@@ -151,7 +152,7 @@ Anzu.Track = function(){
       },
       deleteNoteFromDiv : function(div){
 	for(var i = 0; i < notes.length; i++){
-	  if(notes[i].divID === div.id){
+	  if(notes[i].divID === parseInt(div.id, 10)){
 	    Anzu.eventManager.add("deleteNote", notes[i]);
 	    notes.splice(i, 1);
 	    return;
@@ -160,9 +161,9 @@ Anzu.Track = function(){
       },
       changeNote : function(div){
 	for(var i = 0; i < notes.length; i++){
-	  if(notes[i].divID === div.id){
+	  if(notes[i].divID === parseInt(div.id, 10)){
 	    notes[i].setDiv(div);
-// 	    Anzu.eventManager.add("changeNote", notes[i]);
+	    Anzu.eventManager.add("changeNote", notes[i]);
 	    return;
 	  }
 	}
@@ -274,9 +275,7 @@ Anzu.Note = function(){
 	this.begin = left / 100.0;
 	this.length = width / 100.0;
 	this.key = Anzu.ui.posKeyList[Math.floor((top+5) / 20) * 20];
-	this.divID = div.id;
-
-	Anzu.eventManager.add("addNote", this);
+	this.divID = parseInt(div.id, 10);
       },
       getSignal : function(tone, spb){
 	var signals = tone(spb * this.length, Anzu.core.convertToPitch(this.key));
@@ -286,7 +285,8 @@ Anzu.Note = function(){
 	return "{" + 
 	  '"begin":' + this.begin + "," +
 	  '"length":' + this.length + "," +
-	  '"key":' + '"' + this.key + '"' + 
+	  '"key":' + '"' + this.key + '"' + "," +
+	  '"id":' + '"' + this.divID + '"' + 
 	  "}";
       }
     };

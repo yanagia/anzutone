@@ -3,7 +3,7 @@ $(function()
     Anzu.player.score = Anzu.Score(
       '({"tracks" : [ { "notes" : [], "tone" : "Anzu.SquareWave"}, { "notes" : [], "tone" : "Anzu.SquareWave"}, { "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"} ], "bpm" : 120})'
       );
-    
+
     $("#back1Button").button(
     {
       icons : {
@@ -128,7 +128,8 @@ Anzu.player = function(){
     play : function(){
       var innerWindow = $("iframe")[0].contentWindow;
       getCurrentTime();
-      Anzu.player.score.updateTrack(currentTrack, parseFrame());
+      Anzu.player.score.updateTrack(currentTrack, $("iframe")[0].contentWindow.Anzu.ui.getTrack());
+//       Anzu.player.score.updateTrack(currentTrack, parseFrame());
       Anzu.player.score.setCallback(innerWindow.Anzu.ui.startAnimation);
       Anzu.player.score.setAfterCallback(function(){
 					   playing = false;
@@ -146,23 +147,12 @@ Anzu.player = function(){
     },
     set : function(){
       var t = Anzu.player.score.getTrack(currentTrack);
-      $("iframe")[0].contentWindow.Anzu.ui.setTrack(t.dump());
-//       $('input[name="tone"]').each(function(ind, elm)
-// 				   {
-// 				     console.log(elm);
-// 				     console.log(elm.checked);
-// 				     console.log(elm.value);
-// 				     console.log(t.getTone());
-// 				     if(elm.value === t.getTone())
-// 				       elm.checked = true;
-// 				     else
-// 				       elm.checked = false;
-// 				   });
+      $("iframe")[0].contentWindow.Anzu.ui.setTrack(t);
+
       $('input[name="tone"]').each(function(d, elm)
 				   {
 				     if(elm.value === t.getTone()){
 				       elm.checked = true;
-// 				       $(elm).trigger("click");
 				     }else{
 				       elm.checked = false;
 				     }
@@ -178,13 +168,16 @@ Anzu.player = function(){
       $("iframe")[0].contentWindow.Anzu.ui.moveBar(delta);
     },
     changeTone : function(obj){
-      $("iframe")[0].contentWindow.Anzu.ui.changeTone($('input[name="tone"]:checked').val());
+      var t = $('input[name="tone"]:checked').val();
+      $("iframe")[0].contentWindow.Anzu.ui.changeTone(t);
+      Anzu.eventManager.add("changeTone", t);
     },
     changeVolume : function(v){
-      $("iframe")[0].contentWindow.Anzu.ui.changeVolume(v);      
+      Anzu.player.score.getTrack(currentTrack).setVolume(v);
+      Anzu.eventManager.add("changeVolume", v);
     },
     selectTrack : function(obj){
-      Anzu.player.score.updateTrack(currentTrack, parseFrame());
+//       Anzu.player.score.updateTrack(currentTrack, $("iframe")[0].contentWindow.Anzu.ui.getTrack());
       var trackNumber = parseInt(obj.value);
       currentTrack = trackNumber-1;
       this.set();
@@ -193,6 +186,7 @@ Anzu.player = function(){
 				 obj.className = "";
 			       });
       obj.className = "current";
+      Anzu.eventManager.changeCurrentTrack(currentTrack);
       return false;
     },
     exportAsURL : function(obj){
@@ -235,16 +229,21 @@ Anzu.player = function(){
       if(url.match(/.+?load=(.+)/)){
 	data = RegExp.$1;
 	Anzu.player.load(decodeURI(data));
+      }else{
+	this.set();
       }
     },
     changeBPM : function(obj){
       var bpm = parseFloat(obj);
       if(bpm <= 0.0 || bpm === NaN) return;
       Anzu.player.score.changeBPM(bpm);
+      Anzu.eventManager.add("changeBPM", bpm);
     },
     frameLoaded : function(){
-      Anzu.player.parseURL();
       Anzu.player.setEventManager();
+      Anzu.player.parseURL();
+      Anzu.eventManager.init();
+//       this.set();
     }
 
   };
