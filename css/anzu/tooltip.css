@@ -29,3 +29,9 @@
     display: none;
     z-index: 1000;
 }
+
+body {
+    background-image: url(piano-tate.gif); 
+    background-repeat: repeat-x; 
+    height: 1920px;
+}
