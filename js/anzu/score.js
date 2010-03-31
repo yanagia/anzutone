@@ -107,6 +107,24 @@ Anzu.Score = function(){
       },
       changeBPM : function(b){
 	this.bpm = b;
+      },
+      changeNote : function(key, src){
+	var n, a, tr;
+	n = Anzu.cache.getNote(key);
+	if(n){
+	  if(n === src) return; // 変化なし
+	  // 何か変わっていた
+	  a = src.split("~");
+	  if(a.length < 2){	// 削除されていた
+	    tr = parseInt(a[0]);
+	    tracks[tr].deleteNote(n);
+	    Anzu.cache.setNote(key, src);
+	  }else{		// 追加 or 更新
+	    tr = parseInt(a[0]);
+	    tracks[tr].updateNote(key, a[1]);
+	    Anzu.cache.setNote(key, src);
+	  }
+	}
       }
     };
   };
@@ -240,6 +258,17 @@ Anzu.Track = function(){
 	volume = v;
       },
 
+      updateNote : function(key, src){
+	for(var i = 0; i < notes.length; i++){
+	  var n = notes[i];
+	  if(n.divID === key){
+	    notes[i] = Anzu.Note(eval( "(" + src + ")"));
+	    return;
+	  }
+	}
+	notes.push(Anzu.Note(eval( "(" + src + ")")));
+      },
+
       dump : function(){
 	return "{" +
 	  '"notes":' + "[" + 
@@ -264,6 +293,7 @@ Anzu.Note = function(){
       begin : obj.begin,
       length : obj.length,
       key : obj.key,
+      divID : obj.divID,
       setDiv : function(div){
 	this.div = div;
 	var top, left, width;

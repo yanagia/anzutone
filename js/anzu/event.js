@@ -15,15 +15,20 @@ Anzu.eventManager = function(){
       if(typeof wave !== "undefined"){
 	var id = target.divID;
 	var obj = {};
+	var str;
 	switch(type){
 	case "addNote":
 	case "changeNote":
-	  obj[id] = target.dump();
+	  str = currentTrack + "~" + target.dump();
+	  obj[id] = str;
 	  wave.getState().submitDelta(obj);
+	  Anzu.cache.setNote(id, str);
 	  break;
 	case "deleteNote":
-	  obj[id] = "";
+	  str = currentTrack + "~";
+	  obj[id] = str;
 	  wave.getState().submitDelta(obj);
+	  Anzu.cache.setNote(id, str);
 	  break;
 	}
 	console.log(wave.getState());
@@ -32,7 +37,15 @@ Anzu.eventManager = function(){
     changeState : function(){
       var state = wave.getState();
       for(var key in state){
-	console.log(key + ":" + state.key);
+	switch(key){
+	case "divID":
+	  divID = parseInt(wave.getState().get('divID'));
+	  break;
+
+	default:
+	  Anzu.player.score.changeNote(key, state.key);
+	  Anzu.player.renderScoreAgain();
+	}
       }
     },
     changeCurrentTrack : function(t){

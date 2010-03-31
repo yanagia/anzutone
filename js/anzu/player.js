@@ -264,6 +264,9 @@ Anzu.player = function(){
       Anzu.player.parseURL();
       Anzu.eventManager.init();
 //       this.set();
+    },
+    renderScoreAgain : function(){
+      this.set();
     }
 
   };
