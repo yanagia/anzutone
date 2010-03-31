@@ -115,15 +115,24 @@ Anzu.Score = function(){
 	  if(n === src) return; // 変化なし
 	  // 何か変わっていた
 	  a = src.split("~");
-	  if(a.length < 2){	// 削除されていた
+
+	  if(a[1] === ""){	// 削除されていた
+	    console.log("deleted:" + src);
 	    tr = parseInt(a[0]);
-	    tracks[tr].deleteNote(n);
+	    tracks[tr].deleteNote(eval( "(" + n.split("~")[1] + ")"));
 	    Anzu.cache.setNote(key, src);
-	  }else{		// 追加 or 更新
+	  }else{		// 更新
+	    console.log("changed:" + a[1]);
 	    tr = parseInt(a[0]);
 	    tracks[tr].updateNote(key, a[1]);
 	    Anzu.cache.setNote(key, src);
 	  }
+	}else{			// 追加
+	  a = src.split("~");
+	  console.log("add:" + a[1]);
+	  tr = parseInt(a[0]);
+	  tracks[tr].updateNote(key, a[1]);
+	  Anzu.cache.setNote(key, src);
 	}
       }
     };
@@ -305,7 +314,7 @@ Anzu.Note = function(){
 	this.begin = left / 100.0;
 	this.length = width / 100.0;
 	this.key = Anzu.ui.posKeyList[Math.floor((top+5) / 20) * 20];
-	this.divID = parseInt(div.id, 10);
+	if(!this.divID) this.divID = parseInt(div.id, 10);
       },
       getSignal : function(tone, spb){
 	var signals = tone(spb * this.length, Anzu.core.convertToPitch(this.key));
@@ -316,7 +325,7 @@ Anzu.Note = function(){
 	  '"begin":' + this.begin + "," +
 	  '"length":' + this.length + "," +
 	  '"key":' + '"' + this.key + '"' + "," +
-	  '"id":' + '"' + this.divID + '"' + 
+	  '"divID":' + '"' + this.divID + '"' + 
 	  "}";
       }
     };

@@ -122,6 +122,14 @@ $(function()
 
 //     setTimeout(Anzu.player.frameLoaded, 1000);
 
+    console.log("jquery initializer called");
+
+//     gadgets.util.registerOnLoadHandler(function(){
+// 					 console.log("loaded ready");
+    wave.setStateCallback(Anzu.eventManager.changeState);
+    // 				       });
+
+
   });
 
 Anzu.player = function(){

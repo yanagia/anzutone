@@ -31,22 +31,26 @@ Anzu.eventManager = function(){
 	  Anzu.cache.setNote(id, str);
 	  break;
 	}
-	console.log(wave.getState());
       }      
     },
     changeState : function(){
+//       console.log("change:something : " + state.getKeys());
       var state = wave.getState();
-      for(var key in state){
+      var keys = state.getKeys();
+      var key;
+      console.log("change something");
+      for(var i = 0; i < keys.length; i++){
+	key = keys[i];
 	switch(key){
 	case "divID":
 	  divID = parseInt(wave.getState().get('divID'));
-	  break;
-
+	  break;	    
 	default:
-	  Anzu.player.score.changeNote(key, state.key);
-	  Anzu.player.renderScoreAgain();
+	  Anzu.player.score.changeNote(key, state.get(key));
+	  break;
 	}
       }
+      Anzu.player.renderScoreAgain();
     },
     changeCurrentTrack : function(t){
       currentTrack = t;
@@ -66,8 +70,9 @@ Anzu.eventManager = function(){
     },
     init : function(){
       if(typeof wave !== "undefined" && wave.getState().get('divID')){
-	divID = wave.getState().get('divID');
-	wave.setStateCallback(this.changeState);
+	divID = 0;
+// 	divID = wave.getState().get('divID');
+// 	wave.setStateCallback(this.changeState);
       }else{
 	divID = 0;
       }
