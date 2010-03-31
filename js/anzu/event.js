@@ -16,15 +16,18 @@ Anzu.eventManager = function(){
     changeCurrentTrack : function(t){
       currentTrack = t;
     },
-    changeDivID : function(id){
-      if(wave){
-	
-      }else{
-	divID = id;
-      }
+    setDivID : function(id){
     },
     getDivID : function(){
       return divID;
+    },
+    incDivID : function(){
+      if(typeof wave !== "undefined"){
+	
+      }else{
+	divID += 1;
+      }
+      console.log(divID);
     }
   };
 }();
