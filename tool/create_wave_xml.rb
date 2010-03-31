@@ -34,9 +34,11 @@ piano.gsub!(/src="(.+?)"/, 'src="' + publicurl + '\1' + '"')
 editor.gsub!(/(css.+?href=")(.+?)"/, '\1' + publicurl + '\2' + '"')
 piano.gsub!(/(css.+?href=")(.+?)"/, '\1' + publicurl + '\2' + '"')
 
-piano_b = 'data:text/html;charset=utf-8;base64,' + Base64.encode64(piano)
-editor.sub!(/(<iframe src=")(.+?)(")/, '\1' + piano_b + '\3')
+# piano_b = 'data:text/html;charset=utf-8;base64,' + Base64.encode64(piano)
+# editor.sub!(/(<iframe src=")(.+?)(")/, '\1' + piano_b + '\3')
 
 templete.sub!(/#html_here/, editor)
 
 print templete
+
+# print piano

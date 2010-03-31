@@ -102,6 +102,26 @@ $(function()
       });
 
     $("#toneSelect").buttonset();
+
+    
+    var iframe = document.createElement('IFRAME');
+    document.getElementById('trackviewContainer').appendChild(iframe);
+    var doc = frames[frames.length - 1].document;
+
+    iframe.width = "100%";
+    iframe.height = "80%";
+    iframe.className = "trackview";
+    iframe.id = "pianorole";
+    iframe.frameborder = "0";
+// <iframe class="trackview" width="100%" height="80%" frameborder=0 id="pianorole" tabindex=1 onload=""></iframe>
+    doc.open();
+    doc.write('<html>'+'<head>'+'<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />'+''+'<!-- jQuery -->'+'<link type="text/css" href="http://dl.dropbox.com/u/294534/anzutone/css/ui-lightness/jquery-ui-1.8.custom.css" rel="stylesheet" />'+'<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/jquery-1.4.2.min.js"></script>'+'<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/jquery-ui-1.8.custom.min.js"></script>'+''+'<!-- jQuery Plugin -->'+'<!-- context menu -->'+'<!-- <script src="http://dl.dropbox.com/u/294534/anzutone/js/jquery.contextMenu.js" type="text/javascript"></script> -->'+'<!-- <link href="css/plugin/jquery.contextMenu.css" rel="stylesheet" type="text/css" /> -->'+''+'<!-- Base64 -->'+'<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/base64.js"></script>'+''+'<!-- Anzu -->'+'<!-- <script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/pianorole.js"></script> -->'+'<!-- <script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/wave.js"></script> -->'+'<link type="text/css" href="http://dl.dropbox.com/u/294534/anzutone/css/anzu/tooltip.css" rel="stylesheet" />'+'<link type="text/css" href="http://dl.dropbox.com/u/294534/anzutone/css/anzu/note.css" rel="stylesheet" />'+''+'<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/anzu/core.js"></script>'+'<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/anzu/wave.js"></script>'+'<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/anzu/score.js"></script>'+'<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/anzu/tone.js"></script>'+'<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/anzu/audio.js"></script>'+'<!-- <script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/anzu/event.js"></script> -->'+'<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/anzu/pianorole.js"></script>'+''+'<script type="text/javascript" src="http://dl.dropbox.com/u/294534/anzutone/js/init.js"></script>'+''+'</head>'+'<body>'+'<div id="role">'+'</div>'+''+'<div id="bar" class="ui-state-highlight" style="width: 2px; position: absolute; height: 1920px; top: 0px; left: 100px; z-index: 999;"></div>'+''+'<div class="tooltip" id="barTooltip">'+'<div class="tooltipTri"></div><div class="tooltipBody"><div class="tooltipInner" id="barTooltipInner">abc</div></div>'+'</div>'+''+''+'<!-- <ul id="noteContextMenu" class="contextMenu"> -->'+'<!--   <li><a href="#noteDeleteEvent">Delete</a></li> -->'+'<!-- </ul> -->'+''+'<div id="audioStream"></div>'+'</body>'+'');
+    doc.close();
+
+    iframe.onload = Anzu.player.frameLoaded;
+
+//     setTimeout(Anzu.player.frameLoaded, 1000);
+
   });
 
 Anzu.player = function(){

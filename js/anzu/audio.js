@@ -30,7 +30,7 @@ Anzu.ShortAudio = function(){
     return {
       play : function(){
 	audioStream.append(jo);
-	audio.volume = 0.3;
+	audio.volume = 0.3 * (IsGecko() ? 1 : 2);
 	audio.loop = false;
 	audio.play();
 	audioStream = null;

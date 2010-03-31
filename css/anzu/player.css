@@ -115,6 +115,8 @@ body {
 }
 
 .trackview {
+    frameborder : 0;
+    border: 0px;
 /*     border: 1px solid #778;     */
 /*     margin-left: 5px; */
 }
