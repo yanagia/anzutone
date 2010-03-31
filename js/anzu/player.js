@@ -102,9 +102,6 @@ $(function()
       });
 
     $("#toneSelect").buttonset();
-
-    setTimeout(Anzu.player.parseURL, 500);
-    setTimeout(Anzu.player.setEventManager, 500);
   });
 
 Anzu.player = function(){
@@ -244,6 +241,10 @@ Anzu.player = function(){
       var bpm = parseFloat(obj);
       if(bpm <= 0.0 || bpm === NaN) return;
       Anzu.player.score.changeBPM(bpm);
+    },
+    frameLoaded : function(){
+      Anzu.player.parseURL();
+      Anzu.player.setEventManager();
     }
 
   };
