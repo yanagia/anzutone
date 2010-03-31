@@ -107,6 +107,9 @@ Anzu.ui.initPianorole = function(_track){
   };
 
   function createNoteDiv(obj){
+    // for wave
+    Anzu.ui.divID = Anzu.eventManager.getDivID();
+
     var div = $("<div>")
       .addClass(noteCSSClass)
       .attr("style", "width: " + obj.width + "px;" + " height: 17px; margin 0px 20px 20px 0px;" + 
@@ -146,6 +149,8 @@ Anzu.ui.initPianorole = function(_track){
 	});
     // Waveでは同期が必要。
     Anzu.ui.divID += 1;
+
+    Anzu.eventManager.setDivID(Anzu.ui.divID);
 
     // 将来的にdivIDを同期させる必要がありそうなので、アニメーションで遅さをごまかす。
     div.animate({ opacity : 0.9}, 150);
