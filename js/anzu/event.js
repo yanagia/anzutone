@@ -11,7 +11,6 @@ Anzu.eventManager = function(){
 	  value : target,
 	  track : currentTrack
 	});
-      console.log([type, currentTrack + target]);
     },
     changeCurrentTrack : function(t){
       currentTrack = t;
