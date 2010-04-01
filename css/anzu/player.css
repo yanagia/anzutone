@@ -81,10 +81,19 @@ body {
     height: 20px;
 }
 
-#trackVolume {
+#trackVolumeArea {
     float: right;
     margin-top: 10px;
     margin-right: 10px;
+}
+
+#trackVolumeIcon {
+    float: left;
+    margin-right: 5px;
+}
+
+#trackVolume {
+    float: right;
     width: 220px;
 }
 
