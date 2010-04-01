@@ -122,8 +122,6 @@ $(function()
 
 //     setTimeout(Anzu.player.frameLoaded, 1000);
 
-    console.log("jquery initializer called");
-
 //     gadgets.util.registerOnLoadHandler(function(){
 // 					 console.log("loaded ready");
     wave.setStateCallback(Anzu.eventManager.changeState);
@@ -175,6 +173,7 @@ Anzu.player = function(){
     },
     set : function(){
       var t = Anzu.player.score.getTrack(currentTrack);
+      if(typeof $("iframe")[0].contentWindow.Anzu === "undefined") return;
       $("iframe")[0].contentWindow.Anzu.ui.setTrack(t);
 
       $('input[name="tone"]').each(function(d, elm)
@@ -267,11 +266,24 @@ Anzu.player = function(){
       Anzu.player.score.changeBPM(bpm);
       Anzu.eventManager.add("changeBPM", bpm);
     },
+    _setBPM : function(b){
+      Anzu.player.score.changeBPM(b);
+      $("#bpmForm").val(b);
+      $("#bpmButton > .ui-button-text").html("BPM=" + b);
+    },
+    _setTone : function(t, tone){
+      Anzu.player.score.getTrack(t).setTone(tone);      
+    },
+    _setVolume : function(t, v){
+      Anzu.player.score.getTrack(t).setVolume(v);
+    },
     frameLoaded : function(){
-      Anzu.player.setEventManager();
-      Anzu.player.parseURL();
-      Anzu.eventManager.init();
-//       this.set();
+      setTimeout(function()
+		 {
+		   Anzu.player.setEventManager();
+		   Anzu.player.parseURL();
+		   Anzu.eventManager.init();
+		 }, 500);
     },
     renderScoreAgain : function(){
       this.set();

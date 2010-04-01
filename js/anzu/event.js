@@ -5,12 +5,12 @@ Anzu.eventManager = function(){
 
   return {
     add : function(type, target){
-      eventQueue.push(
-	{
-	  type : type,
-	  value : target,
-	  track : currentTrack
-	});
+//       eventQueue.push(
+// 	{
+// 	  type : type,
+// 	  value : target,
+// 	  track : currentTrack
+// 	});
 
       if(typeof wave !== "undefined"){
 	var id = target.divID;
@@ -30,22 +30,48 @@ Anzu.eventManager = function(){
 	  wave.getState().submitDelta(obj);
 	  Anzu.cache.setNote(id, str);
 	  break;
+	case "changeBPM":
+	  str = target.toString(10);
+	  obj["BPM"] = str;
+	  wave.getState().submitDelta(obj);
+	  break;
+	case "changeTone":
+	  str = target;
+	  obj[currentTrack.toString(10) + " tone"] = str;	  
+	  wave.getState().submitDelta(obj);
+	  break;
+	case "changeVolume":
+	  str = target.toString(10);
+	  obj[currentTrack.toString(10) + " volume"] = str;
+	  wave.getState().submitDelta(obj);
+	  break;
 	}
       }      
     },
     changeState : function(){
-//       console.log("change:something : " + state.getKeys());
       var state = wave.getState();
       var keys = state.getKeys();
-      var key;
-      console.log("change something");
+      var key, t;
       for(var i = 0; i < keys.length; i++){
 	key = keys[i];
 	switch(key){
 	case "divID":
 	  divID = parseInt(wave.getState().get('divID'));
-	  break;	    
+	  break;
+	case "BPM":
+	  Anzu.player._setBPM(wave.getState().get('BPM'));
+	  break;
 	default:
+	  if(key.match(/tone/)){
+	    t = parseInt(key, 10);
+	    Anzu.player._setTone(t, wave.getState().get(key));
+	    break;
+	  }
+	  if(key.match(/volume/)){
+	    t = parseInt(key, 10);
+	    Anzu.player._setVolume(t, wave.getState().get(key));
+	    break;
+	  }
 	  Anzu.player.score.changeNote(key, state.get(key));
 	  break;
 	}
@@ -71,7 +97,7 @@ Anzu.eventManager = function(){
     init : function(){
       if(typeof wave !== "undefined" && wave.getState().get('divID')){
 	divID = 0;
-// 	divID = wave.getState().get('divID');
+	divID = wave.getState().get('divID');
 // 	wave.setStateCallback(this.changeState);
       }else{
 	divID = 0;

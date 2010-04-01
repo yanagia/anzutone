@@ -117,19 +117,17 @@ Anzu.Score = function(){
 	  a = src.split("~");
 
 	  if(a[1] === ""){	// 削除されていた
-	    console.log("deleted:" + src);
 	    tr = parseInt(a[0]);
 	    tracks[tr].deleteNote(eval( "(" + n.split("~")[1] + ")"));
 	    Anzu.cache.setNote(key, src);
 	  }else{		// 更新
-	    console.log("changed:" + a[1]);
 	    tr = parseInt(a[0]);
 	    tracks[tr].updateNote(key, a[1]);
 	    Anzu.cache.setNote(key, src);
 	  }
 	}else{			// 追加
 	  a = src.split("~");
-	  console.log("add:" + a[1]);
+	  if(a[1] === "") return;
 	  tr = parseInt(a[0]);
 	  tracks[tr].updateNote(key, a[1]);
 	  Anzu.cache.setNote(key, src);
@@ -159,8 +157,8 @@ Anzu.Track = function(){
 	notes.push(note);
       },
       deleteNote : function(note){
-	for(var i = 0; notes.length; i++){
-	  if(notes[i] === note){
+	for(var i = 0; i < notes.length; i++){
+	  if(notes[i].divID == note.divID){
 	    notes.splice(i, 1);
 	    return;
 	  }
@@ -179,16 +177,16 @@ Anzu.Track = function(){
       },
       deleteNoteFromDiv : function(div){
 	for(var i = 0; i < notes.length; i++){
-	  if(notes[i].divID === parseInt(div.id, 10)){
+	  if(notes[i].divID == parseInt(div.id, 10)){
 	    Anzu.eventManager.add("deleteNote", notes[i]);
 	    notes.splice(i, 1);
 	    return;
 	  }
 	}
       },
-      changeNote : function(div){
+      changeNote : function(div){ // 自分がオーナーでないものを動かすとなんか増える＝削除できてない！
 	for(var i = 0; i < notes.length; i++){
-	  if(notes[i].divID === parseInt(div.id, 10)){
+	  if(notes[i].divID == parseInt(div.id, 10)){
 	    notes[i].setDiv(div);
 	    Anzu.eventManager.add("changeNote", notes[i]);
 	    return;
@@ -270,7 +268,7 @@ Anzu.Track = function(){
       updateNote : function(key, src){
 	for(var i = 0; i < notes.length; i++){
 	  var n = notes[i];
-	  if(n.divID === key){
+	  if(n.divID == key){
 	    notes[i] = Anzu.Note(eval( "(" + src + ")"));
 	    return;
 	  }
