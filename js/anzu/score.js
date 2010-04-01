@@ -172,6 +172,14 @@ Anzu.Track = function(){
 	  }
 	}
       },
+      getNote : function(id){
+	for(var i = 0; i < notes.length; i++){
+	  if(notes[i].divID == id){
+	    return notes[i];
+	  }
+	}
+	return null;
+      },
       _notes : function(){
 	return notes;
       },
@@ -301,6 +309,7 @@ Anzu.Note = function(){
       length : obj.length,
       key : obj.key,
       divID : obj.divID,
+      dirty : true,
       setDiv : function(div){
 	this.div = div;
 	var top, left, width;

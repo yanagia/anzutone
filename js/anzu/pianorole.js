@@ -53,7 +53,10 @@ Anzu.ui.initPianorole = function(_track){
   $("#role > .ui-widget-header").each(function(ind, elm)
 				     {
 				       var el = $(elm);
-				       el.animate({opacity : 0}, 200, "linear", function()
+
+				       var n = tracks.getNote(parseInt(el.id, 10));
+
+				       el.animate({opacity : 0.9}, 0, "linear", function()
 						 {
 						   el.draggable("destroy");
 						   el.resizable("destroy");
@@ -137,7 +140,7 @@ Anzu.ui.initPianorole = function(_track){
     var div = $("<div>")
       .addClass(noteCSSClass)
       .attr("style", "width: " + obj.width + "px;" + " height: 17px; margin 0px 20px 20px 0px;" + 
-	    "position: absolute; opacity: 0.0;"  + 
+	    "position: absolute; opacity: 0.9;"  + 
 	    "top:" + top + "px;" + 
 	    "left:" + left + "px;")
       .attr("id", id + "AnzutoneNoteDiv")
@@ -174,7 +177,7 @@ Anzu.ui.initPianorole = function(_track){
 	});
 
     // 将来的にdivIDを同期させる必要がありそうなので、アニメーションで遅さをごまかす。
-    div.animate({ opacity : 0.9}, 150);
+//     div.animate({ opacity : 0.9}, 150);
 
     note.setDiv(div[0]);
 
