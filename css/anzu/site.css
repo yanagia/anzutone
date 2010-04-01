@@ -1,0 +1,44 @@
+body {
+/*     background: -moz-linear-gradient(top, #fff, #DEA648);   */
+/*     background: -webkit-gradient(linear, center top, center bottom, from(#00abeb), to(#fff));   */
+/*     background: #DEA648; */
+    padding: 0px;
+/*     width: 100% */
+}
+
+.header {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    width: 100%;
+}
+
+.contents {
+    width: 100%;
+    padding: 0px;
+}
+
+.headerMenu {
+/*     float: right; */
+    margin-top: 0px;
+/*     margin-left: 5px; */
+    margin-bottom: 0px;
+    padding-left: 5px;
+/*     padding-bottom: -20px; */
+    padding-top: 5px;
+}
+
+.headerMenu li {
+    float: left;
+    list-style: none;
+    margin-left: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.headerMenu:after{
+   content: "";
+   display: block;
+   height: 0;
+   clear: both;
+   visibility: hidden;
+}

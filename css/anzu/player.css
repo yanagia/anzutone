@@ -7,8 +7,8 @@ body {
     background: #ffbf40;
     background: #ffe373;
     padding: 6px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
+/*     -webkit-border-radius: 10px; */
+/*     -moz-border-radius: 10px; */
 }
 
 .toolbar {
