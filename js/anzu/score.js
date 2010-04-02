@@ -1,7 +1,14 @@
 Anzu.Score = function(){
   
   return function(obj){
-    if(typeof obj === "string") obj = eval(obj);
+    if(typeof obj === "string"){
+      try {
+	obj = JSON.parse(obj);
+      } catch(e){
+	alert("Parse Error");
+	console.log(e);
+      }
+    }
     var tracks = [];
     var audio, callback, acallback;
 
@@ -16,7 +23,6 @@ Anzu.Score = function(){
       },
       updateTrack : function(i, src){
 	tracks[i] = src;
-// 	tracks[i] = Anzu.Track(eval("(" + src + ")"));
       },
       setCallback : function(f){
 	callback = f;
@@ -115,7 +121,7 @@ Anzu.Score = function(){
 Anzu.Track = function(){
 
   return function(obj){
-    if(typeof obj === "string") obj = eval("(" + obj + ")");
+    if(typeof obj === "string") obj = JSON.parse(obj);
     var notes, tone, volume = 0.5;
     notes = obj.notes;
     for(var i = 0; i < notes.length; i++){
