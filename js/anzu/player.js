@@ -218,6 +218,8 @@ Anzu.player = function(){
       s_comment = s.comment;
       var version = s.version;
 
+      Anzu.eventManager.setDivID(s.score.maxID + 1);
+
       Anzu.player.score = Anzu.Score(s.score);
       $("#bpmInput").val(Anzu.player.score.bpm);
 

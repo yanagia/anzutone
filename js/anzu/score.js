@@ -108,11 +108,21 @@ Anzu.Score = function(){
 		     {
 		       return el.dump();
 		     }).join(",") + "]" + "," +
-	  '"bpm":' + this.bpm +
+	  '"bpm":' + this.bpm + "," +
+	  '"maxID":' + this.getMaxID() +
 	  "}";
       },
       changeBPM : function(b){
 	this.bpm = b;
+      },
+      getMaxID : function(){
+	var max, can;
+	max = 0;
+	for(var i = 0; i < tracks.length; i++){
+	  can = tracks[i].getMaxID();
+	  if(can > max) max = can;
+	}
+	return max;
       }
     };
   };
@@ -167,7 +177,6 @@ Anzu.Track = function(){
       },
       changeNote : function(div){
 	for(var i = 0; i < notes.length; i++){
-	  console.log([notes[i].divID, div.id]);
 	  if(notes[i].divID === parseInt(div.id, 10)){
 	    notes[i].setDiv(div);
 	    Anzu.eventManager.add("changeNote", notes[i]);
@@ -245,6 +254,15 @@ Anzu.Track = function(){
       },
       setVolume : function(v){
 	volume = v;
+      },
+      getMaxID : function(){
+	var max, can;
+	max = 0;
+	for(var i = 0; i < notes.length; i++){
+	  can = notes[i].divID;
+	  if(can > max) max = can;
+	}
+	return max;
       },
 
       dump : function(){
