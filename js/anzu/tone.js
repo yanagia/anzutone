@@ -5,6 +5,7 @@ Anzu.tone = function(){
   toneList["Anzu.SquareWave"] = Anzu.wave.generator.createSquareSignal;
   toneList["Anzu.SineWave"] = Anzu.wave.generator.createSinSignal;
   toneList["Anzu.SawtoothWave"] = Anzu.wave.generator.createSawtoothSignal;
+  toneList["Anzu.TriangleWave"] = Anzu.wave.generator.createTriangleSignal;
   toneList["Anzu.WhiteNoise"] = Anzu.wave.generator.createWhiteNoiseSignal;
 
   return {

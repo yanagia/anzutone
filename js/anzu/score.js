@@ -108,11 +108,21 @@ Anzu.Score = function(){
 		     {
 		       return el.dump();
 		     }).join(",") + "]" + "," +
-	  '"bpm":' + this.bpm +
+	  '"bpm":' + this.bpm + "," +
+	  '"maxID":' + this.getMaxID() +
 	  "}";
       },
       changeBPM : function(b){
 	this.bpm = b;
+      },
+      getMaxID : function(){
+	var max, can;
+	max = 0;
+	for(var i = 0; i < tracks.length; i++){
+	  can = tracks[i].getMaxID();
+	  if(can > max) max = can;
+	}
+	return max;
       }
     };
   };
@@ -245,6 +255,15 @@ Anzu.Track = function(){
       setVolume : function(v){
 	volume = v;
       },
+      getMaxID : function(){
+	var max, can;
+	max = 0;
+	for(var i = 0; i < notes.length; i++){
+	  can = notes[i].divID;
+	  if(can > max) max = can;
+	}
+	return max;
+      },
 
       dump : function(){
 	return "{" +
@@ -270,6 +289,7 @@ Anzu.Note = function(){
       begin : obj.begin,
       length : obj.length,
       key : obj.key,
+      divID : parseInt(obj.id),
       setDiv : function(div){
 	this.div = div;
 	var top, left, width;
