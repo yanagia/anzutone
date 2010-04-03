@@ -245,8 +245,8 @@ Anzu.player = function(){
     },
     frameLoaded : function(){
       Anzu.player.setEventManager();
-      Anzu.player.parseURL();
       Anzu.eventManager.init();
+      Anzu.player.parseURL();
 //       this.set();
     }
 

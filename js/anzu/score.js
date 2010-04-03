@@ -167,6 +167,7 @@ Anzu.Track = function(){
       },
       changeNote : function(div){
 	for(var i = 0; i < notes.length; i++){
+	  console.log([notes[i].divID, div.id]);
 	  if(notes[i].divID === parseInt(div.id, 10)){
 	    notes[i].setDiv(div);
 	    Anzu.eventManager.add("changeNote", notes[i]);
@@ -270,6 +271,7 @@ Anzu.Note = function(){
       begin : obj.begin,
       length : obj.length,
       key : obj.key,
+      divID : parseInt(obj.id),
       setDiv : function(div){
 	this.div = div;
 	var top, left, width;
