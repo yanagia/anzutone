@@ -4,13 +4,13 @@ onmessage = function(query){
   if(args.length === 2){	// initialize
     var url = args[1];
     importScripts(url);
-    return getName();
+    postMessage(getName());
   }else{
     var duration = parseFloat(args[0]);
     var f = parseFloat(args[1]);
     var samplingRate = parseInt(args[2], 10);
 
-    return createSignal(duration, f, samplingRate);
+    postMessage(createSignal(duration, f, samplingRate));
   }
 
   
