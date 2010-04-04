@@ -230,20 +230,32 @@ Anzu.Track = function(){
 	ftone = Anzu.tone.getTone(tone);
 	len = notes.length;
 	lastNote = this.getLastNote();
-
-	// 合成のベースになる配列をつくる
 	alen = Math.ceil((lastNote.begin + lastNote.length) * spb * srate);
-// 	baseSignals = new Array(alen);
-// 	for(i = 0; i < alen; i++){
-// 	  baseSignals[i] = 0.0;
-// 	}
 
 	// 合成
-	for(i = 0; i < len; i++){
-	  note = notes[i];
-	  if(note.begin < beginTime) continue;
-	  signals = note.getSignal(ftone, spb);
-	  Anzu.wave.mixSignalV(baseSignals, signals, (note.begin - beginTime) * spb * srate, volume);
+	if(typeof ftone === "function"){ // プリセットトーン
+	  for(i = 0; i < len; i++){
+	    note = notes[i];
+	    if(note.begin < beginTime) continue;
+	    signals = note.getSignal(ftone, spb);
+	    Anzu.wave.mixSignalV(baseSignals, signals, (note.begin - beginTime) * spb * srate, volume);
+	  }
+	}else{			// ユーザートーン
+	  for(i = 0; i < len; i++){
+	    note = notes[i];
+	    if(note.begin < beginTime) continue;
+	    var key = i + "@" + note.begin + "@" + note.end;
+	    Anzu.mixer.addQueue(
+	      {
+		key : key,
+		info : {
+		  start : (note.begin - beginTime) * spb * srate,
+		  volume : volume
+		}
+	      });
+	    note.getSignalASync(ftone, spb, key);
+// 	    Anzu.wave.mixSignalV(baseSignals, signals, (note.begin - beginTime) * spb * srate, volume);
+	  }  
 	}
 
 	return baseSignals;
@@ -306,6 +318,9 @@ Anzu.Note = function(){
       getSignal : function(tone, spb){
 	var signals = tone(spb * this.length, Anzu.core.convertToPitch(this.key));
 	return signals;
+      },
+      getSignalASync : function(tone, spb, key){
+	tone.call(spb * this.length, Anzu.core.convertToPitch(this.key), key);
       },
       dump : function(){
 	return "{" + 
