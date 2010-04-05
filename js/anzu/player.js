@@ -1,7 +1,7 @@
 $(function()
   {
     Anzu.player.score = Anzu.Score(
-      '({"tracks" : [ { "notes" : [], "tone" : "Anzu.SquareWave"}, { "notes" : [], "tone" : "Anzu.SquareWave"}, { "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"} ], "bpm" : 120})'
+      '{"tracks" : [ { "notes" : [], "tone" : "Anzu.SquareWave"}, { "notes" : [], "tone" : "Anzu.SquareWave"}, { "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"},{ "notes" : [], "tone" : "Anzu.SquareWave"} ], "bpm" : 120}'
       );
 
     $("#back1Button").button(
@@ -61,12 +61,20 @@ $(function()
     ).click(function(){
 	      Anzu.player.openExportDialog();
 	    });
+    $("#toneButton").button(
+      {
+      }
+    ).click(function(){
+	      $("#userToneForm").val("http://");
+	      $("#userToneForm").removeClass("ui-state-error");
+	      $("#userToneFormHelper").html("");
+	      $("#userToneFormHelper").removeClass("ui-state-highlight");
+	      $("#addToneDialog").dialog("open");
+	    });
 
     $("#bpmDialog").dialog(
       {
 	autoOpen: false,
-// 	height: 200,
-// 	width: 300,
 	modal: true,
 	buttons : {
 	  'Set new BPM' : function(){
@@ -82,6 +90,33 @@ $(function()
 	close : function(){
 	  
 	}
+      });
+
+    $("#addToneDialog").dialog(
+      {
+	autoOpen: false,
+	modal: true,
+	buttons : {
+	  'Load this tone' : function(){
+	    var t = $("#userToneForm").val();
+	    if(t.match(/\.js/)){
+	      $("#userToneFormHelper").text("Now loading ...");
+	      Anzu.player.addUserTone(t, function(){
+					$("#addToneDialog").dialog("close");
+				      });
+// 	      $(this).dialog("close");
+	    }else{
+// 	      $("#userToneForm").addClass("ui-state-error");
+	      $("#userToneFormHelper").addClass("ui-state-highlight")
+		.text("Invalid URL. Tone file must be JavaScript file. (*.js only)");
+	    }
+	  },
+	  Cancel : function(){
+	    $(this).dialog("close");
+	  }
+	},
+	close : function(){
+	}	
       });
 
     $("#exportDialog").dialog(
@@ -126,7 +161,6 @@ $(function()
 // 					 console.log("loaded ready");
     wave.setStateCallback(Anzu.eventManager.changeState);
     // 				       });
-
 
   });
 
@@ -190,6 +224,7 @@ Anzu.player = function(){
     },
     setEventManager : function(){
       $("iframe")[0].contentWindow.Anzu.eventManager = Anzu.eventManager;
+      $("iframe")[0].contentWindow.Anzu.tone = Anzu.tone;
     },
     moveBar : function(delta){
       $("iframe")[0].contentWindow.Anzu.ui.moveBar(delta);
@@ -236,10 +271,16 @@ Anzu.player = function(){
 				 );
     },
     load : function(data){
-      var s = eval( "(" + data + ")" );
+      try{
+	var s = JSON.parse(data);
+      }catch(e){
+	alert("Parse Error. I cannot load this URL.");
+      }
       s_name = s.name;
       s_comment = s.comment;
       var version = s.version;
+
+      Anzu.eventManager.setDivID(s.score.maxID + 1);
 
       Anzu.player.score = Anzu.Score(s.score);
       $("#bpmInput").val(Anzu.player.score.bpm);
@@ -283,10 +324,50 @@ Anzu.player = function(){
 		   Anzu.player.setEventManager();
 		   Anzu.player.parseURL();
 		   Anzu.eventManager.init();
+		   Anzu.player.refreshTone();
 		 }, 500);
     },
     renderScoreAgain : function(){
       this.set();
+    },
+    refreshTone : function(){
+      $("#toneSelect").html("");
+      var tone;
+      var toneList = Anzu.tone.getToneList();
+      toneList.sort();
+      var i, len = toneList.length;
+      for(i = 0; i < len; i++){
+	tone = toneList[i];
+
+	var tonePrefix = tone.split(".")[0];
+	var toneName;
+	if(tonePrefix === "Anzu"){
+	  toneName = tone.split(".")[1];
+	}else{
+	  toneName = tone;
+	}
+
+	$("#toneSelect").append(
+	  $("<input>")
+	    .attr("type", "radio")
+	    .attr("name", "tone")
+	    .attr("id", "radio." + tone)
+	    .attr("value", tone))
+	  .append(
+	    $("<label>")
+	      .attr("for", "radio." + tone)
+	      .html(toneName));
+      }
+      $("#toneSelect").buttonset();
+    },
+    addUserTone : function(t, callback){
+      Anzu.tone.addUserTone(t, 
+			    function(name){
+			      callback();
+			    },
+			   function(error){
+			     $("#userToneFormHelper").html("Error!!" + "<br>" + error);
+			   });
     }
 
   };

@@ -6,3 +6,8 @@
 - css/plugin/*
 これらのソースコードはMIT Licenseによってライセンスされています。
 
+ブランチのルール
+master : core/editor のみを含む。常に安定しているべき。
+wave : Google Wave向けのカスタマイズブランチ。
+pagerize : anzutone.appspot.com向けの、index.html等を含むブランチ。
+その他 : 機能追加用トピックブランチ

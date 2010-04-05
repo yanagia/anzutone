@@ -82,6 +82,7 @@ Anzu.eventManager = function(){
       currentTrack = t;
     },
     setDivID : function(id){
+      divID = id;
     },
     getDivID : function(){
       return divID;
@@ -94,13 +95,13 @@ Anzu.eventManager = function(){
 	divID += 1;
       }
     },
-    init : function(){
+    init : function(startID){
       if(typeof wave !== "undefined" && wave.getState().get('divID')){
 	divID = 0;
 	divID = wave.getState().get('divID');
 // 	wave.setStateCallback(this.changeState);
       }else{
-	divID = 0;
+	divID = startID ? startID : 0;
       }
     }
   };

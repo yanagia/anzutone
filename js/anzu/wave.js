@@ -34,7 +34,7 @@ Anzu.wave = function(){
 
 	  phase += freq;
 	};
-
+	
 	return signals;
       },
 
@@ -73,6 +73,30 @@ Anzu.wave = function(){
 	    phase -= freq;
 	  }
 	  sig = (phase*2 / freq - 1);
+	  signals[i] = ~~ (sig * 32767);
+
+	  phase += 1;
+	};
+
+	return signals;
+      },
+
+      createTriangleSignal : function(t, sinF){
+	var i;
+	var signals, sig, phase, hz;
+
+	hz = 22050;
+	phase = 0;
+	t = Math.round(t*hz);
+	var freq = hz / sinF;
+	signals = new Array(t);
+
+	for(i = 0; i < t; i++){
+	  if(phase > freq){
+	    phase -= freq;
+	  }
+	  sig = (phase*2 / freq - 1);
+	  sig = (Math.abs(sig) - 0.5) * 2;
 	  signals[i] = ~~ (sig * 32767);
 
 	  phase += 1;
