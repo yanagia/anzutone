@@ -1,0 +1,117 @@
+<html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link type="text/css" href="css/anzu/site.css" rel="stylesheet" />	
+<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.custom.css" rel="stylesheet" />
+<link type="text/css" href="css/anzu/player.css" rel="stylesheet" />	
+
+<title>Anzutone - Tone</title>
+</head>
+
+<body>
+
+<div class="ui-widget-header header">
+<span class="title">
+English Ver.
+</span>
+<ul class="headerMenu">
+<li class="item"><a href="index.html">TOP</a></li>
+<li class="item"><a href="editor.html">Editor</a></li>
+<li class="item"><a href="wave.html">Wave</a></li>
+<li class="item current"><a href="tone.html">Tone</a></li>
+<li class="item"><a href="usage.html">Usage</a><li>
+<li class="item"><a href="contact.html">Contact</a><li>
+</ul>
+</div>
+
+<div class="contens">
+<div class="topInfo">
+<div class="topExpBox">
+
+<div class="miniTitle">音色の作り方</div>
+<div class="miniBlock">
+以下のインターフェースを満たすJavaScriptファイルを作成し、Webサーバーにアップロードしてください。<br>
+ユーザーはアップロードされたファイルのURLを指定することで音色を追加します。<br>
+<br>
+なお、Anzutoneではプリセット以外の音色を「ユーザートーン」と呼びます。
+</div>
+
+<div class="miniTitle">ユーザートーンのインターフェース</div>
+<div class="miniBlock">
+作成するJavaScriptファイルでは以下の2つの関数を定義して下さい。
+<ul>
+  <li>getName()</li>
+  <li>createWave(seconds, f, samplingRate)</li>
+</ul>
+</div>
+
+<div class="miniTitle">function getName()</div>
+<div class="miniBlock">
+<ul>
+<li>引数：なし</li>
+<li>返り値：音色の名前を表す文字列(String型、以下はIDと呼ぶ)。AnzutoneはIDで音色を識別しています。<br>他のデベロッパが作成した音色とIDが重複しないように、音色の名前にはユニークなPrefixをつけて下さい。<br>
+Prefixと音色の名前はドットを含まない文字列でなければいけません。IDはPrefixと音色の名前をドットで結合したものを返却して下さい。<br>
+たとえば、"SineWave"という音色を作成した場合、IDを"Yanagia.SineWave"などとして下さい。<br>
+</li>
+</div>
+
+<div class="miniTitle">createWave(seconds, f, samplingRate)</div>
+<div class="miniBlock">
+<ul>
+<li>引数：seconds, f, samplingRate<br>
+secondsは作成すべき波形の長さを表します（単位：秒）。<br>
+fは作成すべき波形の周波数を表します（単位：Hz）。<br>
+samplingRateは作成すべき波形のサンプリングレートを表します（単位：Hz）。
+</li>
+<li>返り値：波形を表す配列（離散的な信号列）。<br>
+配列の要素は全て数値（符号つき16bit整数）である必要があります。
+</li>
+</div>
+
+<div class="miniTitle">サンプル</div>
+<div class="miniBlock">
+以下のファイルは"Yanagia.SineWave"というIDのユーザートーンを定義した例です。<br>
+<a href="http://dl.dropbox.com/u/294534/js/sampleSine.js">
+http://dl.dropbox.com/u/294534/js/sampleSine.js
+</a>
+<br>
+このURLをAnzutoneのAdd toneに指定することで音色が追加されます。
+</div>
+
+<div class="miniTitle">注意</div>
+<div class="miniBlock">
+ユーザートーンはWeb Workersのコンテキストで評価されます。なのでdocumentやwindow、console.logやalertを使用することはできません。
+</div>
+
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<div class="footer">
+<br>
+<div class="topInfo">
+<div class="divedLine"></div>
+<center>
+<div class="copyright">
+Copyright (C) 2010 yanagia, All Rights Reserved.
+</div>
+</center>
+</div>
+</div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-5594321-7");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>
