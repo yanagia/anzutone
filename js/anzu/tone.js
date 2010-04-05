@@ -7,7 +7,7 @@ Anzu.tone = function(){
   toneList["Anzu.SquareWave"] = Anzu.wave.generator.createSquareSignal;
   toneList["Anzu.SineWave"] = Anzu.wave.generator.createSinSignal;
   toneList["Anzu.SawtoothWave"] = Anzu.wave.generator.createSawtoothSignal;
-  toneList["Anzu.TriangleWave"] = Anzu.wave.generator.createTriangleSignal;
+//   toneList["Anzu.TriangleWave"] = Anzu.wave.generator.createTriangleSignal;
   toneList["Anzu.WhiteNoise"] = Anzu.wave.generator.createWhiteNoiseSignal;
 
   function parseResult(arg){
@@ -108,7 +108,7 @@ Anzu.tone = function(){
       }
       return toneList["Anzu.SeguareWave"];
     },
-    addUserTone : function(url, callback){
+    addUserTone : function(url, callback, errorCallback){
       for(var key in urls){
 	if(urls.key === url) callback(key);
       }
@@ -129,7 +129,12 @@ Anzu.tone = function(){
 	Anzu.player.refreshTone();
       };
 
+      worker.onerror = function(e){
+	errorCallback(e.message);
+      };
+
       worker.postMessage("init" + "|" + url);
+
     }
   };
 }();

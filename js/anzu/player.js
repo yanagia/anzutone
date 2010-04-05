@@ -61,12 +61,20 @@ $(function()
     ).click(function(){
 	      Anzu.player.openExportDialog();
 	    });
+    $("#toneButton").button(
+      {
+      }
+    ).click(function(){
+	      $("#userToneForm").val("http://");
+	      $("#userToneForm").removeClass("ui-state-error");
+	      $("#userToneFormHelper").html("");
+	      $("#userToneFormHelper").removeClass("ui-state-highlight");
+	      $("#addToneDialog").dialog("open");
+	    });
 
     $("#bpmDialog").dialog(
       {
 	autoOpen: false,
-// 	height: 200,
-// 	width: 300,
 	modal: true,
 	buttons : {
 	  'Set new BPM' : function(){
@@ -82,6 +90,33 @@ $(function()
 	close : function(){
 	  
 	}
+      });
+
+    $("#addToneDialog").dialog(
+      {
+	autoOpen: false,
+	modal: true,
+	buttons : {
+	  'Load this tone' : function(){
+	    var t = $("#userToneForm").val();
+	    if(t.match(/\.js/)){
+	      $("#userToneFormHelper").text("Now loading ...");
+	      Anzu.player.addUserTone(t, function(){
+					$("#addToneDialog").dialog("close");
+				      });
+// 	      $(this).dialog("close");
+	    }else{
+// 	      $("#userToneForm").addClass("ui-state-error");
+	      $("#userToneFormHelper").addClass("ui-state-highlight")
+		.text("Invalid URL. Tone file must be JavaScript file. (*.js only)");
+	    }
+	  },
+	  Cancel : function(){
+	    $(this).dialog("close");
+	  }
+	},
+	close : function(){
+	}	
       });
 
     $("#exportDialog").dialog(
@@ -100,20 +135,8 @@ $(function()
 	},
 	animate: true
       });
-
-    $("#toneSelect").append(
-      $("<input>")
-	.attr("type", "radio")
-	.attr("name", "tone")
-	.attr("id", "radio." + "Yanagia.SineWave")
-	.attr("value", "Yanagia.SineWave"))
-      .append(
-	$("<label>")
-	  .attr("for", "radio." + "Yanagia.SineWave")
-	  .html("Yanagia.SineWave"));
-
-    $("#toneSelect").buttonset();
       
+    Anzu.player.refreshTone();
   });
 
 Anzu.player = function(){
@@ -263,7 +286,6 @@ Anzu.player = function(){
       Anzu.eventManager.init();
       Anzu.player.parseURL();
 
-      Anzu.tone.addUserTone("tone/sampleSine.js");
 //       console.log(Anzu.tone.getToneList());
 //       this.set();
     },
@@ -276,6 +298,14 @@ Anzu.player = function(){
       for(i = 0; i < len; i++){
 	tone = toneList[i];
 
+	var tonePrefix = tone.split(".")[0];
+	var toneName;
+	if(tonePrefix === "Anzu"){
+	  toneName = tone.split(".")[1];
+	}else{
+	  toneName = tone;
+	}
+
 	$("#toneSelect").append(
 	  $("<input>")
 	    .attr("type", "radio")
@@ -285,11 +315,18 @@ Anzu.player = function(){
 	  .append(
 	    $("<label>")
 	      .attr("for", "radio." + tone)
-	      .html(tone));
+	      .html(toneName));
       }
       $("#toneSelect").buttonset();
     },
-    addUserTone : function(){
+    addUserTone : function(t, callback){
+      Anzu.tone.addUserTone(t, 
+			    function(name){
+			      callback();
+			    },
+			   function(error){
+			     $("#userToneFormHelper").html("Error!!" + "<br>" + error);
+			   });
     }
 
   };
