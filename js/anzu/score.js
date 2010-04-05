@@ -143,7 +143,16 @@ Anzu.Track = function(){
       notes[i] = Anzu.Note(notes[i]);
     }
 
-    tone = obj.tone/*Anzu.wave.createSquareSignal*/;
+    if(obj.tone.match(/\.js/)){
+      tone = "Anzu.SequareWave";
+      Anzu.tone.addUserTone(obj.tone, function(n)
+			    {
+			      tone = n;
+			    });
+    }else{
+      tone = obj.tone;
+    }
+
     if(obj.volume)
       volume = Math.abs(obj.volume) > 1.0 ? 0.5 : obj.volume;
     else
@@ -249,7 +258,7 @@ Anzu.Track = function(){
 	  for(i = 0; i < len; i++){
 	    note = notes[i];
 	    if(note.begin < beginTime) continue;
-	    var key = i + "@" + note.begin + "@" + note.end;
+	    var key = i + "@" + note.begin + "@" + note.length;
 	    Anzu.mixer.addQueue(
 	      {
 		key : key,
@@ -289,7 +298,7 @@ Anzu.Track = function(){
 		    {
 		      return el.dump();
 		    }).join(",") + "]" + "," + 
-	  '"tone":' + '"'+ tone + '"' + "," + 
+	  '"tone":' + '"'+ Anzu.tone.getToneDumpName(tone) + '"' + "," + 
 	  '"volume":' + volume
 	+ "}";
       }

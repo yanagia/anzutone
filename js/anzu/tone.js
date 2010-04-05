@@ -2,6 +2,7 @@ Anzu.tone = function(){
   var toneList = {};
   var workerList = {};
   var defaultTone = Anzu.wave.createSquareSignal;
+  var urls = {};
 
   toneList["Anzu.SquareWave"] = Anzu.wave.generator.createSquareSignal;
   toneList["Anzu.SineWave"] = Anzu.wave.generator.createSinSignal;
@@ -9,21 +10,23 @@ Anzu.tone = function(){
   toneList["Anzu.TriangleWave"] = Anzu.wave.generator.createTriangleSignal;
   toneList["Anzu.WhiteNoise"] = Anzu.wave.generator.createWhiteNoiseSignal;
 
-  function setToneFunction(worker){
-    worker.onmessage = function(e){
-      var data = e.data;
+  function parseResult(arg){
+    var obj = {};
 
-      if(typeof data === "string"){ // for Safari
+    if(typeof arg === "string"){ // for Safari
+      var signals = arg.split(",");
+      var i, len = signals.length;
+      for(i = 0; i < len-1; i++){
+	signals[i] = parseInt(signals[i], 10);
       }
-    };
-  }
-
-  function convertToArray(arr){
-
-    if(typeof arr === "string"){ // for Safari
+      var key = signals.pop();
+      obj.key = key;
+      obj.signals = signals;
+    }else{
+      obj = arg;
     }
 
-    return arr;
+    return obj;
   }
 
   return {
@@ -36,6 +39,14 @@ Anzu.tone = function(){
       for(i in workerList) keys.push(i);
       return keys;
     },
+    getToneDumpName : function(name){
+      if(toneList[name]){
+	return name;
+      }else if(workerList[name]){
+	return urls[name];
+      }
+      return "Anzu.SequareWave";
+    },
     getTone : function(tonename){
       var f = toneList[tonename];
       if(f){
@@ -45,20 +56,27 @@ Anzu.tone = function(){
 	if(worker){
 	  return {
 	    call : function(duration, f, key){
-	      worker.onmessage = function(e){
-		var data = e.data;
+	      var s = function(key){
+		var keycopy = parseInt(key);
+		var browser;
 
-		if(typeof data === "string"){ // for Safari
-		}
-		
-		Anzu.mixer.finishQueue(
-		{
-		  key : key,
-		  signals : data
-		});
-	      };
+		worker.onmessage = function(key){
+		  return function(e){
+		    var data = e.data;
+		    var obj = parseResult(data);
+		    var signals = obj.signals;
 
-	      worker.postMessage(duration + "@" + f + "@" + Anzu.core.samplingRate);
+		    Anzu.mixer.finishQueue(
+		      {
+			key : obj.key,
+			signals : signals
+		      });
+		  };
+		}(key);
+		browser = IsGecko() ? 0 : 1;
+		worker.postMessage(duration + "|" + f + "|" + 
+				   Anzu.core.samplingRate + "|" + key + "|" + browser);
+	      }(key);
 	    }
 	  };
 	}else{
@@ -78,16 +96,23 @@ Anzu.tone = function(){
 	  call : function(callback, duration, f){
 	    worker.onmessage = function(e){
 	      var data = e.data;
-	      var signals = convertToArray(data);
+	      var obj = parseResult(data);
+	      var signals = obj.signals;
 	      callback(signals);
 	    };
-	    worker.postMessage(duration + "@" + f + "@" + Anzu.core.samplingRate);
+	    var browser = IsGecko() ? 0 : 1;
+	    worker.postMessage(duration + "|" + f + "|" + 
+			       Anzu.core.samplingRate + "|" + "once" + "|" + browser);
 	  }
 	};
       }
       return toneList["Anzu.SeguareWave"];
     },
-    addUserTone : function(url){
+    addUserTone : function(url, callback){
+      for(var key in urls){
+	if(urls.key === url) callback(key);
+      }
+
       var worker = new Worker("js/anzu/usertone.js");
       
       worker.onmessage = function(e){
@@ -95,9 +120,16 @@ Anzu.tone = function(){
 	var arr = result.split("@");
 	var name = arr[0];
 	workerList[name] = worker;
+	urls[name] = url;
+
+	if(callback){
+	  callback(name);
+	}
+
+	Anzu.player.refreshTone();
       };
 
-      worker.postMessage("init" + "@" + url);
+      worker.postMessage("init" + "|" + url);
     }
   };
 }();

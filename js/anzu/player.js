@@ -264,8 +264,32 @@ Anzu.player = function(){
       Anzu.player.parseURL();
 
       Anzu.tone.addUserTone("tone/sampleSine.js");
-      console.log(Anzu.tone.getToneList());
+//       console.log(Anzu.tone.getToneList());
 //       this.set();
+    },
+    refreshTone : function(){
+      $("#toneSelect").html("");
+      var tone;
+      var toneList = Anzu.tone.getToneList();
+      toneList.sort();
+      var i, len = toneList.length;
+      for(i = 0; i < len; i++){
+	tone = toneList[i];
+
+	$("#toneSelect").append(
+	  $("<input>")
+	    .attr("type", "radio")
+	    .attr("name", "tone")
+	    .attr("id", "radio." + tone)
+	    .attr("value", tone))
+	  .append(
+	    $("<label>")
+	      .attr("for", "radio." + tone)
+	      .html(tone));
+      }
+      $("#toneSelect").buttonset();
+    },
+    addUserTone : function(){
     }
 
   };
