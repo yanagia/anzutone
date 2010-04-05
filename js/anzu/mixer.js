@@ -4,6 +4,15 @@ Anzu.mixer = function(){
   var finishCallback;
   var nomore = false;
 
+  function checkFinish(){
+    if(!nomore) return false;
+    var count = 0;
+    for(var i in queue){
+      count++;
+    }
+    return count === 0;
+  }
+
   return {
     init : function(bs){
       baseSignals = bs;
@@ -15,7 +24,7 @@ Anzu.mixer = function(){
     },
     finishAddQueues : function(){
       nomore = true;
-      if(queue.Keys().length === 0) finishCallback();
+      if(checkFinish()) finishCallback();
     },
     finishQueue : function(obj){
       var signals = obj.signals;
@@ -27,7 +36,7 @@ Anzu.mixer = function(){
       Anzu.wave.mixSignalV(baseSignals, signals, start, volume);
 
       delete queue[key];
-      if(nomore && queue.Keys().length === 0) finishCallback();
+      if(checkFinish()) finishCallback();
     },
     setCallback : function(f){
       finishCallback = f;

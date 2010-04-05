@@ -22,6 +22,9 @@ Anzu.tone = function(){
     addTone : function(name, f){
       toneList[name] = f;
     },
+    getToneList : function(){
+      return;
+    },
     getTone : function(tonename){
       var f = toneList[tonename];
       if(f){

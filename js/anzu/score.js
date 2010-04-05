@@ -43,43 +43,48 @@ Anzu.Score = function(){
 	  baseSignals[i] = 0;
 	}
 
+	Anzu.mixer.init(baseSignals);
+	Anzu.mixer.setCallback(function()
+			       {
+				 var binary = Anzu.wave.convertToBinary(baseSignals);
+				 var url = Anzu.wave.convertToURL(binary);
+				 audio = new Audio(url);
+				 Anzu.core.audioStream.append($(audio));
+				 audio.volume = 1.0;
+
+				 baseSignals = null;
+				 signals = null;
+				 binary = null;
+				 url = null;
+
+				 if(callback){
+				   var tim = setInterval(function()
+							 {
+							   if(audio.currentTime > 0.1){
+							     clearInterval(tim);
+							     callback(spb, endTime - beginTime, audio.currentTime / spb);
+							   }
+							 }, 1000/10);
+				 }
+				 if(acallback){
+				   setTimeout(function()
+					      {
+						acallback();
+						if(audio){
+						  audio.pause();
+						  audio.src = undefined;
+						  $(audio).remove();
+						}
+					      }, alen / srate * 1000 + 100);
+				 }
+				 audio.play();
+
+			       });
 	for(i = 0; i < len; i++){
 	  track = tracks[i];
 	  signals = track.getSignalOpt(baseSignals, beginTime, spb);
-// 	  Anzu.wave.mixSignal(baseSignals, signals, 0);
 	}
-	var binary = Anzu.wave.convertToBinary(baseSignals);
-	var url = Anzu.wave.convertToURL(binary);
-	audio = new Audio(url);
-	Anzu.core.audioStream.append($(audio));
-	audio.volume = 1.0;
-
-	baseSignals = null;
-	signals = null;
-	binary = null;
-	url = null;
-
-	if(callback){
-	  var tim = setInterval(function()
-				{
-				  if(audio.currentTime > 0.1){
-				    clearInterval(tim);
-				    callback(spb, endTime - beginTime, audio.currentTime / spb);
-				  }
-				}, 1000/10);
-	}
-	if(acallback){
-	  setTimeout(function()
-		     {
-		       acallback();
-		       if(audio){
-			 audio.pause();
-			 audio.src = undefined;
-			 $(audio).remove();
-		       }
-		     }, alen / srate * 1000 + 100);
-	}
-	audio.play();
+	Anzu.mixer.finishAddQueues();
       },
       stop : function(){
 	audio.pause();
