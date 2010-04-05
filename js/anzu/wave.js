@@ -34,7 +34,7 @@ Anzu.wave = function(){
 
 	  phase += freq;
 	};
-
+	
 	return signals;
       },
 

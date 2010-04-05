@@ -17,6 +17,7 @@
 <script type="text/javascript" src="js/anzu/core.js"></script>
 <script type="text/javascript" src="js/anzu/wave.js"></script>
 <script type="text/javascript" src="js/anzu/score.js"></script>
+<script type="text/javascript" src="js/anzu/mixer.js"></script>
 <script type="text/javascript" src="js/anzu/tone.js"></script>
 <script type="text/javascript" src="js/anzu/event.js"></script>
 <script type="text/javascript" src="js/anzu/player.js"></script>
@@ -52,6 +53,7 @@ Anzutone
 <button class="" id="play4Button">play4</button>
 <button class="" id="bpmButton">BPM=120</button>
 <button class="" id="saveButton">Save</button>
+<button class="" id="toneButton">Add tone</button>
 </span>
 <ul id="tracklist" class="">
   <li value="1" class="current" onclick="Anzu.player.selectTrack(this)">track1</li>
@@ -75,16 +77,16 @@ Anzutone
 <span id="trackVolume"></span>
 </span>
 <span onclick="Anzu.player.changeTone()" id="toneSelect">
-<input type="radio" name="tone" id="radio.Anzu.SquareWave" value="Anzu.SquareWave" checked="checked">
-<label for="radio.Anzu.SquareWave">SquareWave</label></input>
-<input type="radio" name="tone" id="radio.Anzu.SineWave" value="Anzu.SineWave">
-<label for="radio.Anzu.SineWave">SineWave</label></input>
-<input type="radio" name="tone" id="radio.Anzu.SawtoothWave" value="Anzu.SawtoothWave">
-<label for="radio.Anzu.SawtoothWave">SawtoothWave</label></input>
-<input type="radio" name="tone" id="radio.Anzu.TriangleWave" value="Anzu.TriangleWave">
-<label for="radio.Anzu.TriangleWave">TriangleWave</label></input>
-<input type="radio" name="tone" id="radio.Anzu.WhiteNoise" value="Anzu.WhiteNoise">
-<label for="radio.Anzu.WhiteNoise">WhiteNoise</label></input>
+<!-- <input type="radio" name="tone" id="radio.Anzu.SquareWave" value="Anzu.SquareWave" checked="checked"> -->
+<!-- <label for="radio.Anzu.SquareWave">SquareWave</label></input> -->
+<!-- <input type="radio" name="tone" id="radio.Anzu.SineWave" value="Anzu.SineWave"> -->
+<!-- <label for="radio.Anzu.SineWave">SineWave</label></input> -->
+<!-- <input type="radio" name="tone" id="radio.Anzu.SawtoothWave" value="Anzu.SawtoothWave"> -->
+<!-- <label for="radio.Anzu.SawtoothWave">SawtoothWave</label></input> -->
+<!-- <input type="radio" name="tone" id="radio.Anzu.TriangleWave" value="Anzu.TriangleWave"> -->
+<!-- <label for="radio.Anzu.TriangleWave">TriangleWave</label></input> -->
+<!-- <input type="radio" name="tone" id="radio.Anzu.WhiteNoise" value="Anzu.WhiteNoise"> -->
+<!-- <label for="radio.Anzu.WhiteNoise">WhiteNoise</label></input> -->
 </span>
 
 </form>
@@ -104,6 +106,17 @@ Anzutone
     <input type="text" name="bpm" id="bpmForm" class="ui-widget-content ui-corner-all" value="120"/>
   </form>
 </div>
+
+<div id="addToneDialog" title="Type user tone URL">
+  <form>
+    <label for="usertone">URL</label>
+    <input type="text" name="usertone" id="userToneForm" class="ui-widget-content ui-corner-all" value="http://"/>
+  </form>
+  <div id="userToneFormHelper"></div>
+
+</div>
+
+
 
 </div>
 
