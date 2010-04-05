@@ -54,19 +54,19 @@ Anzu.ShortAudio = function(){
     pitch = null;
 
     return {
-<<<<<<< HEAD
-      play : function(){
-	audioStream.append(jo);
-	audio.volume = 0.3 * (IsGecko() ? 1 : 2);
-	audio.loop = false;
-	audio.play();
-	audioStream = null;
-	setTimeout(disposeAudio, Math.floor(t * 1000 * 1.2));
-	t = null;
-      }
-=======
+// <<<<<<< HEAD
+//       play : function(){
+// 	audioStream.append(jo);
+// 	audio.volume = 0.3 * (IsGecko() ? 1 : 2);
+// 	audio.loop = false;
+// 	audio.play();
+// 	audioStream = null;
+// 	setTimeout(disposeAudio, Math.floor(t * 1000 * 1.2));
+// 	t = null;
+//       }
+// =======
       play : playAudio
->>>>>>> master
+// >>>>>>> master
     };
   };
 

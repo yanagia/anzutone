@@ -113,7 +113,7 @@ Anzu.tone = function(){
 	if(urls.key === url) callback(key);
       }
 
-      var worker = new Worker("js/anzu/usertone.js");
+      var worker = new Worker("usertone.js");
       
       worker.onmessage = function(e){
 	var result = e.data;
