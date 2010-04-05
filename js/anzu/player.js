@@ -72,6 +72,16 @@ $(function()
 	      $("#addToneDialog").dialog("open");
 	    });
 
+    $("#onionCheckBox").button(
+      {
+	icons : {
+	  primary : "ui-icon-check"
+	}
+      })
+      .click(function(){
+	       Anzu.player.setOnion(this.checked);
+	     });
+
     $("#bpmDialog").dialog(
       {
 	autoOpen: false,
@@ -181,6 +191,7 @@ Anzu.player = function(){
       playing = ! playing;
     },
     set : function(){
+      $("iframe")[0].contentWindow.Anzu.ui.setScore(Anzu.player.score);
       var t = Anzu.player.score.getTrack(currentTrack);
       $("iframe")[0].contentWindow.Anzu.ui.setTrack(t);
 
@@ -193,6 +204,8 @@ Anzu.player = function(){
 				     }
 				   });
       $("#trackVolume").slider("value", t.getVolume() * 100);
+      $("#onionCheckBox")[0].checked = t.isOnion();
+      $("#onionCheckBox").button("refresh");
       $('#toneSelect').button("destroy");
       $('#toneSelect').buttonset();
     },
@@ -285,7 +298,6 @@ Anzu.player = function(){
       Anzu.player.setEventManager();
       Anzu.eventManager.init();
       Anzu.player.parseURL();
-
 //       console.log(Anzu.tone.getToneList());
 //       this.set();
     },
@@ -327,6 +339,9 @@ Anzu.player = function(){
 			   function(error){
 			     $("#userToneFormHelper").html("Error!!" + "<br>" + error);
 			   });
+    },
+    setOnion : function(tf){
+      Anzu.player.score.getTrack(currentTrack).setOnion(tf);
     }
 
   };

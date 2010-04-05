@@ -212,12 +212,46 @@ Anzu.ui.initPianorole = function(_track){
 		  });
   }
 
+  function renderOnionTrack(t){
+    var i, notes;
+    notes = t._notes();
+    for(i = 0; i < notes.length; i++){
+      renderOnionNote(notes[i]);
+    }
+  }
+
+  function renderOnionNote(note){
+    var obj = {};
+    obj.width = note.length * 100;
+    obj.left = note.begin * 100;
+    obj.top = posKeyRev[note.key];
+
+    var div = $("<div>")
+      .addClass(noteCSSClass)
+      .attr("style", "width: " + obj.width + "px;" + " height: 17px; margin 0px 20px 20px 0px;" + 
+	    "position: absolute; opacity: 0.3;"  + 
+	    "top:" + obj.top + "px;" + 
+	    "left:" + obj.left + "px;");
+
+    div.appendTo($("#role"));
+  }
+
   // ノートの読み込み、表示を開始
   len = tracks._notes().length;
   var _notes = tracks._notes();
   for(i = 0; i < len; i++){
     var div = createDivFromNote(_notes[i]);
     div.appendTo($("#role"));
+  }
+
+  // オニオンスキン
+  var onionTracks = Anzu.ui.score.getOnionTracks();
+  var onionTrack;
+  len = onionTracks.length;
+  for(i = 0; i < len; i++){
+    onionTrack = onionTracks[i];
+    if(onionTrack === tracks) continue;
+    renderOnionTrack(onionTrack);
   }
 
   // イベントのバインド
@@ -286,7 +320,7 @@ Anzu.ui.initPianorole = function(_track){
     {
       selected : function(ev, ui){
 	var elm = ui.selected;
-	if(elm.style.position){
+	if(elm.style.position && elm.id){
 	  $(elm).addClass("anzu-note-selected");
 // 	  $(elm).animate({backgroundColor : "#66CDAA"}, 300);
 	}
@@ -407,3 +441,6 @@ Anzu.ui.setTrack = function(t){
   Anzu.ui.initPianorole(t);
 };
 
+Anzu.ui.setScore = function(s){
+  Anzu.ui.score = s;
+};
