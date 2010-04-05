@@ -336,7 +336,7 @@ Anzu.ui.initPianorole = function(_track){
 	window.focus(); // focusを奪う
 	playTestSound(ev);
       },
-      filter : "#role > .ui-widget-header"
+      filter : "#role > [id]"
     });
 
   // 再生バーをつかめるようにする
