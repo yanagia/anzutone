@@ -1,5 +1,5 @@
-onmessage = function(query){
-  var args = query.split("@");
+onmessage = function(e){
+  var args = e.data.split("@");
 
   if(args.length === 2){	// initialize
     var url = args[1];
@@ -10,7 +10,7 @@ onmessage = function(query){
     var f = parseFloat(args[1]);
     var samplingRate = parseInt(args[2], 10);
 
-    postMessage(createSignal(duration, f, samplingRate));
+    postMessage(createWave(duration, f, samplingRate));
   }
 
   

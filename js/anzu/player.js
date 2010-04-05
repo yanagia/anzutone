@@ -101,7 +101,19 @@ $(function()
 	animate: true
       });
 
+    $("#toneSelect").append(
+      $("<input>")
+	.attr("type", "radio")
+	.attr("name", "tone")
+	.attr("id", "radio." + "Yanagia.SineWave")
+	.attr("value", "Yanagia.SineWave"))
+      .append(
+	$("<label>")
+	  .attr("for", "radio." + "Yanagia.SineWave")
+	  .html("Yanagia.SineWave"));
+
     $("#toneSelect").buttonset();
+      
   });
 
 Anzu.player = function(){
@@ -163,6 +175,7 @@ Anzu.player = function(){
     },
     setEventManager : function(){
       $("iframe")[0].contentWindow.Anzu.eventManager = Anzu.eventManager;
+      $("iframe")[0].contentWindow.Anzu.tone = Anzu.tone;
     },
     moveBar : function(delta){
       $("iframe")[0].contentWindow.Anzu.ui.moveBar(delta);
@@ -249,6 +262,9 @@ Anzu.player = function(){
       Anzu.player.setEventManager();
       Anzu.eventManager.init();
       Anzu.player.parseURL();
+
+      Anzu.tone.addUserTone("tone/sampleSine.js");
+      console.log(Anzu.tone.getToneList());
 //       this.set();
     }
 

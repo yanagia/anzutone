@@ -18,12 +18,23 @@ Anzu.tone = function(){
     };
   }
 
+  function convertToArray(arr){
+
+    if(typeof arr === "string"){ // for Safari
+    }
+
+    return arr;
+  }
+
   return {
     addTone : function(name, f){
       toneList[name] = f;
     },
     getToneList : function(){
-      return;
+      var keys = [], i;
+      for(i in toneList) keys.push(i);
+      for(i in workerList) keys.push(i);
+      return keys;
     },
     getTone : function(tonename){
       var f = toneList[tonename];
@@ -59,10 +70,25 @@ Anzu.tone = function(){
       return defaultTone;
     },
     setDefaultTone : function(t){
-      defaultTone = this.getTone(t);
+      if(toneList[t]){
+	defaultTone = this.getTone(t);
+      }else if(workerList[t]){
+	var worker = workerList[t];
+	defaultTone = {
+	  call : function(callback, duration, f){
+	    worker.onmessage = function(e){
+	      var data = e.data;
+	      var signals = convertToArray(data);
+	      callback(signals);
+	    };
+	    worker.postMessage(duration + "@" + f + "@" + Anzu.core.samplingRate);
+	  }
+	};
+      }
+      return toneList["Anzu.SeguareWave"];
     },
     addUserTone : function(url){
-      var worker = new Worker("usertone.js");
+      var worker = new Worker("js/anzu/usertone.js");
       
       worker.onmessage = function(e){
 	var result = e.data;
