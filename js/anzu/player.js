@@ -61,16 +61,16 @@ $(function()
     ).click(function(){
 	      Anzu.player.openExportDialog();
 	    });
-    $("#toneButton").button(
-      {
-      }
-    ).click(function(){
-	      $("#userToneForm").val("http://");
-	      $("#userToneForm").removeClass("ui-state-error");
-	      $("#userToneFormHelper").html("");
-	      $("#userToneFormHelper").removeClass("ui-state-highlight");
-	      $("#addToneDialog").dialog("open");
-	    });
+//     $("#toneButton").button(
+//       {
+//       }
+//     ).click(function(){
+// 	      $("#userToneForm").val("http://");
+// 	      $("#userToneForm").removeClass("ui-state-error");
+// 	      $("#userToneFormHelper").html("");
+// 	      $("#userToneFormHelper").removeClass("ui-state-highlight");
+// 	      $("#addToneDialog").dialog("open");
+// 	    });
 
     $("#bpmDialog").dialog(
       {
