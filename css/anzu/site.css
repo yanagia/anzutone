@@ -33,6 +33,10 @@ body {
     margin-bottom: 0px;
 }
 
+.anzuVersion {
+    font-size: 70%;
+}
+
 .titleSet {
     width: 100%;
     margin-bottom: 10px;
