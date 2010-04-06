@@ -1,3 +1,4 @@
+/* Licensed under the MIT license: see LICENCE.txt */
 Anzu.eventManager = function(){
   var eventQueue = [];
   var currentTrack = 0;

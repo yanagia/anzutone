@@ -1,3 +1,4 @@
+/* Licensed under the MIT license: see LICENCE.txt */
 Anzu.ui = function(){
 //   Anzu.ui.killBuffer = [];
 //   Anzu.ui.divID = 0;

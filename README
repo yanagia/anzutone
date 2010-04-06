@@ -1,10 +1,7 @@
-このプロジェクトはまだ作業中です。
+Anzutoneは「みんなで音楽をつくる」ことを目指すミュージックシーケンサです。
+全てJavaScriptで記述されています。
 
-このレポジトリにはjQueryおよびjQuery Context Menu Pluginのソースコードが含まれています。
-- js/jquery*
-- css/ui-*
-- css/plugin/*
-これらのソースコードはMIT Licenseによってライセンスされています。
+詳細は http://anzutone.appspot.com/ をご覧下さい。
 
 ブランチのルール
 master : core/editor のみを含む。常に安定しているべき。

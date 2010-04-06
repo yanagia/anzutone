@@ -1,3 +1,4 @@
+/* Licensed under the MIT license: see LICENCE.txt */
 // wave module
 // this module requires Base64.encode() method.
 

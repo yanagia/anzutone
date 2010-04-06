@@ -1,3 +1,4 @@
+/* Licensed under the MIT license: see LICENCE.txt */
 $(function()
   {
     Anzu.player.score = Anzu.Score(

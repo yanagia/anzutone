@@ -1,3 +1,4 @@
+/* Licensed under the MIT license: see LICENCE.txt */
 Anzu.Score = function(){
   
   return function(obj){
