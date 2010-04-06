@@ -3,8 +3,9 @@ require "base64"
 templete=<<EOF
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-  <ModulePrefs title="Anzutone" author="yanagia" height="600">
+  <ModulePrefs title="Anzutone" author="yanagia">
     <Require feature="wave" />
+    <Require feature="dynamic-height" />
   </ModulePrefs>
   <Content type="html">
     <![CDATA[

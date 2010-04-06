@@ -171,6 +171,8 @@ $(function()
 //     gadgets.util.registerOnLoadHandler(function(){
 // 					 console.log("loaded ready");
     wave.setStateCallback(Anzu.eventManager.changeState);
+    gadgets.window.adjustHeight(600);
+
     // 				       });
 
   });
