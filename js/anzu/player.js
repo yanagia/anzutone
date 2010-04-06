@@ -159,8 +159,8 @@ Anzu.player = function(){
 
   var s_name = "";
   var s_comment = "";
-  var loaderURL = "http://dl.dropbox.com/u/294534/anzutone/editor.html?load=";
-  loaderURL = "file:///Users/yanagi/Documents/program/anzutone/editor.html?load=";
+  var loaderURL = "http://anzutone.appspot.com/editor.html?load=";
+//   loaderURL = "file:///Users/yanagi/Documents/program/anzutone/editor.html?load=";
 
   function getCurrentTime(){
     currentTime = $("iframe")[0].contentWindow.Anzu.ui.getCurrentTime();
