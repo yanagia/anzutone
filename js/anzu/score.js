@@ -155,6 +155,15 @@ Anzu.Score = function(){
 	  if(can > max) max = can;
 	}
 	return max;
+      },
+      getOnionTracks : function(){
+	var onions = [];
+	for(var i = 0; i < tracks.length; i++){
+	  if(tracks[i].isOnion()){
+	    onions.push(tracks[i]);
+	  }
+	}
+	return onions;
       }
     };
   };
@@ -164,7 +173,7 @@ Anzu.Track = function(){
 
   return function(obj){
     if(typeof obj === "string") obj = JSON.parse(obj);
-    var notes, tone, volume = 0.5;
+    var notes, tone, volume = 0.5, onion = false;
     notes = obj.notes;
     for(var i = 0; i < notes.length; i++){
       notes[i] = Anzu.Note(notes[i]);
@@ -308,6 +317,12 @@ Anzu.Track = function(){
 	}
 
 	return baseSignals;
+      },
+      isOnion : function(){
+	return onion;
+      },
+      setOnion : function(tf){
+	onion = tf;
       },
 
       getVolume : function(){
