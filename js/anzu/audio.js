@@ -1,3 +1,4 @@
+/* Licensed under the MIT license: see LICENCE.txt */
 // ShortAudioオブジェクト。
 // リソース管理が主な役目。
 Anzu.ShortAudio = function(){
