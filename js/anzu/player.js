@@ -219,9 +219,9 @@ Anzu.player = function(){
       playing = ! playing;
     },
     set : function(){
+      if(typeof $("iframe")[0].contentWindow.Anzu === "undefined") return;
       $("iframe")[0].contentWindow.Anzu.ui.setScore(Anzu.player.score);
       var t = Anzu.player.score.getTrack(currentTrack);
-      if(typeof $("iframe")[0].contentWindow.Anzu === "undefined") return;
       $("iframe")[0].contentWindow.Anzu.ui.setTrack(t);
 
       $('input[name="tone"]').each(function(d, elm)
