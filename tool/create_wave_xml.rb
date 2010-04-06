@@ -27,7 +27,7 @@ f = open(ARGV.shift)
 piano = f.read
 f.close
 
-publicurl = "http://dl.dropbox.com/u/294534/anzutone/"
+publicurl = "http://anzutone.appspot.com/wave/"
 
 editor.gsub!(/src="(.+?)"/, 'src="' + publicurl + '\1' + '"')
 piano.gsub!(/src="(.+?)"/, 'src="' + publicurl + '\1' + '"')
