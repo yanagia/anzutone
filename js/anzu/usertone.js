@@ -1,3 +1,4 @@
+/* Licensed under the MIT license: see LICENCE.txt */
 onmessage = function(e){
   var args = e.data.split("|");
 

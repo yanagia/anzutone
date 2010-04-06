@@ -1,3 +1,4 @@
+/* Licensed under the MIT license: see LICENCE.txt */
 Anzu.mixer = function(){
   var queue = {};
   var baseSignals;
